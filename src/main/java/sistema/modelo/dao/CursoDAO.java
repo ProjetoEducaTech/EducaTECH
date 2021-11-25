@@ -1,4 +1,8 @@
+package sistema.modelo.dao;
+
 import java.util.List;
+
+import sistema.modelo.entidade.Curso;
 
 public interface CursoDAO {
 
