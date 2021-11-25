@@ -1,1 +1,1 @@
-# EducaTECH
+# EducaTech
