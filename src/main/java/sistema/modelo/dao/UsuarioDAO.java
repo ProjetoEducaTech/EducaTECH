@@ -1,13 +1,16 @@
-import java.util.List;
+package sistema.modelo.dao;
+//import java.util.List;
+import sistema.modelo.entidade.Usuario;
+
 
 public interface UsuarioDAO {
 
-void cadastrarUsuario(Usuario usuario);//cadastro de usuario
-void deletarConta(Usuario usuario);
-void atualizarNomeUsuario(Usuario usuario, String novoNome);
-void atualizarCpfUsuario(Usuario usuario, String novoCpf);
-void atualizarSenhaUsuario(Usuario usuario, String novaSenha);
-void favoritarCurso(Usuario usuario, Curso curso);//usuario favoritar cursos 
+		void deletarConta(String senha);
+		void atualizarNomeUsuario(String cpf, String novoNome);
+		void atualizarCpfUsuario(String cpf, String novoCpf);
+		void atualizarSenhaUsuario(String cpf, String novaSenha);
+		void cadastrarUsuario(Usuario usuario);
+		//void favoritarCurso(Usuario usuario, Curso curso);//usuario favoritar cursos 
 
-List<Curso> listaCursosFavoritos();//listar cursos favoritos do usuario (join)
+		//List<Curso> listaCursosFavoritos();//listar cursos favoritos do usuario (join)
 }

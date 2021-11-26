@@ -1,4 +1,6 @@
+package sistema.modelo.dao;
 
+import sistema.modelo.entidade.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

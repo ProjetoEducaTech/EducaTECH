@@ -1,3 +1,4 @@
+package sistema.modelo.entidade;
 
 public class Area {
 

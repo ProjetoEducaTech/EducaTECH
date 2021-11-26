@@ -1,3 +1,5 @@
+package sistema.modelo.entidade;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,3 +1,6 @@
+package sistema.modelo.dao;
+
+import sistema.modelo.entidade.*;
 import java.util.List;
 
 public interface InstituicaoDAO {

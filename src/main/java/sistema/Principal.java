@@ -1,6 +1,9 @@
 package sistema;
 import java.util.Scanner;
 
+import sistema.modelo.dao.*;
+import sistema.modelo.entidade.*;
+
 public class Principal {
 
 	public static void main(String[] args) {
@@ -13,6 +16,7 @@ public class Principal {
 		System.out.println("\n \n S - Sim");
 		System.out.println("\n \n N - Não");
 		String verificar_login = leitor.next().toUpperCase();
+		
 
 		switch (verificar_login) {
 		case "S":
@@ -27,10 +31,11 @@ public class Principal {
 			System.out.println("Erro");
 			break;
 		}
-
+leitor.close();
 	}
 
-	public static void sistema(String msg, String usuario, String cpf) {
+
+	public static void sistema(String msg, String usuario, String cpf, String senha) {
 
 		Scanner leitor = new Scanner(System.in);
 
@@ -57,12 +62,13 @@ public class Principal {
 		// Resto vida que segue //
 
 		System.out.print("Para prosseguir, insira sua nota de corte: ");
-		float nota_enem = leitor.nextFloat();
+		//float nota_enem = leitor.nextFloat();
 		
 		System.out.print("Escolha sua área de estudo desejada: \n");
 		System.out.println("\n Áreas de Estudo: \n");
 
 		String[] areas = new String[] {"", " Humanas", " Biologicas"," Exatas", " Listar todos os cursos"};
+	
 		
 		for(int i = 1; i <= 4; i++) {
 			System.out.println(i + " - " + areas[i]);
@@ -92,7 +98,7 @@ public class Principal {
 			System.out.println("Erro");
 		break;
 	}
-		
+		leitor.close();
 	}
 	
 	public static void sem_login() {
@@ -104,23 +110,27 @@ public class Principal {
 		}
 	
 	public static void fazerCadastro() {
+		UsuarioDAO dao = (UsuarioDAO) new UsuarioDAOImpl();
 
 		System.out.println("\nBem-vindo ao Cadastro\n");
 
 		Scanner leitor = new Scanner(System.in);
 
 		System.out.print("Seu CPF: ");
-		String cpf_usuario = leitor.next();
+		String cpf = leitor.next();
 
 		System.out.print("Crie um Usuario: ");
-		String criar_usuario = leitor.next();
+		String nome = leitor.next();
 
 		System.out.print("Crie uma Senha: ");
-		String criar_senha = leitor.next();
-
-		// Enviar para o Vitor parametro usuario e senha e cpf //
+		String senha = leitor.next();
+		
+		
+		dao.cadastrarUsuario(new Usuario(nome, cpf, senha));
+		System.out.println("Cliente Salvo Com Sucesso.\n");
 
 		tem_login();
+		leitor.close();
 
 	}
 	
@@ -137,23 +147,24 @@ public class Principal {
 		String senha = leitor.next();
 
 		String nome = "Júlia";
-
+		
 		// Enviar parametros para o victor login & senha //
 
-		sistema("Logado", nome, cpf);
-
+		sistema("Logado", nome, cpf, senha);
+leitor.close();
 	} 
 	
 	public static void info_conta(String nome, String cpf) {
 		
+		UsuarioDAO dao = (UsuarioDAO) new UsuarioDAOImpl();
 		Scanner leitor = new Scanner(System.in);
 		
 		System.out.println("\n");
 		
 		System.out.print("\n O que você gostaria de acessar? \n");
-		String[] opc = new String[] {""," Acessar meus dados ", " Acessar meus cursos favoritados "};
+		String[] opc = new String[] {""," Acessar meus dados ", " Acessar meus cursos favoritados ", " Atualizar nome ", " Atualizar CPF ", " Atualizar senha", " Deletar Conta"};
 		
-		for(int i = 1; i < 3; i++) {
+		for(int i = 1; i < 7; i++) {
 			System.out.println(i + " - " + opc[i]);
 		}
 		
@@ -166,8 +177,50 @@ public class Principal {
 			case 2:
 				infos_favorito(cpf);
 			break;
+			case 3:
+				System.out.print("\n");
+				
+				System.out.print("Informe seu cpf: ");
+				cpf = leitor.next();
+				System.out.print("Informe O Novo Nome Do usuario: ");
+				String novoNome = leitor.next();
+				
+				dao.atualizarNomeUsuario(cpf,  novoNome);
+
+			break;
+			
+			case 4:
+				System.out.print("\n");
+			
+				System.out.print("Informe seu cpf: ");
+				cpf = leitor.next();
+				System.out.print("Informe O Novo CPF: ");
+				String novoCpf = leitor.next();
+				
+				dao.atualizarCpfUsuario( cpf, novoCpf);
+			break;
+			
+			case 5:
+				System.out.print("\n");
+				
+				System.out.print("Informe seu cpf atual: ");
+				 cpf = leitor.next();
+				System.out.print("Informe A Nova senha: ");
+				String novaSenha = leitor.next();
+				
+				dao.atualizarSenhaUsuario( cpf, novaSenha );
+				break;
+			
+			case 6:
+			    System.out.print("\n");
+							
+			    System.out.print("Insira sua senha: ");
+			    String senha = leitor.next();
+			
+			    dao.deletarConta(senha);
+			    break;
 		}
-		
+		leitor.close();
 	}
 	
 	public static void infos_favorito(String id) {
@@ -184,11 +237,14 @@ public class Principal {
 	
 	public static void infos_user(String nome,String cpf) {
 		
-		System.out.println("\n Olá, "+ nome +", esses sãos seus dados: \n");
+		System.out.println("\n Olá, "+ nome +", esses sãos seus dados, digite 1 caso queira proseguir: \n");
+		
 		
 		System.out.println("Seu nome: " + nome);
 		System.out.println("Seu CPF: " + cpf);
 		
+		
+
 	}
 
 	//listações de cursos por área
