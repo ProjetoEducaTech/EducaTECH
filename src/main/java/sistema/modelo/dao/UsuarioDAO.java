@@ -1,6 +1,6 @@
 package sistema.modelo.dao;
 //import java.util.List;
-import sistema.modelo.entidade.Usuario;
+import sistema.modelo.entidade.*;
 
 
 public interface UsuarioDAO {
@@ -10,7 +10,7 @@ public interface UsuarioDAO {
 		void atualizarCpfUsuario(String cpf, String novoCpf);
 		void atualizarSenhaUsuario(String cpf, String novaSenha);
 		void cadastrarUsuario(Usuario usuario);
-		//void favoritarCurso(Usuario usuario, Curso curso);//usuario favoritar cursos 
+		void favoritarCurso(String cpf, String idCurso);//usuario favoritar cursos 
 
 		//List<Curso> listaCursosFavoritos();//listar cursos favoritos do usuario (join)
 }

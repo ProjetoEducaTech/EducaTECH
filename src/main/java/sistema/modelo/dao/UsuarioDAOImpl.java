@@ -1,6 +1,6 @@
 package sistema.modelo.dao;
 
-import sistema.modelo.entidade.Usuario;
+import sistema.modelo.entidade.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -19,7 +19,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		try {
 
 			conexao = conectarBanco();
-			insert = conexao.prepareStatement("INSERT INTO usuario (nome_usuario, cpf, senha ) VALUES (?,?,?)");
+			insert = conexao.prepareStatement("INSERT INTO usuario (nome_usuario, cpf_usuario, senha_usuario ) VALUES (?,?,?)");
 
 			insert.setString(1, usuario.getNome());
 			insert.setString(2, usuario.getCpf());
@@ -56,7 +56,7 @@ public void deletarConta(String senha) {
 		try {
 
 			conexao = conectarBanco();
-			delete = conexao.prepareStatement("DELETE FROM usuario WHERE senha = ?");
+			delete = conexao.prepareStatement("DELETE FROM usuario WHERE senha_usuario = ?");
 
 			delete.setString(1, senha);
 
@@ -91,7 +91,7 @@ public void atualizarNomeUsuario(String cpf, String novoNome) {
 	try {
 
 		conexao = conectarBanco();
-		update = conexao.prepareStatement("UPDATE usuario SET nome_usuario = ? WHERE cpf = ?");
+		update = conexao.prepareStatement("UPDATE usuario SET nome_usuario = ? WHERE cpf_usuario = ?");
 		
 		update.setString(1, novoNome);
 		update.setString(2, cpf);
@@ -127,7 +127,7 @@ public void atualizarCpfUsuario(String cpf, String novoCpf) {
 	try {
 
 		conexao = conectarBanco();
-		update = conexao.prepareStatement("UPDATE usuario SET cpf = ? WHERE cpf = ?");
+		update = conexao.prepareStatement("UPDATE usuario SET cpf_usuario = ? WHERE cpf_usuario = ?");
 		
 		update.setString(1, novoCpf);
 		update.setString(2, cpf);
@@ -163,7 +163,7 @@ public void atualizarSenhaUsuario(String cpf, String novaSenha) {
 	try {
 
 		conexao = conectarBanco();
-		update = conexao.prepareStatement("UPDATE usuario SET senha = ? WHERE cpf = ?");
+		update = conexao.prepareStatement("UPDATE usuario SET senha_usuario = ? WHERE cpf_usuario = ?");
 		
 		update.setString(1, novaSenha);
 		update.setString(2, cpf);
@@ -190,20 +190,55 @@ public void atualizarSenhaUsuario(String cpf, String novaSenha) {
 		}
 	}
 }
-private Connection conectarBanco() throws SQLException {
-	return DriverManager.getConnection("jdbc:mysql://localhost/educatech?user=root&password=4b96d5c1jp36&useTimezone=true&serverTimezone=UTC");
-}
 
-
-
-/*public void favoritarCurso(Usuario usuario, Curso curso) {
-	// TODO Auto-generated method stub
+public void favoritarCurso(String cpf, String idCurso) {
 	
+	Connection conexao = null;
+	PreparedStatement update = null;
+
+	try {
+
+		conexao = conectarBanco();
+		update = conexao.prepareStatement("INSERT INTO usuario_favorita_curso ( cpf_usuario, id_curso ) VALUES (?,?)");
+		
+		update.setString(1, cpf);
+		update.setString(2, idCurso);
+
+		update.execute();
+
+	} catch (SQLException erro) {
+		erro.printStackTrace();
+	}
+
+	finally {
+
+		try {
+
+			if (update != null)
+				update.close();
+
+			if (conexao != null)
+				conexao.close();
+
+		} catch (SQLException erro) {
+
+			erro.printStackTrace();
+		}
+	}
+}
+	
+
+private Connection conectarBanco() throws SQLException {
+	return DriverManager.getConnection("jdbc:mysql://localhost/db_atualizado?user=root&password=4b96d5c1jp36&useTimezone=true&serverTimezone=UTC");
 }
 
-public List<Curso> listaCursosFavoritos() {
+
+
+
+
+//public List<Curso> listaCursosFavoritos() {
 	// TODO Auto-generated method stub
-	return null;
-}*/
+	//return null;
+//}
 }
 

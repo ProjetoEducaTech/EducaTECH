@@ -119,10 +119,10 @@ leitor.close();
 		System.out.print("Seu CPF: ");
 		String cpf = leitor.next();
 
-		System.out.print("Crie um Usuario: ");
+		System.out.print("Crie um senha: ");
 		String nome = leitor.next();
 
-		System.out.print("Crie uma Senha: ");
+		System.out.print("Crie uma usuario: ");
 		String senha = leitor.next();
 		
 		
@@ -219,6 +219,14 @@ leitor.close();
 			
 			    dao.deletarConta(senha);
 			    break;
+			    
+			case 7:
+				System.out.print("Informe seu cpf : ");
+				 cpf = leitor.next();
+				System.out.print("Informe o id do curso: ");
+				String idCurso = leitor.next();
+				
+				dao.favoritarCurso( cpf,  idCurso);
 		}
 		leitor.close();
 	}
