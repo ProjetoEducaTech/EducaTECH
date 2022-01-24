@@ -1,4 +1,5 @@
 package sistema;
+import java.util.List;
 import java.util.Scanner;
 
 import sistema.modelo.dao.*;
@@ -12,26 +13,35 @@ public class Principal {
 
 		System.out.println("\n Seja bem vindo ao EducaTECH! \n");
 
-		System.out.println("\n Para começar, você possui cadastro?");
-		System.out.println("\n \n S - Sim");
-		System.out.println("\n \n N - Não");
-		String verificar_login = leitor.next().toUpperCase();
+		System.out.println("\n Para começar: você possui cadastro?");
+		System.out.println("\n \n 1 - Sim");
+		System.out.println("\n \n 2 - Não");
+		int verificar_login = leitor.nextInt();
 		
 
 		switch (verificar_login) {
-		case "S":
+		case 1:
+			
 			tem_login();
+			
 			break;
 
-		case "N":
+		case 2:
+			
 			sem_login();
+			
 			break;
 
 		default:
+			
 			System.out.println("Erro");
+			
 			break;
+			
 		}
-leitor.close();
+		
+		leitor.close();
+
 	}
 
 
@@ -41,8 +51,6 @@ leitor.close();
 
 		System.out.println("\n \n Você efetuou o login com sucesso!");
 		System.out.println("\n \n Seja bem vindo, " + usuario + ", ao EducaTECH, o sistema que irá o auxiliar no processo de integração ao ensino superior. \n");
-		
-		// Opçoes para o usuario BASICAS //
 		
 		System.out.print("\n Escolha como deseja dar continuação ao sistema: \n \n");
 		String[] opc = new String[] {""," Acessar opções da conta ", " Prosseguir para escolher meu curso"};
@@ -58,11 +66,9 @@ leitor.close();
 				info_conta(usuario, cpf);
 			break;
 		}
-		
-		// Resto vida que segue //
 
 		System.out.print("Para prosseguir, insira sua nota de corte: ");
-		//float nota_enem = leitor.nextFloat();
+		float notaCorte = leitor.nextFloat();
 		
 		System.out.print("Escolha sua área de estudo desejada: \n");
 		System.out.println("\n Áreas de Estudo: \n");
@@ -103,7 +109,7 @@ leitor.close();
 	
 	public static void sem_login() {
 
-		System.out.print("Para acessar todos os nossos benefícios, efetue o login.");
+		System.out.print("Para acessar todos os benefícios de nosso sistema, efetue o cadastro. \n\n");
 
 		fazerCadastro();
 			
@@ -112,22 +118,22 @@ leitor.close();
 	public static void fazerCadastro() {
 		UsuarioDAO dao = (UsuarioDAO) new UsuarioDAOImpl();
 
-		System.out.println("\nBem-vindo ao Cadastro\n");
+		System.out.println("\nBem vindo ao cadastro!\n");
 
 		Scanner leitor = new Scanner(System.in);
-
-		System.out.print("Seu CPF: ");
-		String cpf = leitor.next();
-
-		System.out.print("Crie um senha: ");
+		
+		System.out.print("Crie um nome de usuario: ");
 		String nome = leitor.next();
 
-		System.out.print("Crie uma usuario: ");
+		System.out.print("Insira seu CPF: ");
+		String cpf = leitor.next();
+
+		System.out.print("Crie uma senha: ");
 		String senha = leitor.next();
 		
-		
-		dao.cadastrarUsuario(new Usuario(nome, cpf, senha));
-		System.out.println("Cliente Salvo Com Sucesso.\n");
+		dao.cadastrarUsuario(new Usuario(nome, cpf, senha ));
+		System.out.println("Cliente salvo com sucesso.\n");
+		System.out.print("Seus dados estão seguros conosco, pode confiar!");
 
 		tem_login();
 		leitor.close();
@@ -138,125 +144,158 @@ leitor.close();
 
 		Scanner leitor = new Scanner(System.in);
 
-		System.out.println("\n Seja bem vindo novamente!");
+		System.out.println("\n LOGIN \n");
 		
 		System.out.print("\n Insira seu CPF: ");
 		String cpf = leitor.next();
 
 		System.out.print("\n Insira sua senha: ");
 		String senha = leitor.next();
-
-		String nome = "Júlia";
 		
-		// Enviar parametros para o victor login & senha //
+		System.out.print("\n Insira seu nome de usuário: ");
+		String nome = leitor.next();
 
 		sistema("Logado", nome, cpf, senha);
-leitor.close();
+		
+		leitor.close();
+		
 	} 
 	
 	public static void info_conta(String nome, String cpf) {
 		
 		UsuarioDAO dao = (UsuarioDAO) new UsuarioDAOImpl();
+		
 		Scanner leitor = new Scanner(System.in);
 		
 		System.out.println("\n");
 		
-		System.out.print("\n O que você gostaria de acessar? \n");
-		String[] opc = new String[] {""," Acessar meus dados ", " Acessar meus cursos favoritados ", " Atualizar nome ", " Atualizar CPF ", " Atualizar senha", " Deletar Conta"};
+		System.out.print("\n O que você gostaria de acessar? \n\n");
+		String[] opc = new String[] {""," Acessar meus dados ", " Atualizar nome de usuário" ,  " Atualizar CPF ", " Atualizar senha", " Deletar conta", " Favoritar Curso"," Acessar meus cursos favoritados "};
 		
-		for(int i = 1; i < 7; i++) {
+		for(int i = 1; i < 8; i++) {
+			
 			System.out.println(i + " - " + opc[i]);
+			
 		}
 		
 		int escolha_conta = leitor.nextInt();
 
 		switch(escolha_conta) {
 			case 1:
-				infos_user(nome,cpf);
-			break;
-			case 2:
+				
 				infos_favorito(cpf);
+				
 			break;
-			case 3:
+			
+			case 2:
+				
 				System.out.print("\n");
 				
-				System.out.print("Informe seu cpf: ");
+				System.out.print("Informe seu CPF: \n");
 				cpf = leitor.next();
-				System.out.print("Informe O Novo Nome Do usuario: ");
+				
+				System.out.print("Informe o novo nome de usuário: ");
 				String novoNome = leitor.next();
 				
-				dao.atualizarNomeUsuario(cpf,  novoNome);
+				dao.atualizarNomeUsuario(cpf,  novoNome);	
+				
+			break;
+			
+			case 3:
+				
+				System.out.print("\n");
+				
+				System.out.print("Informe seu CPF atual: \n");
+				cpf = leitor.next();
+				
+				System.out.print("Informe o novo CPF: ");
+				String novoCpf = leitor.next();
+				
+				dao.atualizarCpfUsuario(cpf, novoCpf);
 
 			break;
 			
 			case 4:
-				System.out.print("\n");
-			
-				System.out.print("Informe seu cpf: ");
-				cpf = leitor.next();
-				System.out.print("Informe O Novo CPF: ");
-				String novoCpf = leitor.next();
 				
-				dao.atualizarCpfUsuario( cpf, novoCpf);
-			break;
-			
-			case 5:
 				System.out.print("\n");
 				
-				System.out.print("Informe seu cpf atual: ");
+				System.out.print("Informe seu CPF: \n");
 				 cpf = leitor.next();
-				System.out.print("Informe A Nova senha: ");
+				 
+				System.out.print("Informe a nova senha: ");
 				String novaSenha = leitor.next();
 				
-				dao.atualizarSenhaUsuario( cpf, novaSenha );
+				dao.atualizarSenhaUsuario(cpf, novaSenha );
+				
 				break;
 			
-			case 6:
-			    System.out.print("\n");
-							
-			    System.out.print("Insira sua senha: ");
+			case 5:
+				
+				System.out.print("\n");
+				
+			    System.out.print("Insira seu cpf: ");
 			    String senha = leitor.next();
 			
 			    dao.deletarConta(senha);
+			    
 			    break;
+			
+			case 6:
+				
+				System.out.print("Informe seu CPF atual: ");
+				String cpfUsuario = leitor.next();
+				
+				System.out.print("Informe o ID do curso: ");
+				int idCurso = leitor.nextInt();
+				
+				dao.favoritarCurso( cpfUsuario, idCurso);
+				
+				break;
 			    
 			case 7:
-				System.out.print("Informe seu cpf : ");
-				 cpf = leitor.next();
-				System.out.print("Informe o id do curso: ");
-				String idCurso = leitor.next();
 				
-				dao.favoritarCurso( cpf,  idCurso);
+				System.out.print("Informe seu CPF atual: ");
+				cpf = leitor.next();
+				
+				List<Curso> CursosFavoritos = null;
+				CursosFavoritos =  dao.listaCursosFavoritos(cpf);
+		
+				listarCursos(CursosFavoritos);
+			
+				break;
+				
+			default: 
+		
+				System.out.print("Opção inválida.");
+				
+				break;
+		
 		}
 		leitor.close();
 	}
 	
+	private static void listarCursos(List<Curso> cursosFavoritos) {
+		
+		System.out.println(cursosFavoritos);
+		
+	}
+
+
 	public static void infos_favorito(String id) {
+		
 		System.out.println("\n Seus cursos favoritados são: \n");
 		String[] favoritos = new String[] {"Ánalise e Desenvolvimento de Sistema - IFSC", "Informática - IFC"};
 		
 		for(int i = 0; i < favoritos.length;i++) {
+			
 			System.out.println(favoritos[i]);
+			
 		}
 		
 		System.out.println("\n");
 
 	}
-	
-	public static void infos_user(String nome,String cpf) {
-		
-		System.out.println("\n Olá, "+ nome +", esses sãos seus dados, digite 1 caso queira proseguir: \n");
-		
-		
-		System.out.println("Seu nome: " + nome);
-		System.out.println("Seu CPF: " + cpf);
-		
-		
 
-	}
-
-	//listações de cursos por área
-	
 	public static void lista_humanas() {
 
 		System.out.println("\n Você selecionou a área de humanas!");

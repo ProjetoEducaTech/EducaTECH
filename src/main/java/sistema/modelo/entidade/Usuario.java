@@ -9,11 +9,11 @@ public class Usuario {
 	private String senha;
 	private List<Curso> cursosFavoritos;
 	
-	public Usuario(String senha, String cpf,String nome ) {
+	public Usuario(String nome, String cpf,String senha ) {
 		
+		setNome(nome);
 		setCpf(cpf);
 		setSenha(senha);
-		setNome(nome);
 		
 		cursosFavoritos = new ArrayList<Curso>();
 	}
