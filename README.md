@@ -8,9 +8,8 @@ O sistema visa facilitar a busca por cursos superiores. Ele é composto, princip
 
 Integrantes:
 
-Mariana Cézar da Silva.
-Julia Ballen Haertel.
-Victor Gabriel Zampieri.
-Tiago Perini.
-Lavínia de Oliveira.
-Amanda Beatriz Bandoch.
+Mariana Cézar da Silva,
+Mateus Nunc N'Fooro Nascimento,
+Julia Ballen Haertel,
+Victor Gabriel Zampieri,
+Vitor Quagliotto de Sousa.
