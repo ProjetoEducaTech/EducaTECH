@@ -1,129 +1,111 @@
 package sistema.modelo.dao;
 
-import sistema.modelo.entidade.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
 
+import sistema.modelo.entidade.Area;
+import sistema.modelo.entidade.Curso;
+import sistema.modelo.entidade.Instituicao;
+import sistema.modelo.entidade.Usuario;
 
 
 public class UsuarioDAOImpl implements UsuarioDAO {
 	
 	public void cadastrarUsuario(Usuario usuario) {
 
-		Connection conexao = null;
-		PreparedStatement insert = null;
+		Session sessao = null;
 
 		try {
 
-			conexao = conectarBanco();
-			insert = conexao.prepareStatement( "INSERT INTO usuario (nome_usuario, cpf_usuario, senha_usuario ) VALUES (?,?,?)");
+			sessao = conectarBanco().openSession();
+			sessao.beginTransaction();
 
-			insert.setString(1, usuario.getNome());
-			insert.setString(2, usuario.getCpf());
-			insert.setString(3, usuario.getSenha());
+			sessao.save(usuario);
 
-			insert.execute();
+			sessao.getTransaction().commit();
 
-		} catch (SQLException erro) {
-			erro.printStackTrace();
-		}
+		} catch (Exception sqlException) {
 
-		finally {
+			sqlException.printStackTrace();
 
-			try {
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
 
-				if (insert != null)
-					insert.close();
+		} finally {
 
-				if (conexao != null)
-					conexao.close();
-
-			} catch (SQLException erro) {
-
-				erro.printStackTrace();
+			if (sessao != null) {
+				sessao.close();
 			}
 		}
 	}
 
-	public void deletarConta(String cpf) {
+	public void deletarConta(Usuario usuario) {
 
-		Connection conexao = null;
-		PreparedStatement delete = null;
+		Session sessao = null;
 
 		try {
 
-			conexao = conectarBanco();
-			delete = conexao.prepareStatement("DELETE FROM usuario WHERE cpf_usuario = ?");
+			sessao = conectarBanco().openSession();
+			sessao.beginTransaction();
 
-			delete.setString(1, cpf);
+			sessao.delete(usuario);
 
-			delete.execute();
+			sessao.getTransaction().commit();
 
-		} catch (SQLException erro) {
-			erro.printStackTrace();
-		}
+		} catch (Exception sqlException) {
 
-		finally {
+			sqlException.printStackTrace();
 
-			try {
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
 
-				if (delete != null)
-					delete.close();
+		} finally {
 
-				if (conexao != null)
-					conexao.close();
-
-			} catch (SQLException erro) {
-
-				erro.printStackTrace();
+			if (sessao != null) {
+				sessao.close();
 			}
 		}
 	}
 
-	public void atualizarNomeUsuario(String cpf, String novoNome) {
+	public void atualizarNomeUsuario(String novoNome) {
 
-		Connection conexao = null;
-		PreparedStatement update = null;
+		Session sessao = null;
 
 		try {
 
-			conexao = conectarBanco();
-			update = conexao.prepareStatement("UPDATE usuario SET nome_usuario = ? WHERE cpf_usuario = ?");
+			sessao = conectarBanco().openSession();
+			sessao.beginTransaction();
 
-			update.setString(1, novoNome);
-			update.setString(2, cpf);
+			sessao.update(novoNome);
 
-			update.execute();
+			sessao.getTransaction().commit();
 
-		} catch (SQLException erro) {
-			erro.printStackTrace();
-		}
+		} catch (Exception sqlException) {
 
-		finally {
+			sqlException.printStackTrace();
 
-			try {
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
 
-				if (update != null)
-					update.close();
+		} finally {
 
-				if (conexao != null)
-					conexao.close();
-
-			} catch (SQLException erro) {
-
-				erro.printStackTrace();
+			if (sessao != null) {
+				sessao.close();
 			}
 		}
 	}
 
-	public void atualizarCpfUsuario(String cpf, String novoCpf) {
+	/*public void atualizarCpfUsuario(String cpf, String novoCpf) {
 
 		Connection conexao = null;
 		PreparedStatement update = null;
@@ -157,40 +139,33 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				erro.printStackTrace();
 			}
 		}
-	}
+	} */
 
-	public void atualizarSenhaUsuario(String cpf, String novaSenha) {
+	public void atualizarSenhaUsuario(String novaSenha) {
 
-		Connection conexao = null;
-		PreparedStatement update = null;
+		Session sessao = null;
 
 		try {
 
-			conexao = conectarBanco();
-			update = conexao.prepareStatement("UPDATE usuario SET senha_usuario = ? WHERE cpf_usuario = ?");
+			sessao = conectarBanco().openSession();
+			sessao.beginTransaction();
 
-			update.setString(1, novaSenha);
-			update.setString(2, cpf);
+			sessao.update(novaSenha);
 
-			update.execute();
+			sessao.getTransaction().commit();
 
-		} catch (SQLException erro) {
-			erro.printStackTrace();
-		}
+		} catch (Exception sqlException) {
 
-		finally {
+			sqlException.printStackTrace();
 
-			try {
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
 
-				if (update != null)
-					update.close();
+		} finally {
 
-				if (conexao != null)
-					conexao.close();
-
-			} catch (SQLException erro) {
-
-				erro.printStackTrace();
+			if (sessao != null) {
+				sessao.close();
 			}
 		}
 	}
@@ -259,9 +234,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				int idInstituicao = resultado.getInt("instituicao");
 				float notaCorte = resultado.getFloat("nota_corte");
 				String t =  resultado.getString("nome_instituicao");
+				String endereco =  resultado.getString("endereco_instituicao");
 
-				cursosFavoritos
-						.add(new Curso(id, notaCorte, nomeCurso, new Area(nomeArea), new Instituicao(idInstituicao, t)));
+				cursosFavoritos.add(new Curso(id, notaCorte, nomeCurso, new Area(nomeArea), new Instituicao(idInstituicao, t, endereco)));
 			}
 
 		} catch (SQLException erro) {
@@ -291,17 +266,20 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	}
 	
 
-private Connection conectarBanco() throws SQLException {
-	return DriverManager.getConnection("jdbc:mysql://localhost/db_atualizado?user=root&password=4b96d5c1jp36&useTimezone=true&serverTimezone=UTC");
+	private SessionFactory conectarBanco() {
+
+		Configuration configuracao = new Configuration();
+
+		configuracao.addAnnotatedClass(sistema.modelo.entidade.Area.class);
+		configuracao.addAnnotatedClass(sistema.modelo.entidade.Curso.class);
+		configuracao.addAnnotatedClass(sistema.modelo.entidade.Instituicao.class);
+		configuracao.addAnnotatedClass(sistema.modelo.entidade.Usuario.class);
+
+		configuracao.configure("hibernate.cfg.xml");
+
+		ServiceRegistry servico = new StandardServiceRegistryBuilder().applySettings(configuracao.getProperties()).build();
+		SessionFactory fabricaSessao = configuracao.buildSessionFactory(servico);
+
+		return fabricaSessao;
 }
-
-
-
-
-
-//public List<Curso> listaCursosFavoritos() {
-	// TODO Auto-generated method stub
-	//return null;
-//}
 }
-

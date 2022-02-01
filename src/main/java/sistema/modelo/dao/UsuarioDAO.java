@@ -7,13 +7,13 @@ import sistema.modelo.entidade.*;
 
 public interface UsuarioDAO {
 
-	void deletarConta(String cpf);
-	void atualizarNomeUsuario(String cpf, String novoNome);
-	void atualizarCpfUsuario(String cpf, String novoCpf);
-	void atualizarSenhaUsuario(String cpf, String novaSenha);
+	void deletarConta(Usuario usuario);
+	void atualizarNomeUsuario( String novoNome);
+	//void atualizarCpfUsuario( String novoCpf);
+	void atualizarSenhaUsuario(String novaSenha);
 	void cadastrarUsuario(Usuario usuario);
 	
 
-	List<Curso> listaCursosFavoritos(String cpfUsuario);
-	void favoritarCurso(String cpfUsuario, int idCurso);
+	//List<Curso> listaCursosFavoritos(String cpfUsuario);
+	//void favoritarCurso(String cpfUsuario, int idCurso);
 }

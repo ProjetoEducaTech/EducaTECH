@@ -2,6 +2,7 @@ package sistema.modelo.entidade;
 
 public class Area {
 
+	
 	private int id;
 	private String nome;
 

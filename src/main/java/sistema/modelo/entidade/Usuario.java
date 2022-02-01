@@ -1,15 +1,8 @@
 package sistema.modelo.entidade;
-import java.util.ArrayList;
-
-import java.util.List;
 import java.io.Serializable;
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -18,8 +11,8 @@ public class Usuario implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "cpf_usuario" , length = 14, nullable = false, unique = true)
-	private String cpf;
+	@Column(name = "id_usuario" , length = 14, nullable = false, unique = true)
+	private Long id;
 	
 	@Column(name = "nome_usuario", length = 25, nullable = false, unique = false)
 	private String nome;
@@ -27,27 +20,21 @@ public class Usuario implements Serializable{
 	@Column(name = "senha_usuario", length = 20, nullable = false, unique = false)
 	private String senha;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name = "crusos_favoritos", joinColumns = @JoinColumn(name = "cpf_usuario"), inverseJoinColumns = @JoinColumn(name = "id_curso"))
-	private List<Curso> cursosFavoritos;
-	
 	public Usuario() {}
 	
-	public Usuario(String cpf, String nome,String senha ) {
+	public Usuario(Long id, String nome,String senha) {
 		
-		setCpf(cpf);
+		setId(id);
 		setNome(nome);
 		setSenha(senha);
-		
-		cursosFavoritos = new ArrayList<Curso>();
 	}
 	
-	public String getCpf() {
-		return cpf;
+	public Long getId() {
+		return id;
 	}
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getNome() {
@@ -65,15 +52,5 @@ public class Usuario implements Serializable{
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	
-	public List<Curso> recuperarCursosFavoritos() {
-		return cursosFavoritos;
-	}
-	
-	public void inserirCursoFavorito(Curso cursosFavoritos) {
-		 this.cursosFavoritos.add(cursosFavoritos);
-	}
-
-	
 
 }

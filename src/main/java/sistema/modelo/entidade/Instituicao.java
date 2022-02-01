@@ -1,43 +1,46 @@
 package sistema.modelo.entidade;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Instituicao {
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Entity;
 
-	private int id;
-	private String nome;
-	private List<Curso> cursos;
 
-	public Instituicao(String nome) {
-		setNome(nome);
+
+@Entity
+@Table(name = "institiuicao")
+public class Instituicao implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@Column(name = "cnpj", length = 20, nullable = false, unique = true)
+	private String cnpj;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "instituicao", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Curso> cursos = new ArrayList<Curso>();
+
+	public Instituicao() {
+	}
+
+	public Instituicao(String cnpj) {
+		setNome(cnpj);
 		cursos = new ArrayList<Curso>();
 	}
 
-	public Instituicao(int id, String nome) {
-		setId(id);
-		setNome(nome);
-		cursos = new ArrayList<Curso>();
-	}
-	
-	public Instituicao( int idInstituicao){
-		setId(id);
+	public String getCnpj() {
+		return cnpj;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNome(String cnpj) {
+		this.cnpj = cnpj;
 	}
 
 	public List<Curso> getCursos() {
@@ -50,5 +53,5 @@ public class Instituicao {
 
 	public void inserirCurso(Curso curso) {
 		cursos.add(curso);
-	}	
+	}
 }

@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -40,12 +42,16 @@ public class Aluno implements Serializable {
 	@JoinTable(name = "Aluno_curso", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_curso"))
 	private List<Curso> curso = new ArrayList<Curso>();
 	
+	@Enumerated(EnumType.ORDINAL)
+    private Genero genero;
+	
 	public Aluno() {}
 	
-	public Aluno(String cpf, String sobrenome, float notaCorte) {
+	public Aluno(String cpf, String sobrenome, float notaCorte, Genero genero) {
 		setCpf(cpf);
 		setSobrenome(sobrenome);
 		setNotaCorte(notaCorte);
+		setGenero(genero);
 	}
 	
 	public String getCpf() {
@@ -87,4 +93,13 @@ public class Aluno implements Serializable {
 	public void adicionarCurso(Curso curso) {
 		this.curso.add(curso);
 	}
+	
+	public Genero getGenero() {
+		return genero;
+	}
+
+	public void setGenero(Genero genero) {
+		this.genero = genero;
+	}
+
 }

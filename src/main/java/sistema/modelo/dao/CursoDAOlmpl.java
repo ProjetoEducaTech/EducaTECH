@@ -195,8 +195,10 @@ public class CursoDAOlmpl implements CursoDAO {
 				String nomeCurso = resultado.getString("nomeCurso");
 				String nomeArea = resultado.getString("area");
 				int idInstituicao = resultado.getInt("instituicao");
+				String nomeInstituicao = resultado.getString("nome");
+				String endereco = resultado.getString("endereco");
 
-				cursos.add(new Curso(id, notaCorte, nomeCurso, new Area(nomeArea), new Instituicao(idInstituicao)));
+				cursos.add(new Curso(id, notaCorte, nomeCurso, new Area(nomeArea), new Instituicao(idInstituicao, nomeInstituicao, endereco)));
 			}
 
 		} catch (SQLException erro) {
