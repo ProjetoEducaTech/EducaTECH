@@ -1,4 +1,6 @@
+package sistema.modelo.dao;
 
+import sistema.modelo.entidade.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -143,8 +145,9 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 
 				int id = resultado.getInt("id_instituicao");
 				String nome = resultado.getString("nome_instituicao");
+				String endereco = resultado.getString("endereco");
 
-				instituicaoRetornada = new Instituicao(id, nome);
+				instituicaoRetornada = new Instituicao(id, nome, endereco);
 			}
 
 		} catch (SQLException erro) {

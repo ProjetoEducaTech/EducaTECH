@@ -1,3 +1,6 @@
+package sistema.modelo.dao;
+
+import sistema.modelo.entidade.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,143 +10,183 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsuarioDAOImpl implements UsuarioDAO {
-	
-	public void cadastrarUsuario(Usuario usuario) {
-		
+import sistema.modelo.entidade.Curso;
+
+public class CursoDAOlmpl implements CursoDAO {
+
+	public void inserirCurso(Curso curso) {
+
 		Connection conexao = null;
 		PreparedStatement insert = null;
-		
+
 		try {
-			
+
 			conexao = conectarBanco();
-			insert = conexao.prepareStatement("INSERT INTO cliente (nome_usuario, cpf, senha ) VALUES (?,?,?)");
-			insert.setString(1, usuario.getNome());
-			insert.setString(2, usuario.getCpf());
-			insert.setString(3, usuario.getSenha());
+
+			insert = conexao
+					.prepareStatement("insert into curso (notaCorte,nomeCurso, area, instituicao) values (?,?,?,?)");
+			insert.setFloat(1, curso.getNotaCorte());
+			insert.setString(2, curso.getNomeCurso());
+			insert.setInt(3, curso.getArea().getId());
+			insert.setInt(4, curso.getInstituicao().getId());
+
 			insert.execute();
+
 		} catch (SQLException erro) {
 			erro.printStackTrace();
-		} finally {
+		}
+
+		finally {
+
 			try {
+
 				if (insert != null)
 					insert.close();
+
 				if (conexao != null)
 					conexao.close();
+
 			} catch (SQLException erro) {
+
 				erro.printStackTrace();
 			}
 		}
 	}
 
-	public void deletarConta(Usuario usuario) {
+	public void deletarCurso(Curso curso) {
+
 		Connection conexao = null;
 		PreparedStatement delete = null;
+
 		try {
+
 			conexao = conectarBanco();
-			delete = conexao.prepareStatement("DELETE FROM cliente WHERE cpf = ?");
-			delete.setString(1, usuario.getCpf());
+			delete = conexao.prepareStatement("delete from curso where id_curso = ?");
+
+			delete.setInt(1, curso.getId());
+
 			delete.execute();
+
 		} catch (SQLException erro) {
 			erro.printStackTrace();
-		} finally {
+
+		}
+
+		finally {
+
 			try {
+
 				if (delete != null)
-					delete.close();
+					((Statement) delete).close();
+
 				if (conexao != null)
 					conexao.close();
+
+				if (conexao != null)
+					conexao.close();
+
 			} catch (SQLException erro) {
+
 				erro.printStackTrace();
 			}
 		}
+
 	}
 
-	public void atualizarNomeUsuario(Usuario usuario, String novoNome) {
+	public void atualizarNotaCorteCurso(Curso curso, float notaCorte) {
+
 		Connection conexao = null;
 		PreparedStatement update = null;
+
 		try {
+
 			conexao = conectarBanco();
-			update = conexao.prepareStatement("UPDATE cliente SET nome_cliente = ? WHERE cpf = ?");
-			update.setString(1, novoNome);
-			update.setString(2, usuario.getCpf());
+			update = conexao.prepareStatement("update curso set notaCorte = ? where id_curso = ?");
+
+			update.setFloat(1, notaCorte);
+			update.setInt(2, curso.getId());
 			update.execute();
+
 		} catch (SQLException erro) {
 			erro.printStackTrace();
-		} finally {
+
+		}
+
+		finally {
+
 			try {
+
 				if (update != null)
 					update.close();
+
 				if (conexao != null)
 					conexao.close();
+
+				if (conexao != null)
+					conexao.close();
+
 			} catch (SQLException erro) {
+
 				erro.printStackTrace();
 			}
 		}
+
 	}
 
-	public void atualizarCpfUsuario(Usuario cliente, String novoCpf) {
+	public void atualizarNomeCurso(Curso curso, String nomeCurso) {
+
 		Connection conexao = null;
 		PreparedStatement update = null;
+
 		try {
+
 			conexao = conectarBanco();
-			update = conexao.prepareStatement("UPDATE cliente SET cpf_cliente = ? WHERE cpf = ?");
-			update.setString(1, novoCpf);
-			update.setString(2, cliente.getCpf());
+			update = conexao.prepareStatement("update curso set nomeCurso = ? where id_curso = ?");
+
+			update.setString(1, nomeCurso);
+			update.setInt(2, curso.getId());
 			update.execute();
+
 		} catch (SQLException erro) {
 			erro.printStackTrace();
-		} finally {
+
+		}
+
+		finally {
+
 			try {
+
 				if (update != null)
 					update.close();
+
 				if (conexao != null)
 					conexao.close();
+
+				if (conexao != null)
+					conexao.close();
+
 			} catch (SQLException erro) {
+
 				erro.printStackTrace();
 			}
 		}
-	}
-
-	public void atualizarSenhaUsuario(Usuario cliente, String novaSenha) {
-		Connection conexao = null;
-		PreparedStatement update = null;
-		try {
-			conexao = conectarBanco();
-			update = conexao.prepareStatement("UPDATE cliente SET set = ? WHERE cpf = ?");
-			update.setString(1, novaSenha);
-			update.setString(2, cliente.getCpf());
-			update.execute();
-		} catch (SQLException erro) {
-			erro.printStackTrace();
-		} finally {
-			try {
-				if (update != null)
-					update.close();
-				if (conexao != null)
-					conexao.close();
-			} catch (SQLException erro) {
-				erro.printStackTrace();
-			}
-		}
-	}
-
-	public void favoritarCurso(Usuario usuario, Curso curso) {
 
 	}
 
-	public List<Curso> listaCursosFavoritos() {
+	public List<Curso> recuperarCursos() {
 
 		Connection conexao = null;
 		Statement consulta = null;
 		ResultSet resultado = null;
 
-		List<Curso> cursosFavoritos = new ArrayList<Curso>();
+		List<Curso> cursos = new ArrayList<Curso>();
 
 		try {
 
 			conexao = conectarBanco();
+
 			consulta = conexao.createStatement();
-			resultado = consulta.executeQuery("SELECT * FROM curso ");// join
+			resultado = consulta.executeQuery("SELECT * FROM Curso");
 
 			while (resultado.next()) {
 
@@ -152,9 +195,10 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				String nomeCurso = resultado.getString("nomeCurso");
 				String nomeArea = resultado.getString("area");
 				int idInstituicao = resultado.getInt("instituicao");
+				String nomeInstituicao = resultado.getString("nome");
+				String endereco = resultado.getString("endereco");
 
-				cursosFavoritos
-						.add(new Curso(id, notaCorte, nomeCurso, new Area(nomeArea), new Instituicao(idInstituicao)));
+				cursos.add(new Curso(id, notaCorte, nomeCurso, new Area(nomeArea), new Instituicao(idInstituicao, nomeInstituicao, endereco)));
 			}
 
 		} catch (SQLException erro) {
@@ -180,7 +224,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			}
 		}
 
-		return cursosFavoritos;
+		return cursos;
 	}
 
 	private Connection conectarBanco() throws SQLException {
