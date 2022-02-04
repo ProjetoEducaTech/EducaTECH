@@ -5,6 +5,6 @@ public interface AreaDAO {
 	
 	void inserirArea(Area area);
 	void deletarArea(Area area);
-	void atualizarNomeArea(Area area, String nome);
+	void atualizarArea(Area area);
 
 }

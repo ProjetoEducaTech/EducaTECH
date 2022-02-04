@@ -1,189 +1,168 @@
 package sistema.modelo.dao;
 
-import sistema.modelo.entidade.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.lang.module.Configuration;
 import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.service.ServiceRegistry;
+
+import sistema.modelo.entidade.Instituicao;
 
 public class InstituicaoDAOImpl implements InstituicaoDAO {
 
 	public void inserirInstituicao(Instituicao instituicao) {
 
-		Connection conexao = null;
-		PreparedStatement insert = null;
+		Session sessao = null;
 
 		try {
 
-			conexao = conectarBanco();
+			sessao = conectarBanco().openSession();
+			sessao.beginTransaction();
 
-			insert = conexao.prepareStatement("insert into instituicao (nome) values (?)");
-			insert.setString(1, instituicao.getNome());
-			insert.execute();
+			sessao.save(instituicao);
 
-		} catch (SQLException erro) {
-			erro.printStackTrace();
+			sessao.getTransaction().commit();
 
-		}
+		} catch (Exception sqlException) {
 
-		finally {
+			sqlException.printStackTrace();
 
-			try {
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
 
-				if (insert != null)
-					insert.close();
+		} finally {
 
-				if (conexao != null)
-					conexao.close();
-
-				if (conexao != null)
-					conexao.close();
-
-			} catch (SQLException erro) {
-
-				erro.printStackTrace();
+			if (sessao != null) {
+				sessao.close();
 			}
 		}
 	}
 
 	public void deletarInstituicao(Instituicao instituicao) {
 
-		Connection conexao = null;
-		PreparedStatement delete = null;
+		Session sessao = null;
 
 		try {
 
-			conexao = conectarBanco();
+			sessao = conectarBanco().openSession();
+			sessao.beginTransaction();
 
-			delete = conexao.prepareStatement("delete from instituicao where id_instituicao = ?");
-			delete.setInt(1, instituicao.getId());
-			delete.execute();
+			sessao.delete(instituicao);
 
-		} catch (SQLException erro) {
-			erro.printStackTrace();
+			sessao.getTransaction().commit();
 
-		}
+		} catch (Exception sqlException) {
 
-		finally {
+			sqlException.printStackTrace();
 
-			try {
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
 
-				if (delete != null)
-					((Statement) delete).close();
+		} finally {
 
-				if (conexao != null)
-					conexao.close();
-
-				if (conexao != null)
-					conexao.close();
-
-			} catch (SQLException erro) {
-
-				erro.printStackTrace();
+			if (sessao != null) {
+				sessao.close();
 			}
 		}
 	}
 
-	public void atualizarNomeInstituicao(Instituicao instituicao, String nome) {
+	public void atualizarInstituicao(Instituicao instituicao) {
 
-		Connection conexao = null;
-		PreparedStatement update = null;
-
-		try {
-
-			conexao = conectarBanco();
-			update = conexao.prepareStatement("update instituicao set nome  = ? where id_instituicao = ?");
-
-			update.setString(1, nome);
-			update.setInt(2, instituicao.getId());
-			update.execute();
-
-		} catch (SQLException erro) {
-			erro.printStackTrace();
-
-		}
-
-		finally {
-
-			try {
-
-				if (update != null)
-					update.close();
-
-				if (conexao != null)
-					conexao.close();
-
-				if (conexao != null)
-					conexao.close();
-
-			} catch (SQLException erro) {
-
-				erro.printStackTrace();
-			}
-		}
-	}
-
-	public Instituicao recuperarInstituicao(Instituicao instituicao) {
-
-		Connection conexao = null;
-		PreparedStatement select = null;
-		Instituicao instituicaoRetornada = null;
-		ResultSet resultado = null;
+		Session sessao = null;
 
 		try {
 
-			conexao = conectarBanco();
+			sessao = conectarBanco().openSession();
+			sessao.beginTransaction();
 
-			select = conexao.prepareStatement("select * from instituicao where id_instituicao = ?");
-			select.setInt(1, instituicao.getId());
-			resultado = select.executeQuery();
+			sessao.update(instituicao);
 
-			while (resultado.next()) {
+			sessao.getTransaction().commit();
 
-				int id = resultado.getInt("id_instituicao");
-				String nome = resultado.getString("nome_instituicao");
-				String endereco = resultado.getString("endereco");
+		} catch (Exception sqlException) {
 
-				instituicaoRetornada = new Instituicao(id, nome, endereco);
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
 			}
 
-		} catch (SQLException erro) {
-			erro.printStackTrace();
+		} finally {
 
-		}
-
-		finally {
-
-			try {
-
-				if (select != null)
-					select.close();
-
-				if (conexao != null)
-					conexao.close();
-
-				if (conexao != null)
-					conexao.close();
-
-			} catch (SQLException erro) {
-
-				erro.printStackTrace();
+			if (sessao != null) {
+				sessao.close();
 			}
 		}
-		
-		return instituicaoRetornada;
 	}
 
 	public List<Instituicao> recuperarInstituicoes() {
-		// TODO Auto-generated method stub
-		return null;
+
+		Session sessao = null;
+		List<Instituicao> instituicao = null;
+
+		try {
+
+			sessao = conectarBanco().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Instituicao> criteria = construtor.createQuery(Instituicao.class);
+			Root<Instituicao> raizInstituicao = criteria.from(Instituicao.class);
+
+			criteria.select(raizInstituicao);
+
+			instituicao = sessao.createQuery(criteria).getResultList();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return instituicao;
 	}
 
-	private Connection conectarBanco() throws SQLException {
-		return DriverManager.getConnection("jdbc:mysql://localhost/cadastro?user=admin&password=password");
-	}
+	private SessionFactory conectarBanco() {
+
+		Configuration configuracao = new Configuration();
+
+		configuracao.addAnnotatedClass(sistema.modelo.entidade.Area.class);
+		configuracao.addAnnotatedClass(sistema.modelo.entidade.Aluno.class);
+		configuracao.addAnnotatedClass(sistema.modelo.entidade.Curso.class);
+		configuracao.addAnnotatedClass(sistema.modelo.entidade.Instituicao.class);
+		configuracao.addAnnotatedClass(sistema.modelo.entidade.Usuario.class);
+		configuracao.addAnnotatedEnum(sistema.modelo.entidade.Turno.enum);
+		configuracao.addAnnotatedEnum(sistema.modelo.entidade.Modalidade.enum);
+		configuracao.addAnnotatedEnum(sistema.modelo.entidade.Genero.enum);
+		configuracao.addAnnotatedClass(sistema.modelo.entidade.Contato.class);
+		configuracao.addAnnotatedClass(sistema.modelo.entidade.Endereco.class);
+
+		configuracao.configure("hibernate.cfg.xml");
+
+		ServiceRegistry servico = new StandardServiceRegistryBuilder().applySettings(configuracao.getProperties()).build();
+		SessionFactory fabricaSessao = configuracao.buildSessionFactory(servico);
+
+		return fabricaSessao;
+   }
 
 }

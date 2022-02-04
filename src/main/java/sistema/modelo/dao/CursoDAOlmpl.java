@@ -1,14 +1,17 @@
 package sistema.modelo.dao;
 
-import sistema.modelo.entidade.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Root;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
 
 import sistema.modelo.entidade.Curso;
 
@@ -16,218 +19,151 @@ public class CursoDAOlmpl implements CursoDAO {
 
 	public void inserirCurso(Curso curso) {
 
-		Connection conexao = null;
-		PreparedStatement insert = null;
+		Session sessao = null;
 
 		try {
 
-			conexao = conectarBanco();
+			sessao = conectarBanco().openSession();
+			sessao.beginTransaction();
 
-			insert = conexao
-					.prepareStatement("insert into curso (notaCorte,nomeCurso, area, instituicao) values (?,?,?,?)");
-			insert.setFloat(1, curso.getNotaCorte());
-			insert.setString(2, curso.getNomeCurso());
-			insert.setInt(3, curso.getArea().getId());
-			insert.setInt(4, curso.getInstituicao().getId());
+			sessao.save(curso);
 
-			insert.execute();
+			sessao.getTransaction().commit();
 
-		} catch (SQLException erro) {
-			erro.printStackTrace();
-		}
+		} catch (Exception sqlException) {
 
-		finally {
+			sqlException.printStackTrace();
 
-			try {
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
 
-				if (insert != null)
-					insert.close();
+		} finally {
 
-				if (conexao != null)
-					conexao.close();
-
-			} catch (SQLException erro) {
-
-				erro.printStackTrace();
+			if (sessao != null) {
+				sessao.close();
 			}
 		}
 	}
 
 	public void deletarCurso(Curso curso) {
 
-		Connection conexao = null;
-		PreparedStatement delete = null;
+		Session sessao = null;
 
 		try {
 
-			conexao = conectarBanco();
-			delete = conexao.prepareStatement("delete from curso where id_curso = ?");
+			sessao = conectarBanco().openSession();
+			sessao.beginTransaction();
 
-			delete.setInt(1, curso.getId());
+			sessao.delete(curso);
 
-			delete.execute();
+			sessao.getTransaction().commit();
 
-		} catch (SQLException erro) {
-			erro.printStackTrace();
+		} catch (Exception sqlException) {
 
-		}
+			sqlException.printStackTrace();
 
-		finally {
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
 
-			try {
+		} finally {
 
-				if (delete != null)
-					((Statement) delete).close();
-
-				if (conexao != null)
-					conexao.close();
-
-				if (conexao != null)
-					conexao.close();
-
-			} catch (SQLException erro) {
-
-				erro.printStackTrace();
+			if (sessao != null) {
+				sessao.close();
 			}
 		}
-
 	}
 
-	public void atualizarNotaCorteCurso(Curso curso, float notaCorte) {
+	public void atualizarCurso(Curso curso) {
 
-		Connection conexao = null;
-		PreparedStatement update = null;
-
-		try {
-
-			conexao = conectarBanco();
-			update = conexao.prepareStatement("update curso set notaCorte = ? where id_curso = ?");
-
-			update.setFloat(1, notaCorte);
-			update.setInt(2, curso.getId());
-			update.execute();
-
-		} catch (SQLException erro) {
-			erro.printStackTrace();
-
-		}
-
-		finally {
-
-			try {
-
-				if (update != null)
-					update.close();
-
-				if (conexao != null)
-					conexao.close();
-
-				if (conexao != null)
-					conexao.close();
-
-			} catch (SQLException erro) {
-
-				erro.printStackTrace();
-			}
-		}
-
-	}
-
-	public void atualizarNomeCurso(Curso curso, String nomeCurso) {
-
-		Connection conexao = null;
-		PreparedStatement update = null;
+		Session sessao = null;
 
 		try {
 
-			conexao = conectarBanco();
-			update = conexao.prepareStatement("update curso set nomeCurso = ? where id_curso = ?");
+			sessao = conectarBanco().openSession();
+			sessao.beginTransaction();
 
-			update.setString(1, nomeCurso);
-			update.setInt(2, curso.getId());
-			update.execute();
+			sessao.update(curso);
 
-		} catch (SQLException erro) {
-			erro.printStackTrace();
+			sessao.getTransaction().commit();
 
-		}
+		} catch (Exception sqlException) {
 
-		finally {
+			sqlException.printStackTrace();
 
-			try {
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
 
-				if (update != null)
-					update.close();
+		} finally {
 
-				if (conexao != null)
-					conexao.close();
-
-				if (conexao != null)
-					conexao.close();
-
-			} catch (SQLException erro) {
-
-				erro.printStackTrace();
+			if (sessao != null) {
+				sessao.close();
 			}
 		}
-
 	}
 
 	public List<Curso> recuperarCursos() {
 
-		Connection conexao = null;
-		Statement consulta = null;
-		ResultSet resultado = null;
-
-		List<Curso> cursos = new ArrayList<Curso>();
+		Session sessao = null;
+		List<Curso> curso = null;
 
 		try {
 
-			conexao = conectarBanco();
+			sessao = conectarBanco().openSession();
+			sessao.beginTransaction();
 
-			consulta = conexao.createStatement();
-			resultado = consulta.executeQuery("SELECT * FROM Curso");
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
 
-			while (resultado.next()) {
+			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
+			Root<Curso> raizCurso = criteria.from(Curso.class);
 
-				int id = resultado.getInt("id_curso");
-				float notaCorte = resultado.getFloat("notaCorte");
-				String nomeCurso = resultado.getString("nomeCurso");
-				String nomeArea = resultado.getString("area");
-				int idInstituicao = resultado.getInt("instituicao");
-				String nomeInstituicao = resultado.getString("nome");
-				String endereco = resultado.getString("endereco");
+			criteria.select(raizCurso);
 
-				cursos.add(new Curso(id, notaCorte, nomeCurso, new Area(nomeArea), new Instituicao(idInstituicao, nomeInstituicao, endereco)));
+			curso = sessao.createQuery(criteria).getResultList();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
 			}
 
-		} catch (SQLException erro) {
-			erro.printStackTrace();
-		}
+		} finally {
 
-		finally {
-
-			try {
-
-				if (resultado != null)
-					resultado.close();
-
-				if (consulta != null)
-					consulta.close();
-
-				if (conexao != null)
-					conexao.close();
-
-			} catch (SQLException erro) {
-
-				erro.printStackTrace();
+			if (sessao != null) {
+				sessao.close();
 			}
 		}
 
-		return cursos;
+		return curso;
 	}
 
-	private Connection conectarBanco() throws SQLException {
-		return DriverManager.getConnection("jdbc:mysql://localhost/cadastro?user=admin&password=password");
+	private SessionFactory conectarBanco() {
+
+		Configuration configuracao = new Configuration();
+
+		configuracao.addAnnotatedClass(sistema.modelo.entidade.Area.class);
+		configuracao.addAnnotatedClass(sistema.modelo.entidade.Curso.class);
+		configuracao.addAnnotatedClass(sistema.modelo.entidade.Instituicao.class);
+		configuracao.addAnnotatedClass(sistema.modelo.entidade.Usuario.class);
+		configuracao.addAnnotatedClass(sistema.modelo.entidade.Aluno.class);
+		configuracao.addAnnotatedEnum(sistema.modelo.entidade.Genero.enum);
+		configuracao.addAnnotatedEnum(sistema.modelo.entidade.Turno.enum);
+		configuracao.addAnnotatedClass(sistema.modelo.entidade.Contato.class);
+		configuracao.addAnnotatedClass(sistema.modelo.entidade.Endereco.class);
+		configuracao.addAnnotatedEnum(sistema.modelo.entidade.Modalidade.enum);
+
+		configuracao.configure("hibernate.cfg.xml");
+
+		ServiceRegistry servico = new StandardServiceRegistryBuilder().applySettings(configuracao.getProperties())
+				.build();
+		SessionFactory fabricaSessao = configuracao.buildSessionFactory(servico);
+
+		return fabricaSessao;
 	}
 }

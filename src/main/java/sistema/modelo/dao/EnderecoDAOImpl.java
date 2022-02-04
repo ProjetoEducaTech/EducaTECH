@@ -194,9 +194,15 @@ private SessionFactory conectarBanco() {
 	Configuration configuracao = new Configuration();
 
 	configuracao.addAnnotatedClass(sistema.modelo.entidade.Area.class);
+	configuracao.addAnnotatedClass(sistema.modelo.entidade.Aluno.class);
 	configuracao.addAnnotatedClass(sistema.modelo.entidade.Curso.class);
 	configuracao.addAnnotatedClass(sistema.modelo.entidade.Instituicao.class);
 	configuracao.addAnnotatedClass(sistema.modelo.entidade.Usuario.class);
+	configuracao.addAnnotatedEnum(sistema.modelo.entidade.Turno.enum);
+	configuracao.addAnnotatedEnum(sistema.modelo.entidade.Modalidade.enum);
+	configuracao.addAnnotatedEnum(sistema.modelo.entidade.Genero.enum);
+	configuracao.addAnnotatedClass(sistema.modelo.entidade.Contato.class);
+	configuracao.addAnnotatedClass(sistema.modelo.entidade.Endereco.class);
 
 	configuracao.configure("hibernate.cfg.xml");
 
