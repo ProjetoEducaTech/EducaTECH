@@ -43,10 +43,6 @@ public class Endereco implements Serializable{
 	@Column(name = "referencia", length = 50, nullable = false)
 	private String referencia;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@MapsId
-	@JoinColumn(name = "id_usuario")
-	private Usuario usuario;
 	
 	public Endereco() {}
 	

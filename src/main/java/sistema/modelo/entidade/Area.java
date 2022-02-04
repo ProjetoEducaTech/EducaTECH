@@ -1,25 +1,43 @@
 package sistema.modelo.entidade;
 
-public class Area {
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Entity;
 
 	
-	private int id;
-	private String nome;
+	@Entity
+	@Table(name = "area")
+	public class Area implements Serializable {
+		
+		private static final long serialVersionUID = 1L;
 
-	public Area(int id, String nome) {
-		setId(id);
-		setNome(nome);
-	}
+		@Id
+		@Column(name = "id_area", unique = true)
+		private Long id;
 
+		@Column(name = "nome_area", length = 45, nullable = false)
+		private String nome;
+
+	public Area() {}
+	
+	
 	public Area(String nome) {
 		setNome(nome);
 	}
 
-	public int getId() {
+	public Area(Long id, String nome) {
+		setId(id);
+		setNome(nome);
+	}
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

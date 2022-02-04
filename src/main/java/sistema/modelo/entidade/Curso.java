@@ -1,4 +1,5 @@
 package sistema.modelo.entidade;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -15,10 +16,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Curso")
-public class Curso implements Serializable{
-	
+public class Curso implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", unique = true)
@@ -33,21 +34,34 @@ public class Curso implements Serializable{
 	@Column(name = "descricao", length = 45, nullable = false)
 	private String descricaoCurso;
 
-	@Column(name = "duracao", length = 45, nullable = false)
+	@Column(name = "duracao", nullable = false)
 	private double duracaoCurso;
 
+	@Column(name = "metodoEntrada", length = 45, nullable = false)
+	private String metodoEntrada;
+
+	@Column(name = "preco", nullable = false)
+	private double preco;
+
+	@Column(name = "link", length = 45, nullable = false)
+	private String link;
+
 	@Enumerated(EnumType.ORDINAL)
-	private Turno turno;
-	
+	private Modalidade tipoModalidade;
+
+	@Enumerated(EnumType.ORDINAL)
+	private Turno tipoTurno;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cnpj")
 	private Instituicao instituicao;
-	
+
 	public Curso() {
-		
+
 	}
 
-	public Curso(Long idCurso, String nomeCurso, String area, String descricaoCurso, double duracaoCurso, Turno turno,
+	public Curso(Long idCurso, String nomeCurso, String area, String descricaoCurso, double duracaoCurso,
+			String metodoEntrada, double preco, String link, Modalidade tipoModalidade, Turno tipoTurno,
 			Instituicao instituicao) {
 
 		setIdCurso(idCurso);
@@ -55,7 +69,11 @@ public class Curso implements Serializable{
 		setArea(area);
 		setDescricaoCurso(descricaoCurso);
 		setDuracaoCurso(duracaoCurso);
-		setTurno(turno);
+		setMetodoEntrada(metodoEntrada);
+		setPreco(preco);
+		setLink(link);
+		setTipoModalidade(tipoModalidade);
+		setTipoTurno(tipoTurno);
 		setInstituicao(instituicao);
 
 	}
@@ -100,12 +118,44 @@ public class Curso implements Serializable{
 		this.duracaoCurso = duracaoCurso;
 	}
 
-	public Turno getTurno() {
-		return turno;
+	public String getMetodoEntrada() {
+		return metodoEntrada;
 	}
 
-	public void setTurno(Turno turno) {
-		this.turno = turno;
+	public void setMetodoEntrada(String metodoEntrada) {
+		this.metodoEntrada = metodoEntrada;
+	}
+
+	public double getPreco() {
+		return preco;
+	}
+
+	public void setPreco(double preco) {
+		this.preco = preco;
+	}
+
+	public String link() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
+	}
+
+	public Modalidade getTipoModalidade() {
+		return tipoModalidade;
+	}
+
+	public void setTipoModalidade(Modalidade tipoModalidade) {
+		this.tipoModalidade = tipoModalidade;
+	}
+
+	public Turno getTipoTurno() {
+		return tipoTurno;
+	}
+
+	public void setTipoTurno(Turno tipoTurno) {
+		this.tipoTurno = tipoTurno;
 	}
 
 	public Instituicao getInstituicao() {

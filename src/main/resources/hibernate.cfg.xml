@@ -4,15 +4,20 @@
 	<session-factory>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/vendas?createDatabaseIfNotExist=true</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/educatech?createDatabaseIfNotExist=true</property>
 		<property name="hbm2ddl.auto">update</property>
-		<property name="hibernate.connection.username">admin</property>
-		<property name="hibernate.connection.password">password</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">4b96d5c1jp36</property>
 		<property name="show_sql">true</property>
 		<property name="hibernate.current_session_context_class">org.hibernate.context.internal.ThreadLocalSessionContext</property>
-		<mapping class="exemplo.modelo.entidade.cliente.Cliente" />
-		<mapping class="exemplo.modelo.entidade.contato.Contato" />
-		<mapping class="exemplo.modelo.entidade.endereco.Endereco" />
-		<mapping class="exemplo.modelo.entidade.pedido.Pedido" />
+		<mapping class="sistema.modelo.entidade.usuario.Usuario" />
+		<mapping class="sistema.modelo.entidade.contato.Contato" />
+		<mapping class="sistema.modelo.entidade.endereco.Endereco" />
+		<mapping class="sistema.modelo.entidade.curso.Curso" />
+		<mapping class="sistema.modelo.entidade.area.Area" />
+		<mapping class="sistema.modelo.entidade.genero.Genero" />
+		<mapping class="sistema.modelo.entidade.instituicao.Instituicao" />
+		<mapping class="sistema.modelo.entidade.turno.Turno" />
+		<mapping class="sistema.modelo.entidade.aluno.Aluno" />
 	</session-factory>
 </hibernate-configuration>

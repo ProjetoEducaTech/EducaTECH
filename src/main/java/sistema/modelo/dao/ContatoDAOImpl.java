@@ -1,22 +1,28 @@
 package sistema.modelo.dao;
 
-import java.lang.module.Configuration;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-import sistema.modelo.entidade.Instituicao;
+import sistema.modelo.entidade.Contato;
+import sistema.modelo.entidade.Contato_;
+import sistema.modelo.entidade.Usuario;
+import sistema.modelo.entidade.Usuario_;
 
-public class InstituicaoDAOImpl implements InstituicaoDAO {
+public class ContatoDAOImpl implements ContatoDAO {
 
-	public void inserirInstituicao(Instituicao instituicao) {
+	public void inserirContato(Contato contato) {
 
 		Session sessao = null;
 
@@ -25,7 +31,36 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 			sessao = conectarBanco().openSession();
 			sessao.beginTransaction();
 
-			sessao.save(instituicao);
+			sessao.save(contato);
+			
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+	}
+	
+	public void atualizarContato(Contato contato) {
+
+		Session sessao = null;
+
+		try {
+
+			sessao = conectarBanco().openSession();
+			sessao.beginTransaction();
+
+			sessao.update(contato);
 
 			sessao.getTransaction().commit();
 
@@ -45,7 +80,7 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 		}
 	}
 
-	public void deletarInstituicao(Instituicao instituicao) {
+	public void deletarContato(Contato contato) {
 
 		Session sessao = null;
 
@@ -54,7 +89,7 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 			sessao = conectarBanco().openSession();
 			sessao.beginTransaction();
 
-			sessao.delete(instituicao);
+			sessao.delete(contato);
 
 			sessao.getTransaction().commit();
 
@@ -73,40 +108,11 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 			}
 		}
 	}
-
-	public void atualizarInstituicao(Instituicao instituicao) {
-
-		Session sessao = null;
-
-		try {
-
-			sessao = conectarBanco().openSession();
-			sessao.beginTransaction();
-
-			sessao.update(instituicao);
-
-			sessao.getTransaction().commit();
-
-		} catch (Exception sqlException) {
-
-			sqlException.printStackTrace();
-
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
-
-		} finally {
-
-			if (sessao != null) {
-				sessao.close();
-			}
-		}
-	}
-
-	public List<Instituicao> recuperarInstituicoes() {
+	
+	public List<Contato> recuperarContatos() {
 
 		Session sessao = null;
-		List<Instituicao> instituicao = null;
+		List<Contato> contatos = null;
 
 		try {
 
@@ -115,12 +121,12 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 
 			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
 
-			CriteriaQuery<Instituicao> criteria = construtor.createQuery(Instituicao.class);
-			Root<Instituicao> raizInstituicao = criteria.from(Instituicao.class);
+			CriteriaQuery<Contato> criteria = construtor.createQuery(Contato.class);
+			Root<Contato> raizContato = criteria.from(Contato.class);
 
-			criteria.select(raizInstituicao);
+			criteria.select(raizContato);
 
-			instituicao = sessao.createQuery(criteria).getResultList();
+			contatos = sessao.createQuery(criteria).getResultList();
 
 			sessao.getTransaction().commit();
 
@@ -139,9 +145,51 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 			}
 		}
 
-		return instituicao;
+		return contatos;
 	}
+	
+	public Contato recuperarContatoCliente(Usuario usuario) {
 
+		Session sessao = null;
+		Contato contato = null;
+
+		try {
+
+			sessao = conectarBanco().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Contato> criteria = construtor.createQuery(Contato.class);
+			Root<Contato> raizContato = criteria.from(Contato.class);
+			
+			Join<Contato, Usuario> juncaoUsuario = raizContato.join(Contato_.usuario);
+			
+			ParameterExpression<String> cpfUsuario = construtor.parameter(String.class);
+			criteria.where(construtor.equal(juncaoUsuario.get(Usuario_.ID), idUsuario));
+			
+			contato = sessao.createQuery(criteria).setParameter(idUsuario, usuario.getId()).getSingleResult();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return contato;
+	}
+	
 	private SessionFactory conectarBanco() {
 
 		Configuration configuracao = new Configuration();
@@ -164,5 +212,5 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 
 		return fabricaSessao;
    }
-
+	
 }

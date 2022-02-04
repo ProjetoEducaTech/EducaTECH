@@ -1,6 +1,7 @@
 package sistema.modelo.entidade;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +29,9 @@ public class Aluno implements Serializable {
 	@Column(name = "sobrenome_aluno", length = 20, nullable = false, unique = true)
 	private String sobrenome;
 	
-	//devendo o date
+	@Column(name = "data_nascimento_aluno")
+	private LocalDate dataNascimento;
 
-	
 	@Column(name = "nota_corte", nullable = false)
 	private float notaCorte;
 	
