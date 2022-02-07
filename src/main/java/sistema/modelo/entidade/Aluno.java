@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -22,7 +23,7 @@ public class Aluno implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-
+    @Id
 	@Column(name = "cpf_aluno", length = 20, nullable = false, unique = true)
 	private String cpf;
 	
@@ -33,7 +34,7 @@ public class Aluno implements Serializable {
 	private LocalDate dataNascimento;
 
 	@Column(name = "nota_corte", nullable = false)
-	private float notaCorte;
+	private double notaCorte;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "Aluno_curso_favorito", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_curso"))
@@ -48,7 +49,7 @@ public class Aluno implements Serializable {
 	
 	public Aluno() {}
 	
-	public Aluno(String cpf, String sobrenome, float notaCorte, Genero genero) {
+	public Aluno(String cpf, String sobrenome, double notaCorte, Genero genero) {
 		setCpf(cpf);
 		setSobrenome(sobrenome);
 		setNotaCorte(notaCorte);
@@ -71,11 +72,11 @@ public class Aluno implements Serializable {
 		this.sobrenome = sobrenome;
 	}
 	
-	public float getNotaCorte() {
+	public double getNotaCorte() {
 		return notaCorte;
 	}
 
-	public void setNotaCorte(float notaCorte) {
+	public void setNotaCorte(double notaCorte) {
 		this.notaCorte = notaCorte;
 	}
 	
