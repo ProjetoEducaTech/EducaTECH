@@ -11,5 +11,6 @@ public interface UsuarioDAO {
 	void atualizarUsuario(Usuario usuario);
 	void cadastrarUsuario(Usuario usuario);
 	
-	//List<Curso> listaCursosFavoritos(String cpfUsuario);
+	List<Usuario> loginAluno(Aluno aluno);
+	List<Usuario> loginInstituicao(Instituicao instituicao);
 }

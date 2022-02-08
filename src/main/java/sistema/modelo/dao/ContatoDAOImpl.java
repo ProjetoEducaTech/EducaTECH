@@ -22,7 +22,7 @@ import sistema.modelo.entidade.Usuario_;
 
 public class ContatoDAOImpl implements ContatoDAO {
 
-	public void inserirContato(Contato contato) {
+	public void cadastrarContato(Contato contato) {
 
 		Session sessao = null;
 
@@ -148,7 +148,7 @@ public class ContatoDAOImpl implements ContatoDAO {
 		return contatos;
 	}
 	
-	public Contato recuperarContatoCliente(Usuario usuario) {
+	public Contato recuperarContatoUsuario(Usuario usuario) {
 
 		Session sessao = null;
 		Contato contato = null;

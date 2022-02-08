@@ -1,12 +1,22 @@
 package sistema.modelo.dao;
 
 
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import sistema.modelo.entidade.Aluno;
+import sistema.modelo.entidade.Instituicao;
 import sistema.modelo.entidade.Usuario;
 
 
@@ -97,7 +107,169 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				sessao.close();
 			}
 		}
-	}	
+	}
+	
+	public List<Usuario> loginAluno(Aluno aluno) {
+
+		Session sessao = null;
+		List<Usuario> loginAluno = null;
+
+		try {
+
+			sessao = conectarBanco().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Usuario> criteria = construtor.createQuery(Usuario.class);
+			Root<Usuario> raizUsuario = criteria.from(Usuario.class);
+
+			Join<Usuario, Aluno> juncaoAluno = raizUsuario.join(Aluno_.usuario);
+
+			ParameterExpression<String> cpf = construtor.parameter(String.class);
+			criteria.where(construtor.equal(juncaoAluno.get(Aluno_.CPF), cpf));
+
+			loginAluno = sessao.createQuery(criteria).setParameter(cpf, usuario.getSenha()).getResultList();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return loginAluno;
+	}
+
+	public List<Usuario> loginInstituicao(Instituicao instituicao) {
+
+		Session sessao = null;
+		List<Usuario> loginInstituicao = null;
+
+		try {
+
+			sessao = conectarBanco().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Usuario> criteria = construtor.createQuery(Usuario.class);
+			Root<Usuario> raizUsuario = criteria.from(Usuario.class);
+
+			Join<Usuario, Instituicao> juncaoInstituicao = raizUsuario.join(Usuario_.instituicao);
+
+			ParameterExpression<String> cnpj = construtor.parameter(String.class);
+			criteria.where(construtor.equal(juncaoInstituicao.get(Instituicao_.CNPJ), cnpj));
+
+			loginInstituicao = sessao.createQuery(criteria).setParameter(cnpj, usuario.getSenha()).getResultList();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return loginInstituicao;
+	}
+
+	public List<Instituicao> cadastrarInstituicao() {
+
+		Session sessao = null;
+		List<Instituicao> instituicao = null;
+
+		try {
+
+			sessao = conectarBanco().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Instituicao> criteria = construtor.createQuery(Instituicao.class);
+			Root<Instituicao> raizInstituicao = criteria.from(Instituicao.class);
+
+			criteria.select(raizInstituicao);
+
+			instituicao = sessao.createQuery(criteria).getResultList();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return instituicao;
+	}
+
+	public List<Aluno> cadastrarAluno() {
+
+		Session sessao = null;
+		List<Aluno> alunos = null;
+
+		try {
+
+			sessao = conectarBanco().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Aluno> criteria = construtor.createQuery(Aluno.class);
+			Root<Aluno> raizAluno = criteria.from(Aluno.class);
+
+			criteria.select(raizAluno);
+
+			alunos = sessao.createQuery(criteria).getResultList();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return alunos;
+	}
 
 	private SessionFactory conectarBanco() {
 
@@ -108,8 +280,8 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		configuracao.addAnnotatedClass(sistema.modelo.entidade.Instituicao.class);
 		configuracao.addAnnotatedClass(sistema.modelo.entidade.Usuario.class);
 		configuracao.addAnnotatedClass(sistema.modelo.entidade.Aluno.class);
-		configuracao.addAnnotatedEnum(sistema.modelo.entidade.Genero.class);
-		configuracao.addAnnotatedEnum(sistema.modelo.entidade.Turno.class);
+		configuracao.addAnnotatedEnum(sistema.modelo.entidade.Genero.enum);
+		configuracao.addAnnotatedEnum(sistema.modelo.entidade.Turno.enum);
 		configuracao.addAnnotatedEnum(sistema.modelo.entidade.Modalidade.enum);
 		configuracao.addAnnotatedClass(sistema.modelo.entidade.Contato.class);
 		configuracao.addAnnotatedClass(sistema.modelo.entidade.Endereco.class);
