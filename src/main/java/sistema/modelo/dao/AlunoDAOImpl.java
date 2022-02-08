@@ -151,10 +151,10 @@ public class AlunoDAOImpl implements AlunoDAO {
 
 			Join<Curso, Area> juncaoArea = raizCurso.join(Curso_.area);
 
-			ParameterExpression<String> cnpfinstituicao = construtor.parameter(String.class);
-			criteria.where(construtor.equal(juncaoArea.get(Area_.NOME), cnpfinstituicao));
+			ParameterExpression<String> cnpjinstituicao = construtor.parameter(String.class);
+			criteria.where(construtor.equal(juncaoArea.get(Area_.NOME), cnpjinstituicao));
 
-			consultaArea = sessao.createQuery(criteria).setParameter(cnpfinstituicao, area.getNome()).getResultList();
+			consultaArea = sessao.createQuery(criteria).setParameter(cnpjinstituicao, area.getNome()).getResultList();
 
 			sessao.getTransaction().commit();
 

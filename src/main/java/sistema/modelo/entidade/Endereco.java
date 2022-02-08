@@ -7,9 +7,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Entity;
 
@@ -46,7 +43,16 @@ public class Endereco implements Serializable{
 	
 	public Endereco() {}
 	
-	public Endereco(Long id, String rua, String cep, String cidade, String estado, String referencia) {
+	public Endereco(String rua, int numero,String cep, String cidade, String estado, String referencia) {
+		setRua(rua);
+		setNumero(numero);
+		setCep(cep);
+		setCidade(cidade);
+		setEstado(estado);
+		setReferencia(referencia);
+	}
+	
+	public Endereco(Long id, String rua, int numero,String cep, String cidade, String estado, String referencia) {
 		setId(id);
 		setRua(rua);
 		setNumero(numero);
