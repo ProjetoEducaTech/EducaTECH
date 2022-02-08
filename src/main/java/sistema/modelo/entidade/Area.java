@@ -8,44 +8,40 @@ import javax.persistence.Table;
 import javax.persistence.Entity;
 
 	
-	@Entity
-	@Table(name = "area")
-	public class Area implements Serializable {
-		
-		private static final long serialVersionUID = 1L;
+@Entity
+@Table(name = "area")
+public class Area implements Serializable {
 
-		@Id
-		@Column(name = "id_area", unique = true)
-		private Long id;
+	private static final long serialVersionUID = 1L;
 
-		@Column(name = "nome_area", length = 45, nullable = false)
-		private String nome;
+	@Id
+	@Column(name = "id_area", unique = true)
+	private Long idArea;
 
-	public Area() {}
-	
-	
-	public Area(String nome) {
-		setNome(nome);
+	@Column(name = "nome_area", length = 45, nullable = false)
+	private String nomeArea;
+
+	public Area() {
 	}
 
-	public Area(Long id, String nome) {
-		setId(id);
-		setNome(nome);
+	public Area(long idArea, String nomeArea) {
+		setIdArea(idArea);
+		setNomeArea(nomeArea);
 	}
 
-	public Long getId() {
-		return id;
+	public Long getIdArea() {
+		return idArea;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdArea(Long idArea) {
+		this.idArea = idArea;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getNomeArea() {
+		return nomeArea;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNomeArea(String nomeArea) {
+		this.nomeArea = nomeArea;
 	}
 }
