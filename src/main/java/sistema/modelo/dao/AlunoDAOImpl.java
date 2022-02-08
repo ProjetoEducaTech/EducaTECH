@@ -9,9 +9,37 @@ import org.hibernate.service.ServiceRegistry;
 import sistema.modelo.entidade.Curso;
 
 public class AlunoDAOImpl implements AlunoDAO {
-	
+
+	public void inserirAluno(Aluno aluno) {
+
+		Session sessao = null;
+
+		try {
+
+			sessao = conectarBanco().openSessio();
+			sessao.beginTransaction();
+
+			sessao.save(aluno);
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+	}
+
 	public void favoritarCurso(Curso curso) {
-		
+
 		Session sessao = null;
 
 		try {
@@ -38,7 +66,7 @@ public class AlunoDAOImpl implements AlunoDAO {
 			}
 		}
 	}
-	
+
 	private SessionFactory conectarBanco() {
 
 		Configuration configuracao = new Configuration();
@@ -50,7 +78,7 @@ public class AlunoDAOImpl implements AlunoDAO {
 		configuracao.addAnnotatedClass(sistema.modelo.entidade.Aluno.class);
 		configuracao.addAnnotatedClass(sistema.modelo.entidade.Contato.class);
 		configuracao.addAnnotatedClass(sistema.modelo.entidade.Endereco.class);
-		configuracao.addAnnotatedEnum(sistema.modelo.entidade.Genero.class);
+		configuracao.addAnnotatedEnum(sistema.modelo.entidade.Genero.enum);
 		configuracao.addAnnotatedEnum(sistema.modelo.entidade.Turno.enum);
 		configuracao.addAnnotatedEnum(sistema.modelo.entidade.Modalidade.enum);
 		
@@ -63,5 +91,3 @@ public class AlunoDAOImpl implements AlunoDAO {
 		return fabricaSessao;
    }
 }
-
-

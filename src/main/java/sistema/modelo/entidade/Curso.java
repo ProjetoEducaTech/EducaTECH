@@ -78,11 +78,11 @@ public class Curso implements Serializable {
 
 	}
 
-	public long getIdCurso() {
+	public Long getIdCurso() {
 		return idCurso;
 	}
 
-	public void setIdCurso(long idCurso) {
+	public void setIdCurso(Long idCurso) {
 		this.idCurso = idCurso;
 	}
 

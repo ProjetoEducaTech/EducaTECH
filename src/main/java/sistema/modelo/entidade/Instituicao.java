@@ -14,8 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-
-
 @Entity
 @Table(name = "institiuicao")
 public class Instituicao implements Serializable {
@@ -25,13 +23,17 @@ public class Instituicao implements Serializable {
 	@Id
 	@Column(name = "cnpj", length = 45, nullable = false, unique = true)
 	private String cnpj;
-	
+
 	@Column(name = "descricao", length = 45, nullable = false)
 	private String descricao;
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_endereco")
 	private Endereco endereco;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_usuario")
+	private Usuario usuario;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "instituicao", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Curso> cursos = new ArrayList<Curso>();
@@ -39,9 +41,10 @@ public class Instituicao implements Serializable {
 	public Instituicao() {
 	}
 
-	public Instituicao(String cnpj, Endereco endereco) {
+	public Instituicao(String cnpj, Endereco endereco, Usuario usuario) {
 		setNome(cnpj);
 		setEndereco(endereco);
+		setUsuario(usuario);
 		cursos = new ArrayList<Curso>();
 	}
 
@@ -52,13 +55,21 @@ public class Instituicao implements Serializable {
 	public void setNome(String cnpj) {
 		this.cnpj = cnpj;
 	}
-	
+
 	public Endereco getEndereco() {
 		return endereco;
 	}
-	
-	public void setEndereco (Endereco endereco) {
+
+	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
+	}
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 	
 	public List<Curso> getCursos() {
