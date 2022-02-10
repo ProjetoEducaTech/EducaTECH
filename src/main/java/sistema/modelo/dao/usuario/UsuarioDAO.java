@@ -1,8 +1,5 @@
 package sistema.modelo.dao.usuario;
 
-//import java.util.List;
-
-import sistema.modelo.entidade.*;
 import sistema.modelo.entidade.usuario.Usuario;
 
 public interface UsuarioDAO {

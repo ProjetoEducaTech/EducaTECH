@@ -1,13 +1,4 @@
 package sistema;
-import java.util.List;
-import java.util.Scanner;
-
-import sistema.modelo.dao.*;
-import sistema.modelo.dao.usuario.UsuarioDAO;
-import sistema.modelo.dao.usuario.UsuarioDAOImpl;
-import sistema.modelo.entidade.*;
-import sistema.modelo.entidade.curso.Curso;
-import sistema.modelo.entidade.usuario.Usuario;
 
 public class Principal {
 

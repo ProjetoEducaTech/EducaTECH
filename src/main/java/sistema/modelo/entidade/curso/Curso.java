@@ -15,8 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import sistema.modelo.entidade.instituicao.Instituicao;
-import sistema.modelo.enumeracao.Modalidade;
-import sistema.modelo.enumeracao.Turno;
+import sistema.modelo.enumeracao.modalidade.Modalidade;
+import sistema.modelo.enumeracao.turno.Turno;
 
 @Entity
 @Table(name = "Curso")

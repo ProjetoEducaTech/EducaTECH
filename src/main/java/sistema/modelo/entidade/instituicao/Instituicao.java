@@ -20,7 +20,7 @@ import sistema.modelo.entidade.usuario.Usuario;
 
 @Entity
 @Table(name = "institiuicao")
-public class Instituicao implements Serializable {
+public class Instituicao extends Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -45,7 +45,8 @@ public class Instituicao implements Serializable {
 	public Instituicao() {
 	}
 
-	public Instituicao(String cnpj, Endereco endereco, Usuario usuario) {
+	public Instituicao(Long id, String nome, String senha, String cnpj, Endereco endereco, Usuario usuario) {
+		super (id, nome, senha);
 		setNome(cnpj);
 		setEndereco(endereco);
 		setUsuario(usuario);
