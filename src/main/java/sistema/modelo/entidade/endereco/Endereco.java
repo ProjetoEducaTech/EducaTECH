@@ -27,16 +27,16 @@ public class Endereco implements Serializable{
 	@Column(name = "numero_endereco", nullable = false)
 	private int numero;
 	
-	@Column(name = "cep", length = 50, nullable = false)
+	@Column(name = "cep_endereco", length = 50, nullable = false)
 	private String cep;
 	
-	@Column(name = "cidade", length = 50, nullable = false)
+	@Column(name = "cidade_endereco", length = 50, nullable = false)
 	private String cidade;
 	
-	@Column(name = "estado", length = 50, nullable = false)
+	@Column(name = "estado_endereco", length = 50, nullable = false)
 	private String estado;
 	
-	@Column(name = "referencia", length = 50, nullable = false)
+	@Column(name = "referencia_endereco", length = 50, nullable = false)
 	private String referencia;
 	
 	
@@ -116,5 +116,4 @@ public class Endereco implements Serializable{
 	 public void setReferencia(String referencia) {
 		 this.referencia = referencia;
 	 }
-
 }

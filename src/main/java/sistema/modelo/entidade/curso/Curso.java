@@ -15,8 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import sistema.modelo.entidade.instituicao.Instituicao;
-import sistema.modelo.enumeracao.Modalidade;
 import sistema.modelo.enumeracao.Turno;
+import sistema.modelo.enumeracao.metodoentrada.MetodoEntrada;
+import sistema.modelo.enumeracao.modalidade.Modalidade;
 
 @Entity
 @Table(name = "Curso")
@@ -26,28 +27,28 @@ public class Curso implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", unique = true)
+	@Column(name = "id_curso", unique = true)
 	private Long idCurso;
 
-	@Column(name = "nome", length = 45, nullable = false)
+	@Column(name = "nome_curso", length = 45, nullable = false)
 	private String nomeCurso;
 
-	@Column(name = "area", length = 45, nullable = false)
+	@Column(name = "area_curso", length = 45, nullable = false)
 	private String area;
 
-	@Column(name = "descricao", length = 45, nullable = false)
+	@Column(name = "descricao_curso", length = 45, nullable = false)
 	private String descricaoCurso;
 
-	@Column(name = "duracao", nullable = false)
-	private double duracaoCurso;
+	@Column(name = "duracao_curso", nullable = false)
+	private int duracaoCurso;
 
-	@Column(name = "metodoEntrada", length = 45, nullable = false)
-	private String metodoEntrada;
+	@Enumerated(EnumType.ORDINAL)
+	private MetodoEntrada metodoEntrada;
 
-	@Column(name = "preco", scale = 6, precision = 2,nullable = false)
+	@Column(name = "preco_curso", scale = 6, precision = 2,nullable = false)
 	private double preco;
 
-	@Column(name = "link", length = 45, nullable = false)
+	@Column(name = "link_curso", length = 45, nullable = false)
 	private String link;
 
 	@Enumerated(EnumType.ORDINAL)
@@ -63,9 +64,26 @@ public class Curso implements Serializable {
 	public Curso() {
 
 	}
+	
+	public Curso(String nomeCurso, String area, String descricaoCurso, int duracaoCurso,
+			MetodoEntrada metodoEntrada, double preco, String link, Modalidade tipoModalidade, Turno tipoTurno,
+			Instituicao instituicao) {
 
-	public Curso(Long idCurso, String nomeCurso, String area, String descricaoCurso, double duracaoCurso,
-			String metodoEntrada, double preco, String link, Modalidade tipoModalidade, Turno tipoTurno,
+		setNomeCurso(nomeCurso);
+		setArea(area);
+		setDescricaoCurso(descricaoCurso);
+		setDuracaoCurso(duracaoCurso);
+		setMetodoEntrada(metodoEntrada);
+		setPreco(preco);
+		setLink(link);
+		setTipoModalidade(tipoModalidade);
+		setTipoTurno(tipoTurno);
+		setInstituicao(instituicao);
+
+	}
+
+	public Curso(Long idCurso, String nomeCurso, String area, String descricaoCurso, int duracaoCurso,
+			MetodoEntrada metodoEntrada, int preco, String link, Modalidade tipoModalidade, Turno tipoTurno,
 			Instituicao instituicao) {
 
 		setIdCurso(idCurso);
@@ -114,19 +132,19 @@ public class Curso implements Serializable {
 		this.descricaoCurso = descricaoCurso;
 	}
 
-	public double getDuracaoCurso() {
+	public int getDuracaoCurso() {
 		return duracaoCurso;
 	}
 
-	public void setDuracaoCurso(double duracaoCurso) {
+	public void setDuracaoCurso(int duracaoCurso) {
 		this.duracaoCurso = duracaoCurso;
 	}
 
-	public String getMetodoEntrada() {
+	public MetodoEntrada getMetodoEntrada() {
 		return metodoEntrada;
 	}
 
-	public void setMetodoEntrada(String metodoEntrada) {
+	public void setMetodoEntrada(MetodoEntrada metodoEntrada) {
 		this.metodoEntrada = metodoEntrada;
 	}
 

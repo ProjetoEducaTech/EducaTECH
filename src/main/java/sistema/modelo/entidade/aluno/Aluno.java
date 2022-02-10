@@ -20,7 +20,7 @@ import javax.persistence.Table;
 
 import sistema.modelo.entidade.curso.Curso;
 import sistema.modelo.entidade.usuario.Usuario;
-import sistema.modelo.enumeracao.Genero;
+import sistema.modelo.enumeracao.genero.Genero;
 
 @Entity
 @Table(name = "aluno")
@@ -58,10 +58,12 @@ public class Aluno extends Usuario implements Serializable {
 	
 	public Aluno() {}
 	
-	public Aluno(String cpf, String sobrenome, double notaCorte, Genero genero, Usuario usuario) {
+	public Aluno(Long id, String nome, String senha, String cpf, String sobrenome, double notaCorte, Genero genero, Usuario usuario) {
+		super (id, nome, senha);
 		setCpf(cpf);
 		setSobrenome(sobrenome);
 		setNotaCorte(notaCorte);
+		setUsuario(usuario);
 		setGenero(genero);
 		cursoFavorito = new ArrayList<Curso>();
 	}
