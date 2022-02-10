@@ -44,7 +44,7 @@ public class Curso implements Serializable {
 	@Column(name = "metodoEntrada", length = 45, nullable = false)
 	private String metodoEntrada;
 
-	@Column(name = "preco", nullable = false)
+	@Column(name = "preco", scale = 6, precision = 2,nullable = false)
 	private double preco;
 
 	@Column(name = "link", length = 45, nullable = false)

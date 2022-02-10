@@ -22,7 +22,7 @@ public class Contato implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "id_usuario")
+	@Column(name = "id_contato")
 	private Long id;
 
 	@Column(name = "telefone_contato", length = 20, nullable = false, unique = true)

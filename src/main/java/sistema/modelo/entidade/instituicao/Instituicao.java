@@ -40,7 +40,7 @@ public class Instituicao implements Serializable {
 	private Usuario usuario;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "instituicao", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Curso> cursos = new ArrayList<Curso>();
+	private List<Curso> cursos;
 
 	public Instituicao() {
 	}

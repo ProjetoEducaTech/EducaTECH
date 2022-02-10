@@ -1,8 +1,5 @@
 package sistema.modelo.dao.usuario;
 
-//import java.util.List;
-
-import sistema.modelo.entidade.*;
 import sistema.modelo.entidade.usuario.Usuario;
 
 public interface UsuarioDAO {
@@ -11,12 +8,9 @@ public interface UsuarioDAO {
 
 	void atualizarUsuario(Usuario usuario);
 
-	void cadastrarUsuario(Usuario usuario);
+	void inserirUsuario(Usuario usuario);
 	
 	//List<Usuario> loginAluno();
 	
 	//List<Usuario> loginInstituicao();
-	
-
-	// List<Curso> listaCursosFavoritos(String cpfUsuario);
 }

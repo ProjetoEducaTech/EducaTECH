@@ -1,7 +1,5 @@
 package sistema.modelo.dao.usuario;
 
-import java.util.List;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -12,7 +10,7 @@ import sistema.modelo.entidade.usuario.Usuario;
 
 public class UsuarioDAOImpl implements UsuarioDAO {
 
-	public void cadastrarUsuario(Usuario usuario) {
+	public void inserirUsuario(Usuario usuario) {
 
 		Session sessao = null;
 

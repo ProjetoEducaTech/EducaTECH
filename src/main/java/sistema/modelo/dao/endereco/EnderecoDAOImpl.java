@@ -3,10 +3,9 @@ package sistema.modelo.dao.endereco;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;/*
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.ParameterExpression;*/
+import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
@@ -16,10 +15,11 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 import sistema.modelo.entidade.endereco.Endereco;
+import sistema.modelo.entidade.usuario.Usuario;
 
 public class EnderecoDAOImpl implements EnderecoDAO{
 	
-	public void cadastrarEndereco(Endereco endereco) {
+	public void inserirEndereco(Endereco endereco) {
 
 		Session sessao = null;
 
@@ -106,7 +106,7 @@ public class EnderecoDAOImpl implements EnderecoDAO{
 		}
 	}
 	
-	public List<Endereco> recuperarEnderecos() {
+	public List<Endereco> recuperarEndereco() {
 
 		Session sessao = null;
 		List<Endereco> enderecos = null;
@@ -145,7 +145,7 @@ public class EnderecoDAOImpl implements EnderecoDAO{
 		return enderecos;
 	}
 	
-/*public List<Endereco> recuperarEnderecosCliente(Usuario usuario) {
+    	public List<Endereco> recuperarEnderecoUsuario(Usuario usuario) {
 		
 		Session sessao = null;
 		List<Endereco> enderecos = null;
@@ -162,7 +162,7 @@ public class EnderecoDAOImpl implements EnderecoDAO{
 			
 			Join<Endereco, Usuario> juncaoUsuario = raizEndereco.join(Endereco_.usuario);
 			
-			ParameterExpression<String> idUsuario = construtor.parameter(String.class);
+			ParameterExpression<Long> idUsuario = construtor.parameter(Long.class);
 			criteria.where(construtor.equal(juncaoUsuario.get(Usuario_.ID), idUsuario));
 
 			enderecos = sessao.createQuery(criteria).setParameter(idUsuario, usuario.getId()).getResultList();
@@ -185,7 +185,7 @@ public class EnderecoDAOImpl implements EnderecoDAO{
 		}
 
 		return enderecos;
-	}*/
+	}
 
 private SessionFactory conectarBanco() {
 

@@ -24,7 +24,7 @@ import sistema.modelo.enumeracao.Genero;
 
 @Entity
 @Table(name = "aluno")
-public class Aluno implements Serializable {
+public class Aluno extends Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -32,7 +32,7 @@ public class Aluno implements Serializable {
 	@Column(name = "cpf_aluno", length = 20, nullable = false, unique = true)
 	private String cpf;
 	
-	@Column(name = "sobrenome_aluno", length = 20, nullable = false, unique = true)
+	@Column(name = "sobrenome_aluno", length = 20, nullable = false, unique = false)
 	private String sobrenome;
 	
 	@Column(name = "data_nascimento_aluno")
@@ -51,7 +51,7 @@ public class Aluno implements Serializable {
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "Aluno_curso", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_curso"))
-	private List<Curso> curso = new ArrayList<Curso>();
+	private List<Curso> curso;
 	
 	@Enumerated(EnumType.ORDINAL)
     private Genero genero;
@@ -62,8 +62,8 @@ public class Aluno implements Serializable {
 		setCpf(cpf);
 		setSobrenome(sobrenome);
 		setNotaCorte(notaCorte);
-		setUsuario(usuario);
 		setGenero(genero);
+		cursoFavorito = new ArrayList<Curso>();
 	}
 	
 	public String getCpf() {
@@ -121,5 +121,4 @@ public class Aluno implements Serializable {
 	public void setGenero(Genero genero) {
 		this.genero = genero;
 	}
-
 }

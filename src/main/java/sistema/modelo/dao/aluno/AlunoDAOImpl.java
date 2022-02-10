@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-//import javax.persistence.criteria.Join;
-//import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
@@ -14,7 +14,14 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import sistema.modelo.entidade.aluno.Aluno;
+import sistema.modelo.entidade.aluno.Aluno_;
 import sistema.modelo.entidade.curso.Curso;
+import sistema.modelo.entidade.curso.Curso_;
+import sistema.modelo.entidade.area.Area;
+import sistema.modelo.entidade.area.Area_;
+
+import sistema.modelo.entidade.instituicao.Instituicao;
 
 public class AlunoDAOImpl implements AlunoDAO {
 
@@ -47,7 +54,7 @@ public void favoritarCurso(Curso curso) {
 		}
 	}
 	
-	/*public List<Curso> consultaNota(Aluno aluno) {
+	public List<Curso> consultaNota(Aluno aluno) {
 
 		Session sessao = null;
 		List<Curso> consultaNota = null;
@@ -171,7 +178,7 @@ public void favoritarCurso(Curso curso) {
 		}
 
 		return consultaArea;
-	}*/
+	}
 	
 	public List<Curso> exibirCursosFavoritos() {
 		

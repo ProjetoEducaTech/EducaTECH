@@ -1,5 +1,7 @@
 package sistema.modelo.dao.curso;
 
+import java.util.List;
+
 import sistema.modelo.entidade.curso.Curso;
 
 public interface CursoDAO {
@@ -8,6 +10,6 @@ public interface CursoDAO {
 	void deletarCurso(Curso curso);
 	void atualizarCurso(Curso curso);
 	
-	//List<Curso> recuperarCursos();
+	List<Curso> recuperarCursos();
 
 }

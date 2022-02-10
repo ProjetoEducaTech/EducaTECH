@@ -3,13 +3,9 @@ package sistema.modelo.entidade.endereco;
 import java.io.Serializable;
 
 import javax.persistence.Column;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Entity;
 
@@ -25,8 +21,8 @@ public class Endereco implements Serializable{
 	@Column(name = "id_endereco")
 	private Long id;
 	
-	@Column(name = "rua_endereco", length = 50, nullable = false)
-	private String rua;
+	@Column(name = "logradouro_endereco", length = 50, nullable = false)
+	private String logradouro;
 	
 	@Column(name = "numero_endereco", nullable = false)
 	private int numero;
@@ -46,9 +42,18 @@ public class Endereco implements Serializable{
 	
 	public Endereco() {}
 	
-	public Endereco(Long id, String rua, String cep, String cidade, String estado, String referencia) {
+	public Endereco(String logradouro, int numero,String cep, String cidade, String estado, String referencia) {
+		setLogradouro(logradouro);
+		setNumero(numero);
+		setCep(cep);
+		setCidade(cidade);
+		setEstado(estado);
+		setReferencia(referencia);
+	}
+	
+	public Endereco(Long id, String logradouro, String cep, String cidade, String estado, String referencia) {
 		setId(id);
-		setRua(rua);
+		setLogradouro(logradouro);
 		setNumero(numero);
 		setCep(cep);
 		setCidade(cidade);
@@ -64,12 +69,12 @@ public class Endereco implements Serializable{
 		 this.id = id;
 	 }
 	 
-	 public String getRua() {
-		 return rua;
+	 public String getLogradouro() {
+		 return logradouro;
 	 }
 	 
-	 public void setRua(String rua) {
-		 this.rua = rua;
+	 public void setLogradouro(String logradouro) {
+		 this.logradouro = logradouro;
 	 }
 	 
 	 public int getNumero() {

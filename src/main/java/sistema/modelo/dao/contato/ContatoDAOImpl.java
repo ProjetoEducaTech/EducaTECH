@@ -4,9 +4,9 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-//import javax.persistence.criteria.Join;
-//import javax.persistence.criteria.JoinType;
-//import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
@@ -16,10 +16,11 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 import sistema.modelo.entidade.contato.Contato;
+import sistema.modelo.entidade.usuario.Usuario;
 
 public class ContatoDAOImpl implements ContatoDAO {
 
-	public void cadastrarContato(Contato contato) {
+	public void inserirContato(Contato contato) {
 
 		Session sessao = null;
 
@@ -145,7 +146,7 @@ public class ContatoDAOImpl implements ContatoDAO {
 		return contatos;
 	}
 	
-	/*public Contato recuperarContatoCliente(Usuario usuario) {
+	public Contato recuperarContatoUsuario(Usuario usuario) {
 
 		Session sessao = null;
 		Contato contato = null;
@@ -185,7 +186,7 @@ public class ContatoDAOImpl implements ContatoDAO {
 		}
 
 		return contato;
-	}*/
+	}
 	
 	private SessionFactory conectarBanco() {
 
@@ -206,5 +207,4 @@ public class ContatoDAOImpl implements ContatoDAO {
 
 		return fabricaSessao;
    }
-	
 }
