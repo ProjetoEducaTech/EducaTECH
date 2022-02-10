@@ -3,13 +3,17 @@ import java.util.List;
 import java.util.Scanner;
 
 import sistema.modelo.dao.*;
+import sistema.modelo.dao.usuario.UsuarioDAO;
+import sistema.modelo.dao.usuario.UsuarioDAOImpl;
 import sistema.modelo.entidade.*;
+import sistema.modelo.entidade.curso.Curso;
+import sistema.modelo.entidade.usuario.Usuario;
 
 public class Principal {
 
 	public static void main(String[] args) {
 
-		Scanner leitor = new Scanner(System.in);
+		/*Scanner leitor = new Scanner(System.in);
 
 		System.out.println("\n Seja bem vindo ao EducaTECH! \n");
 
@@ -316,7 +320,7 @@ public class Principal {
 		
 		System.out.println("\n Você escolheu listar todos os cursos! ");
 		
-	}
+	*/}
 
 
 }
