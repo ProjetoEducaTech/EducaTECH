@@ -1,15 +1,50 @@
 package sistema;
-import java.util.List;
-import java.util.Scanner;
-
-import sistema.modelo.dao.*;
-import sistema.modelo.entidade.*;
+import sistema.modelo.dao.contato.ContatoDAO;
+import sistema.modelo.dao.contato.ContatoDAOImpl;
+import sistema.modelo.dao.usuario.UsuarioDAO;
+import sistema.modelo.dao.usuario.UsuarioDAOImpl;
+import sistema.modelo.entidade.contato.Contato;
+import sistema.modelo.entidade.usuario.Usuario;
 
 public class Principal {
 
 	public static void main(String[] args) {
+		
+		UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
+		ContatoDAO contatoDAO = new ContatoDAOImpl();
+		
+		String nome = "Teste";
+		String senha = "12323";
+		
+		Usuario usuario = new Usuario();
+		
+		usuario.setNome(nome);
+		usuario.setSenha(senha);
+		
+		usuarioDAO.inserirUsuario(usuario);
+		
+		String telefone = "3332-3232";
+		String celular = "5432-3232";
+		String email = "teste@email.com.br";
+		
+		Contato contato = new Contato();
+		
+		contato.setTelefone(telefone);
+		contato.setCelular(celular);
+		contato.setEmail(email);
 
-		Scanner leitor = new Scanner(System.in);
+		contato.setUsuario(usuario);
+		
+		contatoDAO.inserirContato(contato);
+		
+		
+		
+
+	
+
+
+
+		/*Scanner leitor = new Scanner(System.in);
 
 		System.out.println("\n Seja bem vindo ao EducaTECH! \n");
 
@@ -316,7 +351,7 @@ public class Principal {
 		
 		System.out.println("\n Você escolheu listar todos os cursos! ");
 		
-	}
+	*/}
 
 
 }
