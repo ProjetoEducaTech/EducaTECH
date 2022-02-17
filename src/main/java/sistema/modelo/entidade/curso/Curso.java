@@ -12,8 +12,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import sistema.modelo.entidade.area.Area;
 import sistema.modelo.entidade.instituicao.Instituicao;
 import sistema.modelo.enumeracao.modalidade.Modalidade;
 import sistema.modelo.enumeracao.turno.Turno;
@@ -32,8 +34,9 @@ public class Curso implements Serializable {
 	@Column(name = "nome", length = 45, nullable = false)
 	private String nomeCurso;
 
-	@Column(name = "area", length = 45, nullable = false)
-	private String area;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "area")
+	private Area area;
 
 	@Column(name = "descricao", length = 45, nullable = false)
 	private String descricaoCurso;
@@ -64,7 +67,7 @@ public class Curso implements Serializable {
 
 	}
 
-	public Curso(Long idCurso, String nomeCurso, String area, String descricaoCurso, double duracaoCurso,
+	public Curso(Long idCurso, String nomeCurso, Area area, String descricaoCurso, double duracaoCurso,
 			String metodoEntrada, double preco, String link, Modalidade tipoModalidade, Turno tipoTurno,
 			Instituicao instituicao) {
 
@@ -98,11 +101,11 @@ public class Curso implements Serializable {
 		this.nomeCurso = nomeCurso;
 	}
 
-	public String getArea() {
+	public Area getArea() {
 		return area;
 	}
 
-	public void setArea(String area) {
+	public void setArea(Area area) {
 		this.area = area;
 	}
 
