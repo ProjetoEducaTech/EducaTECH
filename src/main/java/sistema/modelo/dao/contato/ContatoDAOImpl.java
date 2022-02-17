@@ -5,8 +5,6 @@ import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
-import javax.persistence.criteria.ParameterExpression;
-import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
@@ -17,8 +15,15 @@ import org.hibernate.service.ServiceRegistry;
 
 import sistema.modelo.entidade.contato.Contato;
 import sistema.modelo.entidade.usuario.Usuario;
+import sistema.modelo.factory.conexao.FactoryConexao;
 
 public class ContatoDAOImpl implements ContatoDAO {
+	
+	private FactoryConexao banco;
+
+	public ContatoDAOImpl() {
+		banco = new FactoryConexao();
+	}
 
 	public void inserirContato(Contato contato) {
 
@@ -26,7 +31,7 @@ public class ContatoDAOImpl implements ContatoDAO {
 
 		try {
 
-			sessao = conectarBanco().openSession();
+			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			sessao.save(contato);
@@ -55,7 +60,7 @@ public class ContatoDAOImpl implements ContatoDAO {
 
 		try {
 
-			sessao = conectarBanco().openSession();
+			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			sessao.update(contato);
@@ -84,7 +89,7 @@ public class ContatoDAOImpl implements ContatoDAO {
 
 		try {
 
-			sessao = conectarBanco().openSession();
+			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			sessao.delete(contato);
@@ -114,7 +119,7 @@ public class ContatoDAOImpl implements ContatoDAO {
 
 		try {
 
-			sessao = conectarBanco().openSession();
+			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
@@ -153,7 +158,7 @@ public class ContatoDAOImpl implements ContatoDAO {
 
 		try {
 
-			sessao = conectarBanco().openSession();
+			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
@@ -161,12 +166,12 @@ public class ContatoDAOImpl implements ContatoDAO {
 			CriteriaQuery<Contato> criteria = construtor.createQuery(Contato.class);
 			Root<Contato> raizContato = criteria.from(Contato.class);
 			
-			Join<Contato, Usuario> juncaoUsuario = raizContato.join(Contato_.usuario);
+			Join<Contato, Usuario> juncaoUsuario = raizContato.join("usuario");
 			
-			ParameterExpression<String> cpfUsuario = construtor.parameter(String.class);
-			criteria.where(construtor.equal(juncaoUsuario.get(Usuario_.ID), idUsuario));
+			//ParameterExpression<String> cpfUsuario = construtor.parameter(String.class);
+			//criteria.where(construtor.equal(juncaoUsuario.get(Usuario_.ID), idUsuario));
 			
-			contato = sessao.createQuery(criteria).setParameter(idUsuario, usuario.getId()).getSingleResult();
+			//contato = sessao.createQuery(criteria).setParameter(idUsuario, usuario.getId()).getSingleResult();
 
 			sessao.getTransaction().commit();
 
@@ -187,24 +192,4 @@ public class ContatoDAOImpl implements ContatoDAO {
 
 		return contato;
 	}
-	
-	private SessionFactory conectarBanco() {
-
-		Configuration configuracao = new Configuration();
-
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.area.Area.class);
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.aluno.Aluno.class);
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.curso.Curso.class);
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.instituicao.Instituicao.class);
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.usuario.Usuario.class);
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.contato.Contato.class);
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.endereco.Endereco.class);
-
-		configuracao.configure("hibernate.cfg.xml");
-
-		ServiceRegistry servico = new StandardServiceRegistryBuilder().applySettings(configuracao.getProperties()).build();
-		SessionFactory fabricaSessao = configuracao.buildSessionFactory(servico);
-
-		return fabricaSessao;
-   }
 }

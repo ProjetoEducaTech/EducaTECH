@@ -8,7 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Id;
+//import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -24,7 +24,7 @@ public class Instituicao extends Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
+	
 	@Column(name = "cnpj_instituicao", length = 45, nullable = false, unique = true)
 	private String cnpj;
 

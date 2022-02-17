@@ -12,8 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import sistema.modelo.entidade.area.Area;
 import sistema.modelo.entidade.instituicao.Instituicao;
 import sistema.modelo.enumeracao.Turno;
 import sistema.modelo.enumeracao.metodoentrada.MetodoEntrada;
@@ -32,9 +35,6 @@ public class Curso implements Serializable {
 
 	@Column(name = "nome_curso", length = 45, nullable = false)
 	private String nomeCurso;
-
-	@Column(name = "area_curso", length = 45, nullable = false)
-	private String area;
 
 	@Column(name = "descricao_curso", length = 45, nullable = false)
 	private String descricaoCurso;
@@ -56,16 +56,22 @@ public class Curso implements Serializable {
 
 	@Enumerated(EnumType.ORDINAL)
 	private Turno tipoTurno;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@MapsId
+	@JoinColumn(name = "area_curso")
+	private Area area;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "cnpj")
+	@MapsId
+	@JoinColumn(name = "id_usuario")
 	private Instituicao instituicao;
 
 	public Curso() {
 
 	}
 	
-	public Curso(String nomeCurso, String area, String descricaoCurso, int duracaoCurso,
+	public Curso(String nomeCurso, Area area, String descricaoCurso, int duracaoCurso,
 			MetodoEntrada metodoEntrada, double preco, String link, Modalidade tipoModalidade, Turno tipoTurno,
 			Instituicao instituicao) {
 
@@ -82,7 +88,7 @@ public class Curso implements Serializable {
 
 	}
 
-	public Curso(Long idCurso, String nomeCurso, String area, String descricaoCurso, int duracaoCurso,
+	public Curso(Long idCurso, String nomeCurso, Area area, String descricaoCurso, int duracaoCurso,
 			MetodoEntrada metodoEntrada, int preco, String link, Modalidade tipoModalidade, Turno tipoTurno,
 			Instituicao instituicao) {
 
@@ -116,11 +122,11 @@ public class Curso implements Serializable {
 		this.nomeCurso = nomeCurso;
 	}
 
-	public String getArea() {
+	public Area getArea() {
 		return area;
 	}
 
-	public void setArea(String area) {
+	public void setArea(Area area) {
 		this.area = area;
 	}
 

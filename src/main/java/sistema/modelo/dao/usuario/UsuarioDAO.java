@@ -10,7 +10,6 @@ public interface UsuarioDAO {
 
 	void inserirUsuario(Usuario usuario);
 	
-	//List<Usuario> loginAluno();
+	//Usuario loginUsuario(Usuario usuario);
 	
-	//List<Usuario> loginInstituicao();
 }

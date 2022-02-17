@@ -90,7 +90,7 @@ public class Contato implements Serializable {
 		return usuario;
 	}
 
-	public void setCliente(Usuario usuario) {
+	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
 }

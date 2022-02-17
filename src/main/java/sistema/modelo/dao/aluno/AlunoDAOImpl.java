@@ -4,26 +4,26 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
 
 import sistema.modelo.entidade.aluno.Aluno;
-import sistema.modelo.entidade.aluno.Aluno_;
-import sistema.modelo.entidade.curso.Curso;
-import sistema.modelo.entidade.curso.Curso_;
 import sistema.modelo.entidade.area.Area;
-import sistema.modelo.entidade.area.Area_;
-
+import sistema.modelo.entidade.curso.Curso;
 import sistema.modelo.entidade.instituicao.Instituicao;
+import sistema.modelo.factory.conexao.FactoryConexao;
 
 public class AlunoDAOImpl implements AlunoDAO {
+	
+	private FactoryConexao banco;
+	
+	public AlunoDAOImpl() {
+		
+		banco = new FactoryConexao();
+		
+		}
 
 public void favoritarCurso(Curso curso) {
 		
@@ -31,7 +31,7 @@ public void favoritarCurso(Curso curso) {
 
 		try {
 
-			sessao = conectarBanco().openSession();
+			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			sessao.save(curso);
@@ -61,7 +61,7 @@ public void favoritarCurso(Curso curso) {
 
 		try {
 
-			sessao = conectarBanco().openSession();
+			sessao =  banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
@@ -69,10 +69,10 @@ public void favoritarCurso(Curso curso) {
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 
-			Join<Curso, Aluno> juncaoNota = raizCurso.join(Curso_.aluno);
+			//Join<Curso, Aluno> juncaoNota = raizCurso.join(Curso_.aluno);
 
 			ParameterExpression<Double> notaCorteAluno = construtor.parameter(double.class);
-			criteria.where(construtor.equal(juncaoNota.get(Aluno_.NOTACORTE), notaCorteAluno));
+			//criteria.where(construtor.equal(juncaoNota.get(Aluno_.NOTACORTE), notaCorteAluno));
 
 			consultaNota = sessao.createQuery(criteria).setParameter(notaCorteAluno, aluno.getNotaCorte()).getResultList();
 
@@ -103,7 +103,7 @@ public void favoritarCurso(Curso curso) {
 
 		try {
 
-			sessao = conectarBanco().openSession();
+			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
@@ -111,10 +111,10 @@ public void favoritarCurso(Curso curso) {
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 
-			Join<Curso, Instituicao> juncaoInstituicao = raizCurso.join(Curso_.instituicao);
+			//Join<Curso, Instituicao> juncaoInstituicao = raizCurso.join(Curso_.instituicao);
 
 			ParameterExpression<String> cnpfinstituicao = construtor.parameter(String.class);
-			criteria.where(construtor.equal(juncaoInstituicao.get(Instituicao_.CNPJ), cnpfinstituicao));
+			//criteria.where(construtor.equal(juncaoInstituicao.get(Instituicao_.CNPJ), cnpfinstituicao));
 
 			consultaInstituicao = sessao.createQuery(criteria).setParameter(cnpfinstituicao, instituicao.getCnpj()).getResultList();
 
@@ -145,7 +145,7 @@ public void favoritarCurso(Curso curso) {
 
 		try {
 
-			sessao = conectarBanco().openSession();
+			sessao =  banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
@@ -153,12 +153,12 @@ public void favoritarCurso(Curso curso) {
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 
-			Join<Curso, Area> juncaoArea = raizCurso.join(Curso_.area);
+			//Join<Curso, Area> juncaoArea = raizCurso.join(Curso_.area);
 
 			ParameterExpression<String> cnpjinstituicao = construtor.parameter(String.class);
-			criteria.where(construtor.equal(juncaoArea.get(Area_.NOME), cnpjinstituicao));
+		//	criteria.where(construtor.equal(juncaoArea.get(Area_.NOME), cnpjinstituicao));
 
-			consultaArea = sessao.createQuery(criteria).setParameter(cnpjinstituicao, area.getNome()).getResultList();
+			//consultaArea = sessao.createQuery(criteria).setParameter(cnpjinstituicao, area.getNome()).getResultList();
 
 			sessao.getTransaction().commit();
 
@@ -187,7 +187,7 @@ public void favoritarCurso(Curso curso) {
 
 	try {
 
-		sessao = conectarBanco().openSession();
+		sessao =  banco.getConectarBanco().openSession();
 		sessao.beginTransaction();
 
 		CriteriaBuilder construtor = sessao.getCriteriaBuilder();
@@ -218,25 +218,4 @@ public void favoritarCurso(Curso curso) {
 
 	return favoritos;
 }
-	
-	private SessionFactory conectarBanco() {
-
-		Configuration configuracao = new Configuration();
-
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.area.Area.class);
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.curso.Curso.class);
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.instituicao.Instituicao.class);
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.usuario.Usuario.class);
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.aluno.Aluno.class);
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.contato.Contato.class);
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.endereco.Endereco.class);
-		
-
-		configuracao.configure("hibernate.cfg.xml");
-
-		ServiceRegistry servico = new StandardServiceRegistryBuilder().applySettings(configuracao.getProperties()).build();
-		SessionFactory fabricaSessao = configuracao.buildSessionFactory(servico);
-
-		return fabricaSessao;
-   }
 }

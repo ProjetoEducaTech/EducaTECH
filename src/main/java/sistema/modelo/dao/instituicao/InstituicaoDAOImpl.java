@@ -8,14 +8,18 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
 
 import sistema.modelo.entidade.instituicao.Instituicao;
+import sistema.modelo.factory.conexao.FactoryConexao;
 
 public class InstituicaoDAOImpl implements InstituicaoDAO {
+	
+	private FactoryConexao banco;
+
+	public InstituicaoDAOImpl() {
+		
+		banco = new FactoryConexao();
+	}
 
 	public void inserirInstituicao(Instituicao instituicao) {
 
@@ -23,7 +27,7 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 
 		try {
 
-			sessao = conectarBanco().openSession();
+			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			sessao.save(instituicao);
@@ -52,7 +56,7 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 
 		try {
 
-			sessao = conectarBanco().openSession();
+			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			sessao.delete(instituicao);
@@ -81,7 +85,7 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 
 		try {
 
-			sessao = conectarBanco().openSession();
+			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			sessao.update(instituicao);
@@ -111,7 +115,7 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 
 		try {
 
-			sessao = conectarBanco().openSession();
+			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
@@ -142,25 +146,4 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 
 		return instituicao;
 	}
-
-	private SessionFactory conectarBanco() {
-
-		Configuration configuracao = new Configuration();
-
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.area.Area.class);
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.aluno.Aluno.class);
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.curso.Curso.class);
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.instituicao.Instituicao.class);
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.usuario.Usuario.class);
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.contato.Contato.class);
-		configuracao.addAnnotatedClass(sistema.modelo.entidade.endereco.Endereco.class);
-
-		configuracao.configure("hibernate.cfg.xml");
-
-		ServiceRegistry servico = new StandardServiceRegistryBuilder().applySettings(configuracao.getProperties()).build();
-		SessionFactory fabricaSessao = configuracao.buildSessionFactory(servico);
-
-		return fabricaSessao;
-   }
-
 }

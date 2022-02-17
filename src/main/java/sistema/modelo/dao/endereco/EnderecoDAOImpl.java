@@ -4,20 +4,24 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
 
 import sistema.modelo.entidade.endereco.Endereco;
 import sistema.modelo.entidade.usuario.Usuario;
+import sistema.modelo.factory.conexao.FactoryConexao;
 
-public class EnderecoDAOImpl implements EnderecoDAO{
+public class EnderecoDAOImpl implements EnderecoDAO {
+	
+	private FactoryConexao banco;
+
+	public EnderecoDAOImpl() {
+		
+		banco = new FactoryConexao();
+		
+	}
 	
 	public void inserirEndereco(Endereco endereco) {
 
@@ -25,7 +29,7 @@ public class EnderecoDAOImpl implements EnderecoDAO{
 
 		try {
 
-			sessao = conectarBanco().openSession();
+			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			sessao.save(endereco);
@@ -54,7 +58,7 @@ public class EnderecoDAOImpl implements EnderecoDAO{
 
 		try {
 
-			sessao = conectarBanco().openSession();
+			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			sessao.update(endereco);
@@ -83,7 +87,7 @@ public class EnderecoDAOImpl implements EnderecoDAO{
 
 		try {
 
-			sessao = conectarBanco().openSession();
+			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			sessao.delete(endereco);
@@ -113,7 +117,7 @@ public class EnderecoDAOImpl implements EnderecoDAO{
 
 		try {
 
-			sessao = conectarBanco().openSession();
+			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
@@ -152,7 +156,7 @@ public class EnderecoDAOImpl implements EnderecoDAO{
 
 		try {
 
-			sessao = conectarBanco().openSession();
+			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
@@ -160,10 +164,10 @@ public class EnderecoDAOImpl implements EnderecoDAO{
 			CriteriaQuery<Endereco> criteria = construtor.createQuery(Endereco.class);
 			Root<Endereco> raizEndereco = criteria.from(Endereco.class);
 			
-			Join<Endereco, Usuario> juncaoUsuario = raizEndereco.join(Endereco_.usuario);
+			//Join<Endereco, Usuario> juncaoUsuario = raizEndereco.join(Endereco_.usuario);
 			
 			ParameterExpression<Long> idUsuario = construtor.parameter(Long.class);
-			criteria.where(construtor.equal(juncaoUsuario.get(Usuario_.ID), idUsuario));
+			//criteria.where(construtor.equal(juncaoUsuario.get(Usuario_.ID), idUsuario));
 
 			enderecos = sessao.createQuery(criteria).setParameter(idUsuario, usuario.getId()).getResultList();
 
@@ -186,25 +190,4 @@ public class EnderecoDAOImpl implements EnderecoDAO{
 
 		return enderecos;
 	}
-
-private SessionFactory conectarBanco() {
-
-	Configuration configuracao = new Configuration();
-
-	configuracao.addAnnotatedClass(sistema.modelo.entidade.area.Area.class);
-	configuracao.addAnnotatedClass(sistema.modelo.entidade.aluno.Aluno.class);
-	configuracao.addAnnotatedClass(sistema.modelo.entidade.curso.Curso.class);
-	configuracao.addAnnotatedClass(sistema.modelo.entidade.instituicao.Instituicao.class);
-	configuracao.addAnnotatedClass(sistema.modelo.entidade.usuario.Usuario.class);
-	configuracao.addAnnotatedClass(sistema.modelo.entidade.contato.Contato.class);
-	configuracao.addAnnotatedClass(sistema.modelo.entidade.endereco.Endereco.class);
-
-	configuracao.configure("hibernate.cfg.xml");
-
-	ServiceRegistry servico = new StandardServiceRegistryBuilder().applySettings(configuracao.getProperties()).build();
-	SessionFactory fabricaSessao = configuracao.buildSessionFactory(servico);
-
-	return fabricaSessao;
-}
-
 }

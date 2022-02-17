@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.Id;
+//import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -28,7 +28,7 @@ public class Aluno extends Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Id
+	
 	@Column(name = "cpf_aluno", length = 20, nullable = false, unique = true)
 	private String cpf;
 	
