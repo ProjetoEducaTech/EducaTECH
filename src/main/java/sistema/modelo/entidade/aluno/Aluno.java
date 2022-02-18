@@ -11,11 +11,9 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-//import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import sistema.modelo.entidade.curso.Curso;
@@ -41,19 +39,12 @@ public class Aluno extends Usuario implements Serializable {
 	@Column(name = "nota_corte", scale = 5, precision = 2,nullable = false)
 	private double notaCorte;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_usuario")
-	private Usuario usuario;
-	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "Aluno_curso_favorito", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_curso"))
 	private List<Curso> cursoFavorito = new ArrayList<Curso>();
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name = "Aluno_curso", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_curso"))
-	private List<Curso> curso;
-	
 	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "genero_aluno", nullable = false)
     private Genero genero;
 	
 	public Aluno() {}
@@ -63,7 +54,6 @@ public class Aluno extends Usuario implements Serializable {
 		setCpf(cpf);
 		setSobrenome(sobrenome);
 		setNotaCorte(notaCorte);
-		setUsuario(usuario);
 		setGenero(genero);
 		cursoFavorito = new ArrayList<Curso>();
 	}
@@ -92,14 +82,6 @@ public class Aluno extends Usuario implements Serializable {
 		this.notaCorte = notaCorte;
 	}
 	
-	public Usuario getUsuario() {
-		return usuario;
-	}
-	
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-	
 	public List<Curso> getCursoFavorito() {
 		return cursoFavorito;
 	}
@@ -107,15 +89,7 @@ public class Aluno extends Usuario implements Serializable {
 	public void adicionarCursoFavorito(Curso cursoFavorito) {
 		this.cursoFavorito.add(cursoFavorito);
 	}
-	
-	public List<Curso> getCurso() {
-		return curso;
-	}
 
-	public void adicionarCurso(Curso curso) {
-		this.curso.add(curso);
-	}
-	
 	public Genero getGenero() {
 		return genero;
 	}
