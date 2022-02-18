@@ -53,9 +53,11 @@ public class Curso implements Serializable {
 	@Column(name = "link", length = 45, nullable = false)
 	private String link;
 
+	@Column(name = "tipo_modalidade_curso", nullable = false)
 	@Enumerated(EnumType.ORDINAL)
 	private Modalidade tipoModalidade;
 
+	@Column(name = "tipo_turno_curso", nullable = false)
 	@Enumerated(EnumType.ORDINAL)
 	private Turno tipoTurno;
 

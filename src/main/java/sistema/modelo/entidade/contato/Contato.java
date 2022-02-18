@@ -25,7 +25,7 @@ public class Contato implements Serializable {
 	@Column(name = "id_usuario")
 	private Long id;
 
-	@Column(name = "telefone_contato", length = 20, nullable = false, unique = true)
+	@Column(name = "telefone_contato", length = 20, nullable = true, unique = true)
 	private String telefone;
 	
 	@Column(name = "celular_contato", length = 20, nullable = false, unique = true)
@@ -36,7 +36,7 @@ public class Contato implements Serializable {
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@MapsId
-	@JoinColumn(name = "id_usuario")
+	@JoinColumn(name = "id_contato")
 	private Usuario usuario;
 	
 	public Contato() {}
