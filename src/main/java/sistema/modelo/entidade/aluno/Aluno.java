@@ -26,7 +26,6 @@ public class Aluno extends Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	
 	@Column(name = "cpf_aluno", length = 20, nullable = false, unique = true)
 	private String cpf;
 	
@@ -43,13 +42,13 @@ public class Aluno extends Usuario implements Serializable {
 	@JoinTable(name = "Aluno_curso_favorito", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_curso"))
 	private List<Curso> cursoFavorito = new ArrayList<Curso>();
 	
-	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "genero_aluno", nullable = false)
+	@Enumerated(EnumType.ORDINAL)
     private Genero genero;
 	
 	public Aluno() {}
 	
-	public Aluno(Long id, String nome, String senha, String cpf, String sobrenome, double notaCorte, Genero genero, Usuario usuario) {
+	public Aluno(Long id, String nome, String senha, String cpf, String sobrenome, double notaCorte, Genero genero) {
 		super (id, nome, senha);
 		setCpf(cpf);
 		setSobrenome(sobrenome);

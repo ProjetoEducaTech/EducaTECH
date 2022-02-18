@@ -41,7 +41,8 @@ public class Curso implements Serializable {
 
 	@Column(name = "duracao_curso", nullable = false)
 	private int duracaoCurso;
-
+	
+	@Column(name = "tipo_metodo_entrada_curso", nullable = false)
 	@Enumerated(EnumType.ORDINAL)
 	private MetodoEntrada metodoEntrada;
 
@@ -54,7 +55,8 @@ public class Curso implements Serializable {
 	@Column(name = "tipo_modalidade_curso", nullable = false)
 	@Enumerated(EnumType.ORDINAL)
 	private Modalidade tipoModalidade;
-
+	
+	@Column(name = "tipo_turno_curso", nullable = false)
 	@Enumerated(EnumType.ORDINAL)
 	private Turno tipoTurno;
 	

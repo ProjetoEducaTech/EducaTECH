@@ -23,7 +23,6 @@ import sistema.modelo.entidade.usuario.Usuario;
 public class Instituicao extends Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
 	
 	@Column(name = "cnpj_instituicao", length = 45, nullable = false, unique = true)
 	private String cnpj;
