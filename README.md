@@ -8,8 +8,8 @@ O sistema visa facilitar a busca por cursos superiores. Ele é composto, princip
 
 Integrantes:
 
+Emylli Sousa Lima
 Mariana Cézar da Silva,
-Mateus Nunc N'Fooro Nascimento,
-Julia Ballen Haertel,
+Mateus Nunc-NFôoro Nascimento,
 Victor Gabriel Zampieri,
-Vítor Quagliotto de Soua.
+Vítor Quagliotto de Souza.
