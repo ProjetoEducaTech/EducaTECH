@@ -31,7 +31,7 @@ public class Instituicao extends Usuario implements Serializable {
 	private String descricao;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_endereco")
+	@JoinColumn(name = "id_endereco", nullable = false)
 	private Endereco endereco;
 
 	@OneToOne(fetch = FetchType.LAZY)

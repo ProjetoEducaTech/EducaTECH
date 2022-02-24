@@ -24,6 +24,93 @@ public class AlunoDAOImpl implements AlunoDAO {
 		banco = new FactoryConexao();
 		
 		}
+	
+	public void inserirAluno(Aluno aluno) {
+
+		Session sessao = null;
+
+		try {
+
+			sessao = banco.getConectarBanco().openSession();
+			sessao.beginTransaction();
+
+			sessao.save(aluno);
+			
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+	}
+
+	public void deletarAluno(Aluno aluno) {
+
+		Session sessao = null;
+
+		try {
+
+			sessao = banco.getConectarBanco().openSession();
+			sessao.beginTransaction();
+
+			sessao.delete(aluno);
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+	}
+
+	public void atualizarAluno(Aluno aluno) {
+
+		Session sessao = null;
+
+		try {
+
+			sessao = banco.getConectarBanco().openSession();
+			sessao.beginTransaction();
+
+			sessao.update(aluno);
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+	}
 
 public void favoritarCurso(Curso curso) {
 		

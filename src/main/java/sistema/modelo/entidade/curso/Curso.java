@@ -61,11 +61,11 @@ public class Curso implements Serializable {
 	private Turno tipoTurno;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "area_curso")
+	@JoinColumn(name = "area_curso", nullable = false)
 	private Area area;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "cnpj_instituicao")
+	@JoinColumn(name = "cnpj_instituicao", nullable = false)
 	private Instituicao instituicao;
 
 	public Curso() {

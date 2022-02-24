@@ -32,7 +32,7 @@ public class Aluno extends Usuario implements Serializable {
 	@Column(name = "sobrenome_aluno", length = 20, nullable = false, unique = false)
 	private String sobrenome;
 	
-	@Column(name = "data_nascimento_aluno")
+	@Column(name = "data_nascimento_aluno", nullable = false)
 	private LocalDate dataNascimento;
 
 	@Column(name = "nota_corte_aluno", scale = 5, precision = 2,nullable = false)
