@@ -16,6 +16,7 @@ public class CursoDAOlmpl implements CursoDAO {
 	private FactoryConexao banco;
 
 	public void CursoDAOImpl() {
+		
 		banco = new FactoryConexao();
 	}
 

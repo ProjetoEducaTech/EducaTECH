@@ -102,8 +102,8 @@ public class Endereco implements Serializable{
 		 return bairro;
 	 }
 	 
-	 public void setBairro(String logradouro) {
-		 this.logradouro = logradouro;
+	 public void setBairro(String bairro) {
+		 this.bairro = bairro;
 	 }
 	 
 	 public String getCidade() {

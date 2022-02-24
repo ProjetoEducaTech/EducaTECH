@@ -51,7 +51,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
-
+			
 			sessao.delete(usuario);
 
 			sessao.getTransaction().commit();

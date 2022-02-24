@@ -35,7 +35,7 @@ public class Aluno extends Usuario implements Serializable {
 	@Column(name = "data_nascimento_aluno")
 	private LocalDate dataNascimento;
 
-	@Column(name = "nota_corte", scale = 5, precision = 2,nullable = false)
+	@Column(name = "nota_corte_aluno", scale = 5, precision = 2,nullable = false)
 	private double notaCorte;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})

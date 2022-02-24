@@ -23,14 +23,14 @@ import sistema.modelo.enumeracao.metodoentrada.MetodoEntrada;
 import sistema.modelo.enumeracao.modalidade.Modalidade;
 
 @Entity
-@Table(name = "Curso")
+@Table(name = "curso")
 public class Curso implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_curso", unique = true)
+	@Column(name = "id_curso", length = 14, nullable = false, unique = true)
 	private Long idCurso;
 
 	@Column(name = "nome_curso", length = 45, nullable = false)
@@ -61,13 +61,11 @@ public class Curso implements Serializable {
 	private Turno tipoTurno;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-	@MapsId
 	@JoinColumn(name = "area_curso")
 	private Area area;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@MapsId
-	@JoinColumn(name = "id_usuario")
+	@JoinColumn(name = "cnpj_instituicao")
 	private Instituicao instituicao;
 
 	public Curso() {

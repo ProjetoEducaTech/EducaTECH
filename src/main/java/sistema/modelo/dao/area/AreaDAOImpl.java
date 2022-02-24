@@ -5,7 +5,7 @@ import org.hibernate.Session;
 import sistema.modelo.entidade.area.Area;
 import sistema.modelo.factory.conexao.FactoryConexao;
 
-public class AreaDAOImpl {
+public class AreaDAOImpl implements AreaDAO{
 	
 	private FactoryConexao banco;
 	

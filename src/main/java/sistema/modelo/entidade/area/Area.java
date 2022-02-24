@@ -24,6 +24,10 @@ public class Area implements Serializable {
 	private String nomeArea;
 
 	public Area() {}
+	
+	public Area(String nomeArea) {
+		setNomeArea(nomeArea);
+	}
 
 	public Area(Long idArea, String nomeArea) {
 		setIdArea(idArea);

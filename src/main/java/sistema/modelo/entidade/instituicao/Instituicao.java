@@ -49,6 +49,7 @@ public class Instituicao extends Usuario implements Serializable {
 		setNome(cnpj);
 		setEndereco(endereco);
 		setUsuario(usuario);
+		setDescricao(descricao);
 		cursos = new ArrayList<Curso>();
 	}
 
@@ -56,8 +57,16 @@ public class Instituicao extends Usuario implements Serializable {
 		return cnpj;
 	}
 
-	public void setNome(String cnpj) {
+	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
+	}
+	
+	public String getDescricao() {
+		return descricao;
+	}
+	
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	public Endereco getEndereco() {
