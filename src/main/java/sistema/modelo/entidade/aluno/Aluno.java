@@ -48,12 +48,13 @@ public class Aluno extends Usuario implements Serializable {
 	
 	public Aluno() {}
 	
-	public Aluno(Long id, String nome, String senha, String cpf, String sobrenome, double notaCorte, Genero genero) {
+	public Aluno(Long id, String nome, String senha, String cpf, String sobrenome, double notaCorte, Genero genero, LocalDate dataNascimento) {
 		super (id, nome, senha);
 		setCpf(cpf);
 		setSobrenome(sobrenome);
 		setNotaCorte(notaCorte);
 		setGenero(genero);
+		setDataNascimento(dataNascimento);
 		cursoFavorito = new ArrayList<Curso>();
 	}
 	
@@ -71,6 +72,15 @@ public class Aluno extends Usuario implements Serializable {
 
 	public void setSobrenome(String sobrenome) {
 		this.sobrenome = sobrenome;
+	}
+	
+	public LocalDate getDataNascimento() {
+		
+		return dataNascimento;
+	}
+	
+	public void setDataNascimento(LocalDate dataNascimento) {
+		this.dataNascimento = dataNascimento;
 	}
 	
 	public double getNotaCorte() {

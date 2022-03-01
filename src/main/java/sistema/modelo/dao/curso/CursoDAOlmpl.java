@@ -15,10 +15,11 @@ public class CursoDAOlmpl implements CursoDAO {
 	
 	private FactoryConexao banco;
 
-	public void CursoDAOImpl() {
+	public CursoDAOlmpl() {
 		
 		banco = new FactoryConexao();
-	}
+		
+		}
 
 	public void inserirCurso(Curso curso) {
 

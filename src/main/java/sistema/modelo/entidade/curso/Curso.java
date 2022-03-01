@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -30,7 +29,7 @@ public class Curso implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_curso", length = 14, nullable = false, unique = true)
+	@Column(name = "id_curso")
 	private Long idCurso;
 
 	@Column(name = "nome_curso", length = 45, nullable = false)
@@ -46,7 +45,7 @@ public class Curso implements Serializable {
 	@Enumerated(EnumType.ORDINAL)
 	private MetodoEntrada metodoEntrada;
 
-	@Column(name = "preco_curso", scale = 6, precision = 2,nullable = false)
+	@Column(name = "preco_curso", scale = 6, precision = 2, nullable = false)
 	private double preco;
 
 	@Column(name = "link_curso", length = 45, nullable = false)
@@ -65,7 +64,7 @@ public class Curso implements Serializable {
 	private Area area;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "cnpj_instituicao", nullable = false)
+	@JoinColumn(name = "id_usuario")
 	private Instituicao instituicao;
 
 	public Curso() {

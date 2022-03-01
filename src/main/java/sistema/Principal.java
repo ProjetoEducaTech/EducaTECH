@@ -1,6 +1,9 @@
 package sistema;
+import java.time.LocalDate;
 import java.util.Scanner;
 
+import sistema.modelo.dao.aluno.AlunoDAO;
+import sistema.modelo.dao.aluno.AlunoDAOImpl;
 import sistema.modelo.dao.area.AreaDAO;
 import sistema.modelo.dao.area.AreaDAOImpl;
 import sistema.modelo.dao.contato.ContatoDAO;
@@ -11,12 +14,14 @@ import sistema.modelo.dao.endereco.EnderecoDAO;
 import sistema.modelo.dao.endereco.EnderecoDAOImpl;
 import sistema.modelo.dao.instituicao.InstituicaoDAO;
 import sistema.modelo.dao.instituicao.InstituicaoDAOImpl;
+import sistema.modelo.entidade.aluno.Aluno;
 import sistema.modelo.entidade.area.Area;
 import sistema.modelo.entidade.contato.Contato;
 import sistema.modelo.entidade.curso.Curso;
 import sistema.modelo.entidade.endereco.Endereco;
 import sistema.modelo.entidade.instituicao.Instituicao;
 import sistema.modelo.enumeracao.Turno;
+import sistema.modelo.enumeracao.genero.Genero;
 import sistema.modelo.enumeracao.metodoentrada.MetodoEntrada;
 import sistema.modelo.enumeracao.modalidade.Modalidade;
 
@@ -31,6 +36,7 @@ public class Principal {
 		ContatoDAO contatoDAO = new ContatoDAOImpl();
 		AreaDAO areaDAO = new AreaDAOImpl();
 		CursoDAO cursoDAO = new CursoDAOlmpl();
+		AlunoDAO alunoDAO = new AlunoDAOImpl();
 		
 		String nomeArea = "teste";
 		
@@ -53,15 +59,6 @@ public class Principal {
 		
 		Endereco endereco = new Endereco();
 		
-		endereco.setLogradouro(logeradouro);
-		endereco.setNumero(numero);
-		endereco.setCep(cep);
-		endereco.setBairro(bairro);
-		endereco.setCidade(cidade);
-		endereco.setEstado(estado);
-		endereco.setReferencia(referencia);
-		
-		enderecoDAO.inserirEndereco(endereco);
 		
 		String cnpj = "1223";
 		String desc = "Somo uma instituicao de teste";
@@ -72,9 +69,19 @@ public class Principal {
 		    instituicao.setSenha(senha);
 			instituicao.setCnpj(cnpj);
 			instituicao.setDescricao(desc);
-			instituicao.setEndereco(endereco);
 			
 		instituicaoDAO.inserirInstituicao(instituicao);
+		
+		endereco.setLogradouro(logeradouro);
+		endereco.setNumero(numero);
+		endereco.setCep(cep);
+		endereco.setBairro(bairro);
+		endereco.setCidade(cidade);
+		endereco.setEstado(estado);
+		endereco.setReferencia(referencia);
+		endereco.setInstituicao(instituicao);
+		
+		enderecoDAO.inserirEndereco(endereco);
 		
 		String telefone = "3332-3232";
 		String celular = "5432-3232";
@@ -85,12 +92,9 @@ public class Principal {
 		contato.setTelefone(telefone);
 		contato.setCelular(celular);
 		contato.setEmail(email);
-
 		contato.setUsuario(instituicao);
 		
 		contatoDAO.inserirContato(contato);
-		
-		System.out.println("Nome antigo " + instituicao.getNome());
 		
 		String nomeCurso = "nome curso";
 		String descurso = "descri curso";
@@ -116,6 +120,26 @@ public class Principal {
 		curso.setInstituicao(instituicao);
 		
 		cursoDAO.inserirCurso(curso);
+		
+		String alunoNome = "Aluno";
+		String alunoSenha = "12345";
+		String cpf = "342";
+		String sobrenome = "sobrenome";
+		LocalDate dataNasc = LocalDate.parse("2022-05-25");
+		double notaCorte = 234.5;
+		Genero genero = Genero.MASCULINO;
+
+		Aluno aluno = new Aluno();
+
+		aluno.setNome(alunoNome);
+		aluno.setSenha(alunoSenha);
+		aluno.setCpf(cpf);
+		aluno.setSobrenome(sobrenome);
+		aluno.setDataNascimento(dataNasc);
+		aluno.setNotaCorte(notaCorte);
+		aluno.setGenero(genero);
+		
+		alunoDAO.inserirAluno(aluno);
 		
 		int resposta;
 		
@@ -182,10 +206,39 @@ public class Principal {
 				    instituicao.setSenha(senhatu);
 					instituicao.setCnpj(cnpjtu);
 					instituicao.setDescricao(desctu);
-					instituicao.setEndereco(endereco);
 					
 					instituicaoDAO.atualizarInstituicao(instituicao);
 					System.out.println("nome da instituicao" + instituicao.getNome());
+				}
+					resposta = 0;
+					
+					System.out.println("atualizar curso");
+					resposta = leitor.nextInt();
+					
+					if(resposta != 0) {
+						
+						String nomeCursot = "nomet cursot";
+						String descursot = "descrit cursot";
+						int duracaot = 27;
+						MetodoEntrada enemt = MetodoEntrada.FINACIAMENTO;
+						double precot = 11.3;
+						String linkt = "linkt";
+						Modalidade modalt = Modalidade.SEMIPRESENCIAL;
+						Turno turnot = Turno.INTEGRAL;
+						
+						curso.setNomeCurso(nomeCursot);
+						curso.setDescricaoCurso(descursot);
+						curso.setDuracaoCurso(duracaot);
+						curso.setMetodoEntrada(enemt);
+						curso.setPreco(precot);
+						curso.setLink(linkt);
+						curso.setTipoModalidade(modalt);
+						curso.setTipoTurno(turnot);
+						curso.setArea(area);
+						curso.setInstituicao(instituicao);
+						
+						cursoDAO.atualizarCurso(curso);
+				
 				}
 					resposta = 0;
 					
@@ -205,9 +258,24 @@ public class Principal {
 						instituicaoDAO.deletarInstituicao(instituicao);
 						enderecoDAO.deletarEndereco(endereco);
 						contatoDAO.deletarContato(contato);
-					}
+					}	
 					
 					resposta = 0;
+					
+					System.out.println("deletar tudo");
+					resposta = leitor.nextInt();
+					
+					if(resposta != 0) {
+						
+						enderecoDAO.deletarEndereco(endereco);
+						contatoDAO.deletarContato(contato);
+						instituicaoDAO.deletarInstituicao(instituicao);
+						alunoDAO.deletarAluno(aluno);
+			     		cursoDAO.deletarCurso(curso);
+			     		areaDAO.deletarArea(area);
+						instituicaoDAO.deletarInstituicao(instituicao);
+					}
+					
 					
 					System.out.println(sair);
 					sair = leitor.nextInt();
