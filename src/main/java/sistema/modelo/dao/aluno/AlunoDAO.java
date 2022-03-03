@@ -12,12 +12,20 @@ import sistema.modelo.entidade.instituicao.Instituicao;
 public interface AlunoDAO {
 	
 	void deletarAluno(Aluno aluno);
+	
 	void inserirAluno(Aluno aluno);
+	
 	void atualizarAluno(Aluno aluno);
+	
 	void favoritarCurso(Curso curso);
 	
+	List<Aluno> recuperarAlunos();
+	
 	List<Curso> consultaNota(Aluno aluno);
+	
 	List<Curso> consultaInstituicao(Instituicao instituicao);
+	
 	List<Curso> consultaArea(Area area);
+	
 	List<Curso> exibirCursosFavoritos();
 }

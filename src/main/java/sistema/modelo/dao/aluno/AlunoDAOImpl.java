@@ -140,6 +140,45 @@ public void favoritarCurso(Curso curso) {
 			}
 		}
 	}
+
+public List<Aluno> recuperarAlunos() {
+
+	Session sessao = null;
+	List<Aluno> aluno = null;
+
+	try {
+
+		sessao = banco.getConectarBanco().openSession();
+		sessao.beginTransaction();
+
+		CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+		CriteriaQuery<Aluno> criteria = construtor.createQuery(Aluno.class);
+		Root<Aluno> raizAluno = criteria.from(Aluno.class);
+
+		criteria.select(raizAluno);
+
+		aluno = sessao.createQuery(criteria).getResultList();
+
+		sessao.getTransaction().commit();
+
+	} catch (Exception sqlException) {
+
+		sqlException.printStackTrace();
+
+		if (sessao.getTransaction() != null) {
+			sessao.getTransaction().rollback();
+		}
+
+	} finally {
+
+		if (sessao != null) {
+			sessao.close();
+		}
+	}
+
+	return aluno;
+}
 	
 	public List<Curso> consultaNota(Aluno aluno) {
 
