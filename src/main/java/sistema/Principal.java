@@ -1,6 +1,9 @@
 package sistema;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
+
+import org.hibernate.internal.build.AllowSysOut;
 
 import sistema.modelo.dao.aluno.AlunoDAO;
 import sistema.modelo.dao.aluno.AlunoDAOImpl;
@@ -145,6 +148,69 @@ public class Principal {
 		
 		int sair = 0;
 		
+		while(sair != 1) {
+		
+		List<Instituicao> instituicoes = instituicaoDAO.recuperarInstituicoes();
+		List<Aluno> alunos = alunoDAO.recuperarAlunos();
+		List<Contato> contatos = contatoDAO.recuperarContatos();
+		List<Endereco> enderecos = enderecoDAO.recuperarEndereco();
+		List<Curso> cursos = cursoDAO.recuperarCursos();
+		
+		System.out.println("Exibindo instituicao");
+	for(Instituicao instituicaoCadastrado : instituicoes) {
+			System.out.println("Nome: " + instituicaoCadastrado.getNome());
+			System.out.println("Descricao: " + instituicaoCadastrado.getDescricao());
+			System.out.println("CNPJ: " + instituicaoCadastrado.getCnpj());
+			System.out.println();
+			}
+				System.out.println("sair");
+				sair = leitor.nextInt();
+				
+		System.out.println("Exibindo instituicao");
+		for(Aluno alunosCadastrados : alunos) {
+			System.out.println("Nome: " + alunosCadastrados.getNome());
+			System.out.println("Sobrenome: " + alunosCadastrados.getSobrenome());
+			System.out.println("CPF: " + alunosCadastrados.getCpf());
+			System.out.println("Genero: " + alunosCadastrados.getGenero());
+			System.out.println();
+				}
+		
+					System.out.println("sair");
+					sair = leitor.nextInt();
+				
+			System.out.println("Exibindo contato");
+			for(Contato contatosCadastrados : contatos) {
+				System.out.println("Telefone: " + contatosCadastrados.getTelefone());
+				System.out.println("Celular: " + contatosCadastrados.getCelular());
+				System.out.println("E-mail: " + contatosCadastrados.getEmail());
+				System.out.println();
+			}
+			
+						System.out.println("sair");
+						sair = leitor.nextInt();
+					
+			System.out.println("Exibindo endereco");
+			for(Endereco enderecosCadastrado : enderecos) {
+				System.out.println("Logradouro: " + enderecosCadastrado.getLogradouro());
+				System.out.println("Referencia: " + enderecosCadastrado.getReferencia());
+				System.out.println("Numero: " + enderecosCadastrado.getNumero());
+			}
+					
+						System.out.println("sair");
+						sair = leitor.nextInt();
+							
+			System.out.println("Exibindo endereco");
+			for(Curso cursosCadastrado : cursos) {
+				System.out.println("Nome: " + cursosCadastrado.getNomeCurso());
+				System.out.println("Area: " + area.getNomeArea());
+				System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
+				System.out.println("Preco: " + cursosCadastrado.getPreco());
+			}
+			
+					System.out.println("sair");
+					sair = leitor.nextInt();
+		}
+		sair = 0;
 		while(sair != 1) {
 			
 
