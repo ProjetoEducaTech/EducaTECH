@@ -4,13 +4,14 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 
 import sistema.modelo.entidade.endereco.Endereco;
-import sistema.modelo.entidade.usuario.Usuario;
+import sistema.modelo.entidade.instituicao.Instituicao;
 import sistema.modelo.factory.conexao.FactoryConexao;
 
 public class EnderecoDAOImpl implements EnderecoDAO {
@@ -149,7 +150,7 @@ public class EnderecoDAOImpl implements EnderecoDAO {
 		return enderecos;
 	}
 	
-    	public List<Endereco> recuperarEnderecoUsuario(Usuario usuario) {
+public List<Endereco> recuperarEnderecoInstituicao(Instituicao instituicao) {
 		
 		Session sessao = null;
 		List<Endereco> enderecos = null;
@@ -164,12 +165,12 @@ public class EnderecoDAOImpl implements EnderecoDAO {
 			CriteriaQuery<Endereco> criteria = construtor.createQuery(Endereco.class);
 			Root<Endereco> raizEndereco = criteria.from(Endereco.class);
 			
-			//Join<Endereco, Usuario> juncaoUsuario = raizEndereco.join(Endereco_.usuario);
+			Join<Endereco, Instituicao> juncaoUsuario = raizEndereco.join("instituicao");
 			
 			ParameterExpression<Long> idUsuario = construtor.parameter(Long.class);
-			//criteria.where(construtor.equal(juncaoUsuario.get(Usuario_.ID), idUsuario));
+			criteria.where(construtor.equal(juncaoUsuario.get("id"), idUsuario));
 
-			enderecos = sessao.createQuery(criteria).setParameter(idUsuario, usuario.getId()).getResultList();
+			enderecos = sessao.createQuery(criteria).setParameter(idUsuario, instituicao.getId()).getResultList();
 
 			sessao.getTransaction().commit();
 

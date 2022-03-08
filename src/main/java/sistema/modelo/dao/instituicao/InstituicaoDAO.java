@@ -1,8 +1,9 @@
 package sistema.modelo.dao.instituicao;
 
-import sistema.modelo.entidade.instituicao.Instituicao;
-
 import java.util.List;
+
+import sistema.modelo.entidade.curso.Curso;
+import sistema.modelo.entidade.instituicao.Instituicao;
 
 public interface InstituicaoDAO {
 
@@ -13,4 +14,7 @@ public interface InstituicaoDAO {
 	void atualizarInstituicao(Instituicao instuicao);
 
 	List<Instituicao> recuperarInstituicoes();
+	
+	List<Curso> consultaInstituicaoCurso(Instituicao instituicao);
+	
 }

@@ -4,15 +4,14 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 
 import sistema.modelo.entidade.aluno.Aluno;
-import sistema.modelo.entidade.area.Area;
 import sistema.modelo.entidade.curso.Curso;
-import sistema.modelo.entidade.instituicao.Instituicao;
 import sistema.modelo.factory.conexao.FactoryConexao;
 
 public class AlunoDAOImpl implements AlunoDAO {
@@ -180,131 +179,48 @@ public List<Aluno> recuperarAlunos() {
 	return aluno;
 }
 	
-	public List<Curso> consultaNota(Aluno aluno) {
+public List<Curso> consultaNotaCurso(Aluno aluno) {
 
-		Session sessao = null;
-		List<Curso> consultaNota = null;
+	Session sessao = null;
+	List<Curso> consultaNota = null;
 
-		try {
+	try {
 
-			sessao =  banco.getConectarBanco().openSession();
-			sessao.beginTransaction();
+		sessao = banco.getConectarBanco().openSession();
+		sessao.beginTransaction();
 
-			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+		CriteriaBuilder construtor = sessao.getCriteriaBuilder();
 
-			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
-			Root<Curso> raizCurso = criteria.from(Curso.class);
+		CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
+		Root<Curso> raizCurso = criteria.from(Curso.class);
 
-			//Join<Curso, Aluno> juncaoNota = raizCurso.join(Curso_.aluno);
+		Join<Curso, Aluno> juncaoNota = raizCurso.join("aluno");
 
-			ParameterExpression<Double> notaCorteAluno = construtor.parameter(double.class);
-			//criteria.where(construtor.equal(juncaoNota.get(Aluno_.NOTACORTE), notaCorteAluno));
+		ParameterExpression<Double> notaCorteAluno = construtor.parameter(double.class);
+		criteria.where(construtor.equal(juncaoNota.get("notaCorte"), notaCorteAluno));
 
-			consultaNota = sessao.createQuery(criteria).setParameter(notaCorteAluno, aluno.getNotaCorte()).getResultList();
+		consultaNota = sessao.createQuery(criteria).setParameter(notaCorteAluno, aluno.getNotaCorte())
+				.getResultList();
 
-			sessao.getTransaction().commit();
+		sessao.getTransaction().commit();
 
-		} catch (Exception sqlException) {
+	} catch (Exception sqlException) {
 
-			sqlException.printStackTrace();
+		sqlException.printStackTrace();
 
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
-
-		} finally {
-
-			if (sessao != null) {
-				sessao.close();
-			}
+		if (sessao.getTransaction() != null) {
+			sessao.getTransaction().rollback();
 		}
 
-		return consultaNota;
-	}
-	
-	public List<Curso> consultaInstituicao(Instituicao instituicao) {
+	} finally {
 
-		Session sessao = null;
-		List<Curso> consultaInstituicao = null;
-
-		try {
-
-			sessao = banco.getConectarBanco().openSession();
-			sessao.beginTransaction();
-
-			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
-
-			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
-			Root<Curso> raizCurso = criteria.from(Curso.class);
-
-			//Join<Curso, Instituicao> juncaoInstituicao = raizCurso.join(Curso_.instituicao);
-
-			ParameterExpression<String> cnpfinstituicao = construtor.parameter(String.class);
-			//criteria.where(construtor.equal(juncaoInstituicao.get(Instituicao_.CNPJ), cnpfinstituicao));
-
-			consultaInstituicao = sessao.createQuery(criteria).setParameter(cnpfinstituicao, instituicao.getCnpj()).getResultList();
-
-			sessao.getTransaction().commit();
-
-		} catch (Exception sqlException) {
-
-			sqlException.printStackTrace();
-
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
-
-		} finally {
-
-			if (sessao != null) {
-				sessao.close();
-			}
+		if (sessao != null) {
+			sessao.close();
 		}
-
-		return consultaInstituicao;
 	}
-	
-	public List<Curso> consultaArea(Area area) {
-		
-		Session sessao = null;
-		List<Curso> consultaArea = null;
 
-		try {
-
-			sessao =  banco.getConectarBanco().openSession();
-			sessao.beginTransaction();
-
-			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
-
-			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
-			Root<Curso> raizCurso = criteria.from(Curso.class);
-
-			//Join<Curso, Area> juncaoArea = raizCurso.join(Curso_.area);
-
-			ParameterExpression<String> cnpjinstituicao = construtor.parameter(String.class);
-		//	criteria.where(construtor.equal(juncaoArea.get(Area_.NOME), cnpjinstituicao));
-
-			//consultaArea = sessao.createQuery(criteria).setParameter(cnpjinstituicao, area.getNome()).getResultList();
-
-			sessao.getTransaction().commit();
-
-		} catch (Exception sqlException) {
-
-			sqlException.printStackTrace();
-
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
-
-		} finally {
-
-			if (sessao != null) {
-				sessao.close();
-			}
-		}
-
-		return consultaArea;
-	}
+	return consultaNota;
+}
 	
 	public List<Curso> exibirCursosFavoritos() {
 		

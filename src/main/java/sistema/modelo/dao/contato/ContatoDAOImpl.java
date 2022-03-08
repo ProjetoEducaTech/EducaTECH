@@ -5,13 +5,10 @@ import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
 
 import sistema.modelo.entidade.contato.Contato;
 import sistema.modelo.entidade.usuario.Usuario;
@@ -168,10 +165,10 @@ public class ContatoDAOImpl implements ContatoDAO {
 			
 			Join<Contato, Usuario> juncaoUsuario = raizContato.join("usuario");
 			
-			//ParameterExpression<String> cpfUsuario = construtor.parameter(String.class);
-			//criteria.where(construtor.equal(juncaoUsuario.get(Usuario_.ID), idUsuario));
+			ParameterExpression<Long> idUsuario = construtor.parameter(Long.class);
+			criteria.where(construtor.equal(juncaoUsuario.get("id"), idUsuario));
 			
-			//contato = sessao.createQuery(criteria).setParameter(idUsuario, usuario.getId()).getSingleResult();
+			contato = sessao.createQuery(criteria).setParameter(idUsuario, usuario.getId()).getSingleResult();
 
 			sessao.getTransaction().commit();
 
