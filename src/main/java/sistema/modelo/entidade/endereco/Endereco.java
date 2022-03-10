@@ -3,11 +3,17 @@ package sistema.modelo.entidade.endereco;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Entity;
+
+import sistema.modelo.entidade.instituicao.Instituicao;
 
 
 @Entity
@@ -18,7 +24,7 @@ public class Endereco implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_endereco")
+	@Column(name = "id_usuario")
 	private Long id;
 	
 	@Column(name = "logradouro_endereco", length = 45, nullable = false)
@@ -42,10 +48,15 @@ public class Endereco implements Serializable{
 	@Column(name = "referencia_endereco", length = 45, nullable = false)
 	private String referencia;
 	
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@MapsId
+	@JoinColumn(name = "id_usuario", nullable = false)
+	private Instituicao instituicao;
 	
 	public Endereco() {}
 	
-	public Endereco(String logradouro, int numero,String cep, String bairro, String cidade, String estado, String referencia) {
+	public Endereco(String logradouro, int numero,String cep, String bairro, String cidade, String estado, String referencia, Instituicao instituicao) {
 		setLogradouro(logradouro);
 		setNumero(numero);
 		setCep(cep);
@@ -53,9 +64,10 @@ public class Endereco implements Serializable{
 		setCidade(cidade);
 		setEstado(estado);
 		setReferencia(referencia);
+		setInstituicao(instituicao);
 	}
 	
-	public Endereco(Long id, String logradouro, String cep, String bairro, String cidade, String estado, String referencia) {
+	public Endereco(Long id, String logradouro, String cep, String bairro, String cidade, String estado, String referencia, Instituicao instituicao) {
 		setId(id);
 		setLogradouro(logradouro);
 		setNumero(numero);
@@ -64,6 +76,7 @@ public class Endereco implements Serializable{
 		setCidade(cidade);
 		setEstado(estado);
 		setReferencia(referencia);
+		setInstituicao(instituicao);
 	}
 	
 	 public Long getId() {
@@ -102,8 +115,8 @@ public class Endereco implements Serializable{
 		 return bairro;
 	 }
 	 
-	 public void setBairro(String logradouro) {
-		 this.logradouro = logradouro;
+	 public void setBairro(String bairro) {
+		 this.bairro = bairro;
 	 }
 	 
 	 public String getCidade() {
@@ -129,4 +142,12 @@ public class Endereco implements Serializable{
 	 public void setReferencia(String referencia) {
 		 this.referencia = referencia;
 	 }
+
+	 public Instituicao getInstituicao() {
+			return instituicao;
+	}
+
+	public void setInstituicao(Instituicao instituicao) {
+			this.instituicao = instituicao;
+	}
 }

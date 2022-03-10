@@ -1,5 +1,6 @@
 package sistema.modelo.dao.usuario;
 
+import java.util.List;
 import sistema.modelo.entidade.usuario.Usuario;
 
 public interface UsuarioDAO {
@@ -9,6 +10,8 @@ public interface UsuarioDAO {
 	void atualizarUsuario(Usuario usuario);
 
 	void inserirUsuario(Usuario usuario);
+	
+	List<Usuario> recuperarUsuario();//controle de usuarios
 	
 	//Usuario loginUsuario(Usuario usuario);
 	

@@ -3,7 +3,7 @@ package sistema.modelo.dao.endereco;
 import java.util.List;
 
 import sistema.modelo.entidade.endereco.Endereco;
-import sistema.modelo.entidade.usuario.Usuario;
+import sistema.modelo.entidade.instituicao.Instituicao;
 
 public interface EnderecoDAO {
 	
@@ -11,6 +11,6 @@ public interface EnderecoDAO {
 	void atualizarEndereco(Endereco endereco);
 	void deletarEndereco(Endereco endereco);
 	List<Endereco> recuperarEndereco();
-	List<Endereco> recuperarEnderecoUsuario(Usuario usuario);
+	List<Endereco> recuperarEnderecoInstituicao(Instituicao instituicao);
 
 }

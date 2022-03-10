@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -23,14 +22,14 @@ import sistema.modelo.enumeracao.metodoentrada.MetodoEntrada;
 import sistema.modelo.enumeracao.modalidade.Modalidade;
 
 @Entity
-@Table(name = "Curso")
+@Table(name = "curso")
 public class Curso implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_curso", unique = true)
+	@Column(name = "id_curso")
 	private Long idCurso;
 
 	@Column(name = "nome_curso", length = 45, nullable = false)
@@ -45,8 +44,11 @@ public class Curso implements Serializable {
 	@Column(name = "tipo_metodo_entrada_curso", nullable = false)
 	@Enumerated(EnumType.ORDINAL)
 	private MetodoEntrada metodoEntrada;
+	
+	@Column(name = "nota_corte_curso", scale = 5, precision = 2,nullable = false)
+	private double notaCorte;
 
-	@Column(name = "preco_curso", scale = 6, precision = 2,nullable = false)
+	@Column(name = "preco_curso", scale = 6, precision = 2, nullable = false)
 	private double preco;
 
 	@Column(name = "link_curso", length = 45, nullable = false)
@@ -61,12 +63,10 @@ public class Curso implements Serializable {
 	private Turno tipoTurno;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-	@MapsId
-	@JoinColumn(name = "area_curso")
+	@JoinColumn(name = "area_curso", nullable = false)
 	private Area area;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@MapsId
 	@JoinColumn(name = "id_usuario")
 	private Instituicao instituicao;
 
@@ -75,7 +75,7 @@ public class Curso implements Serializable {
 	}
 	
 	public Curso(String nomeCurso, Area area, String descricaoCurso, int duracaoCurso,
-			MetodoEntrada metodoEntrada, double preco, String link, Modalidade tipoModalidade, Turno tipoTurno,
+			MetodoEntrada metodoEntrada, double preco, double notaCorte,String link, Modalidade tipoModalidade, Turno tipoTurno,
 			Instituicao instituicao) {
 
 		setNomeCurso(nomeCurso);
@@ -84,6 +84,7 @@ public class Curso implements Serializable {
 		setDuracaoCurso(duracaoCurso);
 		setMetodoEntrada(metodoEntrada);
 		setPreco(preco);
+		setNotaCorte(notaCorte);
 		setLink(link);
 		setTipoModalidade(tipoModalidade);
 		setTipoTurno(tipoTurno);
@@ -92,7 +93,7 @@ public class Curso implements Serializable {
 	}
 
 	public Curso(Long idCurso, String nomeCurso, Area area, String descricaoCurso, int duracaoCurso,
-			MetodoEntrada metodoEntrada, int preco, String link, Modalidade tipoModalidade, Turno tipoTurno,
+			MetodoEntrada metodoEntrada, double preco, double notaCorte,String link, Modalidade tipoModalidade, Turno tipoTurno,
 			Instituicao instituicao) {
 
 		setIdCurso(idCurso);
@@ -163,6 +164,14 @@ public class Curso implements Serializable {
 
 	public void setPreco(double preco) {
 		this.preco = preco;
+	}
+	
+	public double setNotaCorte() {
+		return notaCorte;
+	}
+	
+	public void setNotaCorte(double notaCorte) {
+		this.notaCorte = notaCorte;
 	}
 
 	public String link() {

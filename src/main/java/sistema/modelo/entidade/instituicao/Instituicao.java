@@ -8,18 +8,14 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-//import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import sistema.modelo.entidade.curso.Curso;
-import sistema.modelo.entidade.endereco.Endereco;
 import sistema.modelo.entidade.usuario.Usuario;
 
 @Entity
-@Table(name = "institiuicao")
+@Table(name = "instituicao")
 public class Instituicao extends Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -30,13 +26,6 @@ public class Instituicao extends Usuario implements Serializable {
 	@Column(name = "descricao_instituicao", length = 45, nullable = false)
 	private String descricao;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_endereco")
-	private Endereco endereco;
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_usuario")
-	private Usuario usuario;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "instituicao", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Curso> cursos;
@@ -44,11 +33,10 @@ public class Instituicao extends Usuario implements Serializable {
 	public Instituicao() {
 	}
 
-	public Instituicao(Long id, String nome, String senha, String cnpj, Endereco endereco, Usuario usuario) {
+	public Instituicao(Long id, String nome, String senha, String cnpj) {
 		super (id, nome, senha);
 		setNome(cnpj);
-		setEndereco(endereco);
-		setUsuario(usuario);
+		setDescricao(descricao);
 		cursos = new ArrayList<Curso>();
 	}
 
@@ -56,24 +44,16 @@ public class Instituicao extends Usuario implements Serializable {
 		return cnpj;
 	}
 
-	public void setNome(String cnpj) {
+	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
 	}
-
-	public Endereco getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
+	
+	public String getDescricao() {
+		return descricao;
 	}
 	
-	public Usuario getUsuario() {
-		return usuario;
-	}
-	
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 	
 	public List<Curso> getCursos() {
