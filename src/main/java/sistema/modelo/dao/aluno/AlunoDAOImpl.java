@@ -222,7 +222,7 @@ public List<Curso> consultaNotaCurso(Aluno aluno) {
 	return consultaNota;
 }
 	
-	public List<Curso> exibirCursosFavoritos() {
+	public List<Curso> exibirCursosFavoritos(Aluno aluno) {
 		
 		Session sessao = null;
 		List<Curso> favoritos = null;
@@ -236,6 +236,15 @@ public List<Curso> consultaNotaCurso(Aluno aluno) {
 
 		CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 		Root<Curso> raizFavorito = criteria.from(Curso.class);
+		
+		Join<Curso, Aluno> juncaoAluno = raizFavorito.join("aluno");
+		
+		ParameterExpression<Long> idaluno = construtor.parameter(Long.class);
+		criteria.where(construtor.equal(juncaoAluno.get("id"), idaluno));
+
+		favoritos = sessao.createQuery(criteria).setParameter(idaluno, aluno.getId()).getResultList();
+
+		sessao.getTransaction().commit();
 
 		criteria.select(raizFavorito);
 

@@ -139,6 +139,7 @@ public class Principal {
 		aluno.setDataNascimento(dataNasc);
 		aluno.setNota(notaCorte);
 		aluno.setGenero(genero);
+		aluno.adicionarCursoFavorito(curso);
 
 		alunoDAO.inserirAluno(aluno);
 
@@ -168,7 +169,7 @@ public class Principal {
 			Contato contatoRecuperado = null;
 			List<Endereco> enderecosRecuperados = null;
 			List<Curso> consultascurso = null;
-
+			List<Curso> favoritos = alunoDAO.exibirCursosFavoritos(aluno);
 			List<Curso> cursos = cursoDAO.recuperarCursos();
 
 			System.out.println("Exibir instituicao");
@@ -219,6 +220,8 @@ public class Principal {
 					System.out.println("Celular: " + contatoRecuperado.getCelular());
 					System.out.println("E-mail: " + contatoRecuperado.getEmail());
 					System.out.println();
+					
+					
 				}
 			}
 
@@ -230,6 +233,17 @@ public class Principal {
 				System.out.println("Celular: " + contatosCadastrados.getCelular());
 				System.out.println("E-mail: " + contatosCadastrados.getEmail());
 				System.out.println();
+				}
+			}
+			
+			System.out.println("Exibir cursos favoritos ");
+			resposta = leitor.nextInt();
+			if (resposta != 0) {
+			for (Curso cursosCadastrados : favoritos) {
+				System.out.println("Nome: " + cursosCadastrados.getNomeCurso());
+				System.out.println("Area: " + area.getNomeArea());
+				System.out.println("Metodo de entrada: " + cursosCadastrados.getMetodoEntrada());
+				System.out.println("Preco: " + cursosCadastrados.getPreco());
 				}
 			}
 

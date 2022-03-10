@@ -1,6 +1,8 @@
 package sistema.modelo.entidade.curso;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,10 +13,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import sistema.modelo.entidade.aluno.Aluno;
 import sistema.modelo.entidade.area.Area;
 import sistema.modelo.entidade.instituicao.Instituicao;
 import sistema.modelo.enumeracao.Turno;
@@ -69,6 +73,9 @@ public class Curso implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_usuario")
 	private Instituicao instituicao;
+	
+	@ManyToMany(mappedBy = "cursosFavorito")
+	private List<Aluno> alunos = new ArrayList<Aluno>();
 
 	public Curso() {
 
@@ -204,5 +211,13 @@ public class Curso implements Serializable {
 
 	public void setInstituicao(Instituicao instituicao) {
 		this.instituicao = instituicao;
+	}
+	
+	public List<Aluno> getAlunos() {
+		return alunos;
+	}
+
+	public void adicionarAlunos(Aluno alunos) {
+		this.alunos.add(alunos);
 	}
 }
