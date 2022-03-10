@@ -40,7 +40,7 @@ public class Aluno extends Usuario implements Serializable {
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "Aluno_curso_favorito", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_curso"))
-	private List<Curso> cursoFavorito = new ArrayList<Curso>();
+	private List<Curso> cursosFavorito = new ArrayList<Curso>();
 	
 	@Column(name = "genero_aluno", nullable = false)
 	@Enumerated(EnumType.ORDINAL)
@@ -55,7 +55,7 @@ public class Aluno extends Usuario implements Serializable {
 		setNota(nota);
 		setGenero(genero);
 		setDataNascimento(dataNascimento);
-		cursoFavorito = new ArrayList<Curso>();
+		cursosFavorito = new ArrayList<Curso>();
 	}
 	
 	public String getCpf() {
@@ -92,11 +92,11 @@ public class Aluno extends Usuario implements Serializable {
 	}
 	
 	public List<Curso> getCursoFavorito() {
-		return cursoFavorito;
+		return cursosFavorito;
 	}
 
-	public void adicionarCursoFavorito(Curso cursoFavorito) {
-		this.cursoFavorito.add(cursoFavorito);
+	public void adicionarCursoFavorito(Curso cursosFavorito) {
+		this.cursosFavorito.add(cursosFavorito);
 	}
 
 	public Genero getGenero() {

@@ -21,5 +21,5 @@ public interface AlunoDAO {
 	
 	List<Curso> consultaNotaCurso(Aluno aluno);
 	
-	List<Curso> exibirCursosFavoritos();
+	List<Curso> exibirCursosFavoritos(Aluno aluno);
 }
