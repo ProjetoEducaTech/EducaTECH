@@ -35,8 +35,8 @@ public class Aluno extends Usuario implements Serializable {
 	@Column(name = "data_nascimento_aluno", nullable = false)
 	private LocalDate dataNascimento;
 
-	@Column(name = "nota_corte_aluno", scale = 5, precision = 2,nullable = false)
-	private double notaCorte;
+	@Column(name = "nota_aluno", scale = 5, precision = 2,nullable = false)
+	private double nota;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "Aluno_curso_favorito", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_curso"))
@@ -48,11 +48,11 @@ public class Aluno extends Usuario implements Serializable {
 	
 	public Aluno() {}
 	
-	public Aluno(Long id, String nome, String senha, String cpf, String sobrenome, double notaCorte, Genero genero, LocalDate dataNascimento) {
+	public Aluno(Long id, String nome, String senha, String cpf, String sobrenome, double nota, Genero genero, LocalDate dataNascimento) {
 		super (id, nome, senha);
 		setCpf(cpf);
 		setSobrenome(sobrenome);
-		setNotaCorte(notaCorte);
+		setNota(nota);
 		setGenero(genero);
 		setDataNascimento(dataNascimento);
 		cursoFavorito = new ArrayList<Curso>();
@@ -83,12 +83,12 @@ public class Aluno extends Usuario implements Serializable {
 		this.dataNascimento = dataNascimento;
 	}
 	
-	public double getNotaCorte() {
-		return notaCorte;
+	public double getNota() {
+		return nota;
 	}
 
-	public void setNotaCorte(double notaCorte) {
-		this.notaCorte = notaCorte;
+	public void setNota(double nota) {
+		this.nota = nota;
 	}
 	
 	public List<Curso> getCursoFavorito() {

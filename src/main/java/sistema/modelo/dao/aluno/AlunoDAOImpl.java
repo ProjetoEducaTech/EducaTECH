@@ -197,9 +197,9 @@ public List<Curso> consultaNotaCurso(Aluno aluno) {
 		Join<Curso, Aluno> juncaoNota = raizCurso.join("aluno");
 
 		ParameterExpression<Double> notaCorteAluno = construtor.parameter(double.class);
-		criteria.where(construtor.equal(juncaoNota.get("notaCorte"), notaCorteAluno));
+		criteria.where(construtor.lessThanOrEqualTo(juncaoNota.get("nota"), notaCorteAluno));
 
-		consultaNota = sessao.createQuery(criteria).setParameter(notaCorteAluno, aluno.getNotaCorte())
+		consultaNota = sessao.createQuery(criteria).setParameter(notaCorteAluno, aluno.getNota())
 				.getResultList();
 
 		sessao.getTransaction().commit();

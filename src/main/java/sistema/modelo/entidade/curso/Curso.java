@@ -44,6 +44,9 @@ public class Curso implements Serializable {
 	@Column(name = "tipo_metodo_entrada_curso", nullable = false)
 	@Enumerated(EnumType.ORDINAL)
 	private MetodoEntrada metodoEntrada;
+	
+	@Column(name = "nota_corte_curso", scale = 5, precision = 2,nullable = false)
+	private double notaCorte;
 
 	@Column(name = "preco_curso", scale = 6, precision = 2, nullable = false)
 	private double preco;
@@ -72,7 +75,7 @@ public class Curso implements Serializable {
 	}
 	
 	public Curso(String nomeCurso, Area area, String descricaoCurso, int duracaoCurso,
-			MetodoEntrada metodoEntrada, double preco, String link, Modalidade tipoModalidade, Turno tipoTurno,
+			MetodoEntrada metodoEntrada, double preco, double notaCorte,String link, Modalidade tipoModalidade, Turno tipoTurno,
 			Instituicao instituicao) {
 
 		setNomeCurso(nomeCurso);
@@ -81,6 +84,7 @@ public class Curso implements Serializable {
 		setDuracaoCurso(duracaoCurso);
 		setMetodoEntrada(metodoEntrada);
 		setPreco(preco);
+		setNotaCorte(notaCorte);
 		setLink(link);
 		setTipoModalidade(tipoModalidade);
 		setTipoTurno(tipoTurno);
@@ -89,7 +93,7 @@ public class Curso implements Serializable {
 	}
 
 	public Curso(Long idCurso, String nomeCurso, Area area, String descricaoCurso, int duracaoCurso,
-			MetodoEntrada metodoEntrada, int preco, String link, Modalidade tipoModalidade, Turno tipoTurno,
+			MetodoEntrada metodoEntrada, double preco, double notaCorte,String link, Modalidade tipoModalidade, Turno tipoTurno,
 			Instituicao instituicao) {
 
 		setIdCurso(idCurso);
@@ -160,6 +164,14 @@ public class Curso implements Serializable {
 
 	public void setPreco(double preco) {
 		this.preco = preco;
+	}
+	
+	public double setNotaCorte() {
+		return notaCorte;
+	}
+	
+	public void setNotaCorte(double notaCorte) {
+		this.notaCorte = notaCorte;
 	}
 
 	public String link() {

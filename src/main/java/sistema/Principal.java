@@ -101,6 +101,7 @@ public class Principal {
 		int duracao = 23;
 		MetodoEntrada enem = MetodoEntrada.ENEM;
 		double preco = 12.3;
+		double nota = 300.4;
 		String link = "zelda";
 		Modalidade modal = Modalidade.AOVIVO;
 		Turno turno = Turno.MATUTINO;
@@ -112,6 +113,7 @@ public class Principal {
 		curso.setDuracaoCurso(duracao);
 		curso.setMetodoEntrada(enem);
 		curso.setPreco(preco);
+		curso.setNotaCorte(nota);
 		curso.setLink(link);
 		curso.setTipoModalidade(modal);
 		curso.setTipoTurno(turno);
@@ -135,7 +137,7 @@ public class Principal {
 		aluno.setCpf(cpf);
 		aluno.setSobrenome(sobrenome);
 		aluno.setDataNascimento(dataNasc);
-		aluno.setNotaCorte(notaCorte);
+		aluno.setNota(notaCorte);
 		aluno.setGenero(genero);
 
 		alunoDAO.inserirAluno(aluno);
@@ -269,6 +271,7 @@ public class Principal {
 					System.out.println("Area: " + area.getNomeArea());
 					System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
 					System.out.println("Preco: " + cursosCadastrado.getPreco());
+					System.out.println("Preco: " + cursosCadastrado.getPreco());
 					System.out.println();
 					}
 				}
@@ -290,7 +293,7 @@ public class Principal {
 					}
 			}
 			
-			System.out.println("Exibir Cursos por nota de corte");
+			System.out.println("Exibir Cursos por nota de corte");//no momento nao esta funcionando
 			resposta = leitor.nextInt();
 			if (resposta != 0) {
 				
