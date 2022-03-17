@@ -19,7 +19,4 @@ public interface AlunoDAO {
 	
 	List<Aluno> recuperarAlunos();
 	
-	List<Curso> consultaNotaCurso(Aluno aluno);
-	
-	List<Curso> exibirCursosFavoritos(Aluno aluno);
 }

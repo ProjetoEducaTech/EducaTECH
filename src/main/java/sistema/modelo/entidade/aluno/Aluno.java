@@ -39,7 +39,7 @@ public class Aluno extends Usuario implements Serializable {
 	private double nota;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name = "Aluno_curso_favorito", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_curso"))
+	@JoinTable(name = "aluno_curso_favorito", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_curso"))
 	private List<Curso> cursosFavorito = new ArrayList<Curso>();
 	
 	@Column(name = "genero_aluno", nullable = false)

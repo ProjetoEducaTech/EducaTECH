@@ -127,7 +127,7 @@ public class Principal {
 		String cpf = "342";
 		String sobrenome = "sobrenome";
 		LocalDate dataNasc = LocalDate.parse("2022-05-25");
-		double notaCorte = 234.5;
+		double notaCorte = 500.5;
 		Genero genero = Genero.MASCULINO;
 
 		Aluno aluno = new Aluno();
@@ -169,7 +169,7 @@ public class Principal {
 			Contato contatoRecuperado = null;
 			List<Endereco> enderecosRecuperados = null;
 			List<Curso> consultascurso = null;
-			List<Curso> favoritos = alunoDAO.exibirCursosFavoritos(aluno);
+			List<Curso> favoritos = cursoDAO.exibirCursosFavoritos(aluno);
 			List<Curso> cursos = cursoDAO.recuperarCursos();
 
 			System.out.println("Exibir instituicao");
@@ -278,7 +278,7 @@ public class Principal {
 				System.out.println("CNPJ: " + instituicaoCadastrado.getCnpj());
 				System.out.println();
 
-				consultascurso = instituicaoDAO.consultaInstituicaoCurso(instituicao);
+				consultascurso = cursoDAO.consultaInstituicaoCurso(instituicao);
 
 				for (Curso cursosCadastrado : consultascurso) {
 					System.out.println("Nome: " + cursosCadastrado.getNomeCurso());
@@ -295,7 +295,7 @@ public class Principal {
 			resposta = leitor.nextInt();
 			if (resposta != 0) {
 				
-				consultascurso = areaDAO.consultaAreaCurso(area);
+				consultascurso = cursoDAO.consultaAreaCurso(area);
 				
 				for (Curso cursosCadastrado : consultascurso) {
 					System.out.println("Nome: " + cursosCadastrado.getNomeCurso());
@@ -311,7 +311,7 @@ public class Principal {
 			resposta = leitor.nextInt();
 			if (resposta != 0) {
 				
-				consultascurso = alunoDAO.consultaNotaCurso(aluno);
+				consultascurso = cursoDAO.consultaNotaCurso(aluno);
 				
 				for (Curso cursosCadastrado : consultascurso) {
 					System.out.println("Nome: " + cursosCadastrado.getNomeCurso());
