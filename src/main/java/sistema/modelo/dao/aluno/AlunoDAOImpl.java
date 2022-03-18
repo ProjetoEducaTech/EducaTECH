@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
@@ -179,94 +177,4 @@ public List<Aluno> recuperarAlunos() {
 	return aluno;
 }
 	
-public List<Curso> consultaNotaCurso(Aluno aluno) {
-
-	Session sessao = null;
-	List<Curso> consultaNota = null;
-
-	try {
-
-		sessao = banco.getConectarBanco().openSession();
-		sessao.beginTransaction();
-
-		CriteriaBuilder construtor = sessao.getCriteriaBuilder();
-
-		CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
-		Root<Curso> raizCurso = criteria.from(Curso.class);
-
-		Join<Curso, Aluno> juncaoNota = raizCurso.join("aluno");
-
-		ParameterExpression<Double> notaCorteAluno = construtor.parameter(double.class);
-		criteria.where(construtor.lessThanOrEqualTo(juncaoNota.get("nota"), notaCorteAluno));
-
-		consultaNota = sessao.createQuery(criteria).setParameter(notaCorteAluno, aluno.getNota())
-				.getResultList();
-
-		sessao.getTransaction().commit();
-
-	} catch (Exception sqlException) {
-
-		sqlException.printStackTrace();
-
-		if (sessao.getTransaction() != null) {
-			sessao.getTransaction().rollback();
-		}
-
-	} finally {
-
-		if (sessao != null) {
-			sessao.close();
-		}
-	}
-
-	return consultaNota;
-}
-	
-	public List<Curso> exibirCursosFavoritos(Aluno aluno) {
-		
-		Session sessao = null;
-		List<Curso> favoritos = null;
-
-	try {
-
-		sessao =  banco.getConectarBanco().openSession();
-		sessao.beginTransaction();
-
-		CriteriaBuilder construtor = sessao.getCriteriaBuilder();
-
-		CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
-		Root<Curso> raizFavorito = criteria.from(Curso.class);
-		
-		Join<Curso, Aluno> juncaoAluno = raizFavorito.join("aluno");
-		
-		ParameterExpression<Long> idaluno = construtor.parameter(Long.class);
-		criteria.where(construtor.equal(juncaoAluno.get("id"), idaluno));
-
-		favoritos = sessao.createQuery(criteria).setParameter(idaluno, aluno.getId()).getResultList();
-
-		sessao.getTransaction().commit();
-
-		criteria.select(raizFavorito);
-
-		favoritos = sessao.createQuery(criteria).getResultList();
-
-		sessao.getTransaction().commit();
-
-	} catch (Exception sqlException) {
-
-		sqlException.printStackTrace();
-
-		if (sessao.getTransaction() != null) {
-			sessao.getTransaction().rollback();
-		}
-
-	} finally {
-
-		if (sessao != null) {
-			sessao.close();
-		}
-	}
-
-	return favoritos;
-}
 }

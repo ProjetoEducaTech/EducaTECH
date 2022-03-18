@@ -5,13 +5,10 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 
-import sistema.modelo.entidade.curso.Curso;
 import sistema.modelo.entidade.instituicao.Instituicao;
 import sistema.modelo.factory.conexao.FactoryConexao;
 
@@ -148,48 +145,6 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 		}
 
 		return instituicao;
-	}
-	
-	public List<Curso> consultaInstituicaoCurso(Instituicao instituicao) {
-
-		Session sessao = null;
-		List<Curso> consultaCurso = null;
-
-		try {
-
-			sessao = banco.getConectarBanco().openSession();
-			sessao.beginTransaction();
-
-			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
-
-			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
-			Root<Curso> raizCurso = criteria.from(Curso.class);
-
-			Join<Curso, Instituicao> juncaoInstituicao = raizCurso.join("instituicao");
-
-			ParameterExpression<Long> idinst = construtor.parameter(Long.class);
-			criteria.where(construtor.equal(juncaoInstituicao.get("id"), idinst));
-
-			consultaCurso = sessao.createQuery(criteria).setParameter(idinst, instituicao.getId()).getResultList();
-
-			sessao.getTransaction().commit();
-
-		} catch (Exception sqlException) {
-
-			sqlException.printStackTrace();
-
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
-
-		} finally {
-
-			if (sessao != null) {
-				sessao.close();
-			}
-		}
-
-		return consultaCurso;
 	}
 	
 }
