@@ -251,7 +251,7 @@ public List<Curso> consultaAreaCurso(Area area) {
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 			
-			Join<Curso, Aluno> juncaoAluno = raizCurso.join("aluno");
+			Join<Curso, Aluno> juncaoAluno = raizCurso.join("alunos");
 			
 			ParameterExpression<Double> notaAluno = construtor.parameter(double.class);
 			criteria.where(construtor.lessThanOrEqualTo(juncaoAluno.get("nota"), notaAluno));
@@ -292,18 +292,12 @@ public List<Curso> consultaAreaCurso(Area area) {
 
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizFavorito = criteria.from(Curso.class);
-			
-			Join<Curso, Aluno> juncaoAlunoCursoFavorito = raizFavorito.join("aluno_curso_favorito");
-			
-			ParameterExpression<Long> idcurso = construtor.parameter(Long.class);
-			criteria.where(construtor.equal(juncaoAlunoCursoFavorito.get("idCurso"), idcurso));
 					
-			Join<Curso, Aluno> juncaoAluno = raizFavorito.join("aluno");
+			Join<Curso, Aluno> juncaoAluno = raizFavorito.join("alunos");
 			
 			ParameterExpression<Long> idaluno = construtor.parameter(Long.class);
 			criteria.where(construtor.equal(juncaoAluno.get("id"), idaluno));
 			
-
 			favoritos = sessao.createQuery(criteria).setParameter(idaluno, aluno.getId()).getResultList();
 
 			sessao.getTransaction().commit();
