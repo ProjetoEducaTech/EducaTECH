@@ -20,6 +20,6 @@ public interface AlunoDAO {
 	
 	List<Aluno> recuperarAlunos();
 	
-	Usuario loginUsuarioAluno(Usuario usuario);
+	Usuario loginUsuarioAluno(Aluno aluno);
 	
 }

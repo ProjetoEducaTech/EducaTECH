@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -17,15 +15,15 @@ import sistema.modelo.entidade.usuario.Usuario;
 import sistema.modelo.factory.conexao.FactoryConexao;
 
 public class AlunoDAOImpl implements AlunoDAO {
-	
+
 	private FactoryConexao banco;
-	
+
 	public AlunoDAOImpl() {
-		
+
 		banco = new FactoryConexao();
-		
-		}
-	
+
+	}
+
 	public void inserirAluno(Aluno aluno) {
 
 		Session sessao = null;
@@ -36,7 +34,7 @@ public class AlunoDAOImpl implements AlunoDAO {
 			sessao.beginTransaction();
 
 			sessao.save(aluno);
-			
+
 			sessao.getTransaction().commit();
 
 		} catch (Exception sqlException) {
@@ -113,8 +111,8 @@ public class AlunoDAOImpl implements AlunoDAO {
 		}
 	}
 
-public void favoritarCurso(Curso curso) {
-		
+	public void favoritarCurso(Curso curso) {
+
 		Session sessao = null;
 
 		try {
@@ -142,90 +140,85 @@ public void favoritarCurso(Curso curso) {
 		}
 	}
 
-public List<Aluno> recuperarAlunos() {
+	public List<Aluno> recuperarAlunos() {
 
-	Session sessao = null;
-	List<Aluno> aluno = null;
+		Session sessao = null;
+		List<Aluno> aluno = null;
 
-	try {
+		try {
 
-		sessao = banco.getConectarBanco().openSession();
-		sessao.beginTransaction();
+			sessao = banco.getConectarBanco().openSession();
+			sessao.beginTransaction();
 
-		CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
 
-		CriteriaQuery<Aluno> criteria = construtor.createQuery(Aluno.class);
-		Root<Aluno> raizAluno = criteria.from(Aluno.class);
+			CriteriaQuery<Aluno> criteria = construtor.createQuery(Aluno.class);
+			Root<Aluno> raizAluno = criteria.from(Aluno.class);
 
-		criteria.select(raizAluno);
+			criteria.select(raizAluno);
 
-		aluno = sessao.createQuery(criteria).getResultList();
+			aluno = sessao.createQuery(criteria).getResultList();
 
-		sessao.getTransaction().commit();
+			sessao.getTransaction().commit();
 
-	} catch (Exception sqlException) {
+		} catch (Exception sqlException) {
 
-		sqlException.printStackTrace();
+			sqlException.printStackTrace();
 
-		if (sessao.getTransaction() != null) {
-			sessao.getTransaction().rollback();
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
 		}
 
-	} finally {
-
-		if (sessao != null) {
-			sessao.close();
-		}
+		return aluno;
 	}
 
-	return aluno;
-}
+	public Usuario loginUsuarioAluno(Aluno aluno) {
 
-public Usuario loginUsuarioAluno(Usuario usuario) {
+		Session sessao = null;
+		Usuario loginUsuarioAluno = null;
 
-	Session sessao = null;
-	Usuario loginUsuarioAluno = null;
+		try {
 
-	try {
+			sessao = banco.getConectarBanco().openSession();
+			sessao.beginTransaction();
 
-		sessao = banco.getConectarBanco().openSession();
-		sessao.beginTransaction();
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
 
-		CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+			CriteriaQuery<Aluno> criteria = construtor.createQuery(Aluno.class);
+			Root<Aluno> raizAluno = criteria.from(Aluno.class);
 
-		CriteriaQuery<Usuario> criteria = construtor.createQuery(Usuario.class);
-		Root<Usuario> raizUsuario = criteria.from(Usuario.class);
+			Predicate predicateCpfAluno = construtor.equal(raizAluno.get("cpf"), aluno.getCpf());
+			Predicate predicateSenhaAluno = construtor.equal(raizAluno.get("senha"), aluno.getSenha());
+			Predicate predicateLoginAluno = construtor.and(predicateCpfAluno, predicateSenhaAluno);
 
-		Join<Usuario, Aluno> juncaoLoginAluno = raizUsuario.join("aluno");
+			criteria.where(predicateLoginAluno);
 
-		ParameterExpression<String> cpfAluno = construtor.parameter(String.class);
-		ParameterExpression<String> senhaAluno = construtor.parameter(String.class);
-		
-		Predicate predicateCpfAluno = construtor.equal(juncaoLoginAluno.get("cpf"), cpfAluno);
-		Predicate predicateSenhaAluno = construtor.equal(raizUsuario.get("senha"), senhaAluno);
-		Predicate predicateLoginAluno = construtor.and(predicateCpfAluno, predicateSenhaAluno);
-		
-		criteria.where(predicateLoginAluno);
-		
-		loginUsuarioAluno = sessao.createQuery(criteria).getSingleResult();
+			loginUsuarioAluno = sessao.createQuery(criteria).getSingleResult();
 
-		sessao.getTransaction().commit();
+			sessao.getTransaction().commit();
 
-	} catch (Exception sqlException) {
+		} catch (Exception sqlException) {
 
-		sqlException.printStackTrace();
+			sqlException.printStackTrace();
 
-		if (sessao.getTransaction() != null) {
-			sessao.getTransaction().rollback();
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
 		}
 
-	} finally {
-
-		if (sessao != null) {
-			sessao.close();
-		}
+		return loginUsuarioAluno;
 	}
-
-	return loginUsuarioAluno;
-}
 }
