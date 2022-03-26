@@ -18,5 +18,5 @@ public interface CursoDAO {
 	List<Curso> consultaAreaCurso(Area area);
 	List<Curso> consultaNotaCurso(Aluno aluno);
 	List<Curso> exibirCursosFavoritos(Aluno aluno);
-
+	List<Curso> consultaPrecoCurso(double custo);
 }

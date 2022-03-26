@@ -320,4 +320,44 @@ public List<Curso> consultaAreaCurso(Area area) {
 
 		return favoritos;
 	}
+		
+	public	List<Curso> consultaPrecoCurso(double custo){
+		
+		Session sessao = null;
+		List<Curso> cursos = null;
+
+	try {
+
+		sessao =  banco.getConectarBanco().openSession();
+		sessao.beginTransaction();
+
+		CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+		CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
+		Root<Curso> raizCurso = criteria.from(Curso.class);
+				
+		criteria.where(construtor.between(raizCurso.get("preco"), 50.0, custo));
+		
+		cursos = sessao.createQuery(criteria).getResultList();
+
+		sessao.getTransaction().commit();
+		
+
+	} catch (Exception sqlException) {
+
+		sqlException.printStackTrace();
+
+		if (sessao.getTransaction() != null) {
+			sessao.getTransaction().rollback();
+		}
+
+	} finally {
+
+		if (sessao != null) {
+			sessao.close();
+		}
+	}
+
+	return cursos;
+}
 }

@@ -150,9 +150,9 @@ public class Principal {
 		String descurso = "descri curso";
 		int duracao = 23;
 		MetodoEntrada enem = MetodoEntrada.ENEM;
-		double preco = 12.3;
+		double preco = 120.3;
 		double nota = 300.4;
-		String link = "zelda";
+		String link = "link";
 		Modalidade modal = Modalidade.AOVIVO;
 		Turno turno = Turno.MATUTINO;
 
@@ -176,7 +176,7 @@ public class Principal {
 		String descurso2 = "descricao curso";
 		int duracao2 = 230;
 		MetodoEntrada enem2 = MetodoEntrada.FINACIAMENTO;
-		double preco2 = 120.50;
+		double preco2 = 320.50;
 		double nota2 = 450.4;
 		String link2 = "link teste";
 		Modalidade modal2 = Modalidade.PRESENCIAL;
@@ -268,6 +268,7 @@ public class Principal {
 				System.out.println("Nome: " + loginUsuarioAluno.getNome());
 				System.out.println("Senha: " + loginUsuarioAluno.getSenha());
 			}
+			
 			System.out.println("Exibir instituicao");
 			resposta = leitor.nextInt();
 			if (resposta != 0) {
@@ -402,6 +403,25 @@ public class Principal {
 			if (resposta != 0) {
 
 				consultascurso = cursoDAO.consultaNotaCurso(aluno);
+
+				for (Curso cursosCadastrado : consultascurso) {
+					System.out.println("Nome: " + cursosCadastrado.getNomeCurso());
+					System.out.println("Area: " + area.getNomeArea());
+					System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
+					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
+					System.out.println("Preco: " + cursosCadastrado.getPreco());
+					System.out.println();
+				}
+			
+			
+			System.out.println("Exibir Cursos por preco");
+			resposta = leitor.nextInt();
+			if (resposta != 0) {
+				
+				System.out.println("Informe o o preco: ");
+				double custo = leitor.nextDouble();
+
+				consultascurso = cursoDAO.consultaPrecoCurso(custo);}
 
 				for (Curso cursosCadastrado : consultascurso) {
 					System.out.println("Nome: " + cursosCadastrado.getNomeCurso());
