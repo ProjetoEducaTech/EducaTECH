@@ -14,6 +14,7 @@ import sistema.modelo.entidade.aluno.Aluno;
 import sistema.modelo.entidade.area.Area;
 import sistema.modelo.entidade.curso.Curso;
 import sistema.modelo.entidade.instituicao.Instituicao;
+import sistema.modelo.enumeracao.modalidade.Modalidade;
 import sistema.modelo.factory.conexao.FactoryConexao;
 
 public class CursoDAOlmpl implements CursoDAO {
@@ -251,12 +252,9 @@ public List<Curso> consultaAreaCurso(Area area) {
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 			
-			Join<Curso, Aluno> juncaoAluno = raizCurso.join("alunos");
-			
-			ParameterExpression<Double> notaAluno = construtor.parameter(double.class);
-			criteria.where(construtor.lessThanOrEqualTo(juncaoAluno.get("nota"), notaAluno));
+			criteria.where(construtor.lessThanOrEqualTo(raizCurso.get("notaCorte"), aluno.getNota()));
 
-			consultaNota = sessao.createQuery(criteria).setParameter(notaAluno, aluno.getNota()).getResultList();
+			consultaNota = sessao.createQuery(criteria).getResultList();
 
 			sessao.getTransaction().commit();
 
@@ -319,5 +317,83 @@ public List<Curso> consultaAreaCurso(Area area) {
 		}
 
 		return favoritos;
+	}
+		
+	public	List<Curso> consultaPrecoCurso(double custo){
+		
+		Session sessao = null;
+		List<Curso> cursos = null;
+
+	try {
+
+		sessao =  banco.getConectarBanco().openSession();
+		sessao.beginTransaction();
+
+		CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+		CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
+		Root<Curso> raizCurso = criteria.from(Curso.class);
+				
+		criteria.where(construtor.between(raizCurso.get("preco"), 50.0, custo));
+		
+		cursos = sessao.createQuery(criteria).getResultList();
+
+		sessao.getTransaction().commit();
+		
+
+	} catch (Exception sqlException) {
+
+		sqlException.printStackTrace();
+
+		if (sessao.getTransaction() != null) {
+			sessao.getTransaction().rollback();
+		}
+
+	} finally {
+
+		if (sessao != null) {
+			sessao.close();
+		}
+	}
+
+	return cursos;
+}
+	public List<Curso> consultaModalidadeCurso(Modalidade modalidade) {
+
+		Session sessao = null;
+		List<Curso> consultaModalidadeCurso = null;
+
+		try {
+
+			sessao = banco.getConectarBanco().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
+			Root<Curso> raizCurso = criteria.from(Curso.class);
+
+			criteria.where(construtor.equal(raizCurso.get("tipoModalidade"), modalidade));
+
+			consultaModalidadeCurso = sessao.createQuery(criteria).getResultList();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return consultaModalidadeCurso;
 	}
 }
