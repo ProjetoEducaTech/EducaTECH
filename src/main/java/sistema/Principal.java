@@ -22,6 +22,7 @@ import sistema.modelo.entidade.contato.Contato;
 import sistema.modelo.entidade.curso.Curso;
 import sistema.modelo.entidade.endereco.Endereco;
 import sistema.modelo.entidade.instituicao.Instituicao;
+import sistema.modelo.entidade.usuario.Usuario;
 import sistema.modelo.enumeracao.Turno;
 import sistema.modelo.enumeracao.genero.Genero;
 import sistema.modelo.enumeracao.metodoentrada.MetodoEntrada;
@@ -39,13 +40,6 @@ public class Principal {
 		AreaDAO areaDAO = new AreaDAOImpl();
 		CursoDAO cursoDAO = new CursoDAOlmpl();
 		AlunoDAO alunoDAO = new AlunoDAOImpl();
-
-		String nomeArea = "teste";
-
-		Area area = new Area();
-
-		area.setNomeArea(nomeArea);
-		areaDAO.inserirArea(area);
 
 		String nome = "Teste instituicao";
 		String senha = "13ee3";
@@ -96,6 +90,62 @@ public class Principal {
 
 		contatoDAO.inserirContato(contato);
 
+		nome = "Teste instituicao";
+		senha = "senha";
+
+		logeradouro = "rua teste";
+		numero = 34;
+		cep = "1234567";
+		bairro = "bairro teste2";
+		cidade = "Blumenau";
+		estado = "Santa Catarina";
+		referencia = "referencia teste";
+
+		endereco = new Endereco();
+
+		cnpj = "12236785";
+		desc = "Somo a sengunda instituicao de teste";
+
+		instituicao = new Instituicao();
+
+		instituicao.setNome(nome);
+		instituicao.setSenha(senha);
+		instituicao.setCnpj(cnpj);
+		instituicao.setDescricao(desc);
+
+		instituicaoDAO.inserirInstituicao(instituicao);
+
+		endereco.setLogradouro(logeradouro);
+		endereco.setNumero(numero);
+		endereco.setCep(cep);
+		endereco.setBairro(bairro);
+		endereco.setCidade(cidade);
+		endereco.setEstado(estado);
+		endereco.setReferencia(referencia);
+		endereco.setInstituicao(instituicao);
+
+		enderecoDAO.inserirEndereco(endereco);
+
+		telefone = "3982-3232";
+		celular = "5432-2176";
+		email = "teste2@email.com.br";
+
+		contato = new Contato();
+
+		contato.setTelefone(telefone);
+		contato.setCelular(celular);
+		contato.setEmail(email);
+		contato.setUsuario(instituicao);
+
+		contatoDAO.inserirContato(contato);
+
+		String nomeArea = "teste";
+
+		Area area = new Area();
+
+		area.setNomeArea(nomeArea);
+		areaDAO.inserirArea(area);
+
 		String nomeCurso = "nome curso";
 		String descurso = "descri curso";
 		int duracao = 23;
@@ -117,6 +167,32 @@ public class Principal {
 		curso.setLink(link);
 		curso.setTipoModalidade(modal);
 		curso.setTipoTurno(turno);
+		curso.setArea(area);
+		curso.setInstituicao(instituicao);
+
+		cursoDAO.inserirCurso(curso);
+
+		String nomeCurso2 = "nome curso2";
+		String descurso2 = "descricao curso";
+		int duracao2 = 230;
+		MetodoEntrada enem2 = MetodoEntrada.FINACIAMENTO;
+		double preco2 = 120.50;
+		double nota2 = 450.4;
+		String link2 = "link teste";
+		Modalidade modal2 = Modalidade.PRESENCIAL;
+		Turno turno2 = Turno.NOTURNO;
+
+		curso = new Curso();
+
+		curso.setNomeCurso(nomeCurso2);
+		curso.setDescricaoCurso(descurso2);
+		curso.setDuracaoCurso(duracao2);
+		curso.setMetodoEntrada(enem2);
+		curso.setPreco(preco2);
+		curso.setNotaCorte(nota2);
+		curso.setLink(link2);
+		curso.setTipoModalidade(modal2);
+		curso.setTipoTurno(turno2);
 		curso.setArea(area);
 		curso.setInstituicao(instituicao);
 
@@ -164,14 +240,34 @@ public class Principal {
 
 			List<Instituicao> instituicoes = instituicaoDAO.recuperarInstituicoes();
 			List<Aluno> alunos = alunoDAO.recuperarAlunos();
-			List<Contato> contatos = contatoDAO.recuperarContatos();
 			List<Endereco> enderecos = enderecoDAO.recuperarEndereco();
 			Contato contatoRecuperado = null;
 			List<Endereco> enderecosRecuperados = null;
 			List<Curso> consultascurso = null;
 			List<Curso> favoritos = cursoDAO.exibirCursosFavoritos(aluno);
 			List<Curso> cursos = cursoDAO.recuperarCursos();
+			Usuario loginUsuarioInstituicao = null;
+			Usuario loginUsuarioAluno = null;
 
+			System.out.println("Fazer login Instituicao");
+			resposta = leitor.nextInt();
+			if (resposta != 0) {
+				loginUsuarioInstituicao = instituicaoDAO.loginUsuarioInstituicao(instituicao);
+
+				System.out.println("Nome: " + loginUsuarioInstituicao.getNome());
+				System.out.println("Senha: " + loginUsuarioInstituicao.getSenha());
+			}
+      
+			resposta = 0;
+			
+			System.out.println("Fazer login Aluno");
+			resposta = leitor.nextInt();
+			if (resposta != 0) {
+				loginUsuarioAluno = alunoDAO.loginUsuarioAluno(aluno);
+
+				System.out.println("Nome: " + loginUsuarioAluno.getNome());
+				System.out.println("Senha: " + loginUsuarioAluno.getSenha());
+			}
 			System.out.println("Exibir instituicao");
 			resposta = leitor.nextInt();
 			if (resposta != 0) {
@@ -198,6 +294,8 @@ public class Principal {
 						System.out.println("Logradouro: " + enderecoRecuperado.getLogradouro());
 						System.out.println("Referencia: " + enderecoRecuperado.getReferencia());
 						System.out.println("Numero: " + enderecoRecuperado.getNumero());
+						System.out.println();
+
 					}
 				}
 			}
@@ -220,109 +318,101 @@ public class Principal {
 					System.out.println("Celular: " + contatoRecuperado.getCelular());
 					System.out.println("E-mail: " + contatoRecuperado.getEmail());
 					System.out.println();
-					
-					
+
 				}
 			}
 
-			System.out.println("Exibir contato aluno ");
-			resposta = leitor.nextInt();
-			if (resposta != 0) {
-			for (Contato contatosCadastrados : contatos) {
-				System.out.println("Telefone: " + contatosCadastrados.getTelefone());
-				System.out.println("Celular: " + contatosCadastrados.getCelular());
-				System.out.println("E-mail: " + contatosCadastrados.getEmail());
-				System.out.println();
-				}
-			}
-			
 			System.out.println("Exibir cursos favoritos ");
 			resposta = leitor.nextInt();
 			if (resposta != 0) {
-			for (Curso cursosCadastrados : favoritos) {
-				System.out.println("Nome: " + cursosCadastrados.getNomeCurso());
-				System.out.println("Area: " + area.getNomeArea());
-				System.out.println("Metodo de entrada: " + cursosCadastrados.getMetodoEntrada());
-				System.out.println("Preco: " + cursosCadastrados.getPreco());
+				for (Curso cursosCadastrados : favoritos) {
+					System.out.println("Nome: " + cursosCadastrados.getNomeCurso());
+					System.out.println("Area: " + area.getNomeArea());
+					System.out.println("Metodo de entrada: " + cursosCadastrados.getMetodoEntrada());
+					System.out.println("Preco: " + cursosCadastrados.getPreco());
+					System.out.println();
+
 				}
 			}
 
-
-			System.out.println("Exibir endereco");
+			System.out.println("Exibir enderecos");
 			resposta = leitor.nextInt();
 			if (resposta != 0) {
-			for (Endereco enderecosCadastrado : enderecos) {
-				System.out.println("Logradouro: " + enderecosCadastrado.getLogradouro());
-				System.out.println("Referencia: " + enderecosCadastrado.getReferencia());
-				System.out.println("Numero: " + enderecosCadastrado.getNumero());
+				for (Endereco enderecosCadastrado : enderecos) {
+					System.out.println("Logradouro: " + enderecosCadastrado.getLogradouro());
+					System.out.println("Referencia: " + enderecosCadastrado.getReferencia());
+					System.out.println("Numero: " + enderecosCadastrado.getNumero());
+					System.out.println();
+
 				}
 			}
 
 			System.out.println("Exibir Cursos");
 			resposta = leitor.nextInt();
 			if (resposta != 0) {
-			for (Curso cursosCadastrado : cursos) {
-				System.out.println("Nome: " + cursosCadastrado.getNomeCurso());
-				System.out.println("Area: " + area.getNomeArea());
-				System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
-				System.out.println("Preco: " + cursosCadastrado.getPreco());
+				for (Curso cursosCadastrado : cursos) {
+					System.out.println("Nome: " + cursosCadastrado.getNomeCurso());
+					System.out.println("Area: " + area.getNomeArea());
+					System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
+					System.out.println("Preco: " + cursosCadastrado.getPreco());
+					System.out.println();
+
 				}
 			}
 
 			System.out.println("Exibir Cursos por instituicao");
 			resposta = leitor.nextInt();
 			if (resposta != 0) {
-			for (Instituicao instituicaoCadastrado : instituicoes) {
-				System.out.println("Nome: " + instituicaoCadastrado.getNome());
-				System.out.println("Descricao: " + instituicaoCadastrado.getDescricao());
-				System.out.println("CNPJ: " + instituicaoCadastrado.getCnpj());
-				System.out.println();
-
-				consultascurso = cursoDAO.consultaInstituicaoCurso(instituicao);
-
-				for (Curso cursosCadastrado : consultascurso) {
-					System.out.println("Nome: " + cursosCadastrado.getNomeCurso());
-					System.out.println("Area: " + area.getNomeArea());
-					System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
-					System.out.println("Preco: " + cursosCadastrado.getPreco());
-					System.out.println("Preco: " + cursosCadastrado.getPreco());
+				for (Instituicao instituicaoCadastrado : instituicoes) {
+					System.out.println("Nome: " + instituicaoCadastrado.getNome());
+					System.out.println("Descricao: " + instituicaoCadastrado.getDescricao());
+					System.out.println("CNPJ: " + instituicaoCadastrado.getCnpj());
 					System.out.println();
+
+					consultascurso = cursoDAO.consultaInstituicaoCurso(instituicao);
+
+					for (Curso cursosCadastrado : consultascurso) {
+						System.out.println("Nome: " + cursosCadastrado.getNomeCurso());
+						System.out.println("Area: " + area.getNomeArea());
+						System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
+						System.out.println("Preco: " + cursosCadastrado.getPreco());
+						System.out.println();
 					}
 				}
 			}
-			
+
 			System.out.println("Exibir Cursos por area");
 			resposta = leitor.nextInt();
 			if (resposta != 0) {
-				
+
 				consultascurso = cursoDAO.consultaAreaCurso(area);
-				
+
 				for (Curso cursosCadastrado : consultascurso) {
 					System.out.println("Nome: " + cursosCadastrado.getNomeCurso());
 					System.out.println("Area: " + area.getNomeArea());
 					System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
 					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
 					System.out.println("Preco: " + cursosCadastrado.getPreco());
-
-					}
+					System.out.println();
+				}
 			}
-			
-			System.out.println("Exibir Cursos por nota de corte");//no momento nao esta funcionando
+
+			System.out.println("Exibir Cursos por nota de corte");
 			resposta = leitor.nextInt();
 			if (resposta != 0) {
-				
+
 				consultascurso = cursoDAO.consultaNotaCurso(aluno);
-				
+
 				for (Curso cursosCadastrado : consultascurso) {
 					System.out.println("Nome: " + cursosCadastrado.getNomeCurso());
 					System.out.println("Area: " + area.getNomeArea());
 					System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
 					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
 					System.out.println("Preco: " + cursosCadastrado.getPreco());
-
-					}
+					System.out.println();
+				}
 			}
-			
+
 			System.out.println("sair");
 			sair = leitor.nextInt();
 		}
@@ -448,6 +538,7 @@ public class Principal {
 			if (resposta != 0) {
 
 				enderecoDAO.deletarEndereco(endereco);
+				contatoDAO.deletarContato(contato);
 				contatoDAO.deletarContato(contato);
 				instituicaoDAO.deletarInstituicao(instituicao);
 				alunoDAO.deletarAluno(aluno);

@@ -5,6 +5,7 @@ import java.util.List;
 
 import sistema.modelo.entidade.aluno.Aluno;
 import sistema.modelo.entidade.curso.Curso;
+import sistema.modelo.entidade.usuario.Usuario;
 
 
 public interface AlunoDAO {
@@ -18,5 +19,7 @@ public interface AlunoDAO {
 	void favoritarCurso(Curso curso);
 	
 	List<Aluno> recuperarAlunos();
+	
+	Usuario loginUsuarioAluno(Aluno aluno);
 	
 }
