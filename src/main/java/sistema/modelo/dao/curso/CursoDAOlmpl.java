@@ -14,6 +14,7 @@ import sistema.modelo.entidade.aluno.Aluno;
 import sistema.modelo.entidade.area.Area;
 import sistema.modelo.entidade.curso.Curso;
 import sistema.modelo.entidade.instituicao.Instituicao;
+import sistema.modelo.enumeracao.Turno;
 import sistema.modelo.enumeracao.modalidade.Modalidade;
 import sistema.modelo.factory.conexao.FactoryConexao;
 
@@ -395,5 +396,44 @@ public List<Curso> consultaAreaCurso(Area area) {
 		}
 
 		return consultaModalidadeCurso;
+	}
+	
+	public List<Curso> consultaTurnoCurso(Turno turno) {
+
+		Session sessao = null;
+		List<Curso> consultaTurnoCurso = null;
+
+		try {
+
+			sessao = banco.getConectarBanco().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
+			Root<Curso> raizCurso = criteria.from(Curso.class);
+
+			criteria.where(construtor.equal(raizCurso.get("tipoTurno"), turno));
+
+			consultaTurnoCurso = sessao.createQuery(criteria).getResultList();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return consultaTurnoCurso;
 	}
 }

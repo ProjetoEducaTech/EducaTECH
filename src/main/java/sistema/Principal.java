@@ -65,7 +65,7 @@ public class Principal {
 		instituicao.setDescricao(desc);
 
 		instituicaoDAO.inserirInstituicao(instituicao);
-		
+
 		String nomeArea = "teste";
 
 		Area area = new Area();
@@ -145,7 +145,7 @@ public class Principal {
 		contato.setUsuario(instituicao2);
 
 		contatoDAO.inserirContato(contato);
-		
+
 		String nomeCurso = "nome curso";
 		String descurso = "descri curso";
 		int duracao = 23;
@@ -154,7 +154,7 @@ public class Principal {
 		double nota = 300.4;
 		String link = "link";
 		Modalidade modal = Modalidade.AOVIVO;
-		Turno turno = Turno.MATUTINO;
+		Turno turno = Turno.NOTURNO;
 
 		Curso curso = new Curso();
 
@@ -239,7 +239,7 @@ public class Principal {
 		while (sair != 1) {
 
 			resposta = 0;
-			
+
 			List<Instituicao> instituicoes = instituicaoDAO.recuperarInstituicoes();
 			List<Aluno> alunos = alunoDAO.recuperarAlunos();
 			List<Endereco> enderecos = enderecoDAO.recuperarEndereco();
@@ -250,18 +250,21 @@ public class Principal {
 			List<Curso> cursos = cursoDAO.recuperarCursos();
 			Usuario loginUsuarioInstituicao = null;
 			Usuario loginUsuarioAluno = null;
-			
+
 			System.out.print("\n Qual funcao voce deseja acessar? \n");
-			String[] opc = new String[] {""," Fazer login Instituicao ", " Fazer login Aluno ", " Exibir instituicao ", " Exibir aluno ", " Exibir cursos favoritos", " Exibir enderecos",
-					 " Exibir Cursos", " Exibir Cursos por instituicao", " Exibir Cursos por area", "Exibir Cursos por nota de corte", "Exibir Cursos por modalidade", "Exibir Cursos por preco"};
-			for(int i = 1; i < 13; i++) {
+			String[] opc = new String[] { "", " Fazer login Instituicao ", " Fazer login Aluno ",
+					" Exibir instituicao ", " Exibir aluno ", " Exibir cursos favoritos", " Exibir enderecos",
+					" Exibir Cursos", " Exibir Cursos por instituicao", " Exibir Cursos por area",
+					"Exibir Cursos por nota de corte", "Exibir Cursos por modalidade", "Exibir Cursos por preco",
+					"Exibir Cursos por turno" };
+			for (int i = 1; i < 14; i++) {
 				System.out.println(i + " - " + opc[i]);
 			}
-			
+
 			resposta = leitor.nextInt();
-			
-			switch(resposta) {
-			
+
+			switch (resposta) {
+
 			case 1: {
 				loginUsuarioInstituicao = instituicaoDAO.loginUsuarioInstituicao(instituicao);
 
@@ -269,7 +272,7 @@ public class Principal {
 				System.out.println("Senha: " + loginUsuarioInstituicao.getSenha());
 				break;
 			}
-			
+
 			case 2: {
 				loginUsuarioAluno = alunoDAO.loginUsuarioAluno(aluno);
 
@@ -277,7 +280,7 @@ public class Principal {
 				System.out.println("Senha: " + loginUsuarioAluno.getSenha());
 				break;
 			}
-			
+
 			case 3: {
 				for (Instituicao instituicaoCadastrado : instituicoes) {
 					System.out.println("Nome: " + instituicaoCadastrado.getNome());
@@ -310,7 +313,6 @@ public class Principal {
 
 			}
 
-			
 			case 4: {
 				for (Aluno alunosCadastrados : alunos) {
 					System.out.println("Nome: " + alunosCadastrados.getNome());
@@ -355,7 +357,7 @@ public class Principal {
 				}
 				break;
 			}
-	
+
 			case 7: {
 				for (Curso cursosCadastrado : cursos) {
 					System.out.println("Nome: " + cursosCadastrado.getNomeCurso());
@@ -403,7 +405,6 @@ public class Principal {
 				break;
 			}
 
-			
 			case 10: {
 
 				consultascurso = cursoDAO.consultaNotaCurso(aluno);
@@ -418,8 +419,7 @@ public class Principal {
 				}
 				break;
 			}
-			
-			
+
 			case 11: {
 
 				consultascurso = cursoDAO.consultaModalidadeCurso(modal2);
@@ -434,9 +434,9 @@ public class Principal {
 				}
 				break;
 			}
-			
+
 			case 12: {
-				
+
 				System.out.println("Informe o o preco: ");
 				double custo = leitor.nextDouble();
 
@@ -449,30 +449,45 @@ public class Principal {
 					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
 					System.out.println("Preco: " + cursosCadastrado.getPreco());
 					System.out.println();
-					}
-					break;
 				}
+				break;
+			}
+
+			case 13: {
+				consultascurso = cursoDAO.consultaTurnoCurso(turno);
+
+				for (Curso cursosCadastrado : consultascurso) {
+					System.out.println("Nome: " + cursosCadastrado.getNomeCurso());
+					System.out.println("Area: " + area.getNomeArea());
+					System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
+					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
+					System.out.println("Preco: " + cursosCadastrado.getPreco());
+					System.out.println();
+				}
+			}
 			}
 
 			System.out.println("sair");
 			sair = leitor.nextInt();
-			
+
 		}
-		
+
 		resposta = 0;
 		sair = 0;
-		
+
 		while (sair != 1) {
-			
+
 			System.out.print("\n O que você gostaria de executar? \n");
-			String[] opc2 = new String[] {""," atualizar area ", " atualizar endereço ", " atualizar instituicao ", " atualizar curso ", " deletar area ", " deletar endereco, instituica e contato ", " deletar tudo"};
-			
-			for(int i = 1; i < 8; i++) {
+			String[] opc2 = new String[] { "", " atualizar area ", " atualizar endereço ", " atualizar instituicao ",
+					" atualizar curso ", " deletar area ", " deletar endereco, instituica e contato ",
+					" deletar tudo" };
+
+			for (int i = 1; i < 8; i++) {
 				System.out.println(i + " - " + opc2[i]);
 			}
 			resposta = leitor.nextInt();
-			
-			switch(resposta) {
+
+			switch (resposta) {
 
 			case 1: {
 
@@ -481,7 +496,7 @@ public class Principal {
 				area.setNomeArea(areaNome);
 
 				areaDAO.atualizarArea(area);
-				
+
 				break;
 			}
 
@@ -504,7 +519,7 @@ public class Principal {
 				endereco.setReferencia(referenciatu);
 
 				enderecoDAO.atualizarEndereco(endereco);
-				
+
 				break;
 			}
 
@@ -522,10 +537,10 @@ public class Principal {
 
 				instituicaoDAO.atualizarInstituicao(instituicao);
 				System.out.println("nome da instituicao" + instituicao.getNome());
-				
+
 				break;
 			}
-			
+
 			case 4: {
 
 				String nomeCursot = "nomet cursot";
@@ -549,14 +564,14 @@ public class Principal {
 				curso.setInstituicao(instituicao);
 
 				cursoDAO.atualizarCurso(curso);
-				
+
 				break;
 
 			}
-			
+
 			case 5: {
 				areaDAO.deletarArea(area);
-				
+
 				break;
 			}
 
@@ -564,7 +579,7 @@ public class Principal {
 				instituicaoDAO.deletarInstituicao(instituicao);
 				enderecoDAO.deletarEndereco(endereco);
 				contatoDAO.deletarContato(contato);
-				
+
 				break;
 			}
 
@@ -578,10 +593,10 @@ public class Principal {
 				cursoDAO.deletarCurso(curso);
 				areaDAO.deletarArea(area);
 				instituicaoDAO.deletarInstituicao(instituicao);
-				
+
 				break;
-				
-				}
+
+			}
 			}
 
 			System.out.println("sair");
