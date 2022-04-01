@@ -185,7 +185,7 @@ public class Principal {
 		double nota2 = 450.4;
 		String link2 = "link teste";
 		Modalidade modal2 = Modalidade.PRESENCIAL;
-		Turno turno2 = Turno.NOTURNO;
+		Turno turno2 = Turno.MATUTINO;
 
 		curso = new Curso();
 
@@ -199,7 +199,7 @@ public class Principal {
 		curso.setTipoModalidade(modal2);
 		curso.setTipoTurno(turno2);
 		curso.setArea(area);
-		curso.setInstituicao(instituicao2);
+		curso.setInstituicao(instituicao);
 
 		cursoDAO.inserirCurso(curso);
 
@@ -473,7 +473,7 @@ public class Principal {
 			}
 			
 			case 14:{
-				consultascurso = cursoDAO.consultaFiltroCurso(turnoOp, modalidadeOp);
+				consultascurso = cursoDAO.consultaFiltroCurso(idInstituicao, turnoOp, modalidadeOp);
 				
 				for (Curso cursosCadastrado : consultascurso) {
 					System.out.println("Nome: " + cursosCadastrado.getNomeCurso());

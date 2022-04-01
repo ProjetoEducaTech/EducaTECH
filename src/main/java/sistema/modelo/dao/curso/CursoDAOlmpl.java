@@ -439,12 +439,11 @@ public class CursoDAOlmpl implements CursoDAO {
 		return consultaTurnoCurso;
 	}
 
-	public List<Curso> consultaFiltroCurso( Optional<Turno> turno , Optional<Modalidade> modalidade) {
+	public List<Curso> consultaFiltroCurso(Optional<Long> idInsti, Optional<Turno> turno,Optional<Modalidade> modalidade) {
 
 		Session sessao = null;
 		List<Curso> consultaFiltroCurso = null;
 		List<Predicate> predicates = new ArrayList<>();
-//Optional<Long> idInsti
 		try {
 
 			sessao = banco.getConectarBanco().openSession();
@@ -455,10 +454,13 @@ public class CursoDAOlmpl implements CursoDAO {
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 
-			/*if (idInsti.isPresent() && (idInsti.get() > 0)) {
-				predicates.add(construtor.and(construtor.equal(raizCurso.get("id"), idInsti.get())));
-			}*/
-			
+			if (idInsti.isPresent() && (idInsti.get() > 0)) {
+				
+				Join<Curso, Instituicao> juncaoInstituicao = raizCurso.join("instituicao");
+				
+				predicates.add(construtor.and(construtor.equal(juncaoInstituicao.get("id"), idInsti.get())));
+			}
+
 			if (turno.isPresent()) {
 				predicates.add(construtor.and(construtor.equal(raizCurso.get("tipoTurno"), turno.get())));
 			}
@@ -466,9 +468,9 @@ public class CursoDAOlmpl implements CursoDAO {
 			if (modalidade.isPresent()) {
 				predicates.add(construtor.and(construtor.equal(raizCurso.get("tipoModalidade"), modalidade.get())));
 			}
-			
-			criteria.where (construtor.or(predicates.toArray(new Predicate[predicates.size()])));
-			
+
+			criteria.where(construtor.or(predicates.toArray(new Predicate[predicates.size()])));
+
 			consultaFiltroCurso = sessao.createQuery(criteria).getResultList();
 
 			sessao.getTransaction().commit();
