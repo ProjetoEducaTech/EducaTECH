@@ -2,6 +2,7 @@ package sistema;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 import sistema.modelo.dao.aluno.AlunoDAO;
@@ -63,15 +64,18 @@ public class Principal {
 		instituicao.setSenha(senha);
 		instituicao.setCnpj(cnpj);
 		instituicao.setDescricao(desc);
+		
 
 		instituicaoDAO.inserirInstituicao(instituicao);
-
+		Optional<Long> idInstituicao = Optional.of(instituicao.getId());
+		
 		String nomeArea = "teste";
 
 		Area area = new Area();
 
 		area.setNomeArea(nomeArea);
 		areaDAO.inserirArea(area);
+		Optional<Long> idArea = Optional.of(area.getIdArea());
 
 		endereco.setLogradouro(logradouro);
 		endereco.setNumero(numero);
@@ -153,7 +157,7 @@ public class Principal {
 		double preco = 120.3;
 		double nota = 300.4;
 		String link = "link";
-		Modalidade modal = Modalidade.AOVIVO;
+		Modalidade modal = Modalidade.PRESENCIAL;
 		Turno turno = Turno.NOTURNO;
 
 		Curso curso = new Curso();
@@ -171,6 +175,8 @@ public class Principal {
 		curso.setInstituicao(instituicao);
 
 		cursoDAO.inserirCurso(curso);
+		Optional<Modalidade> modalidadeOp = Optional.of(modal);
+		Optional<Turno> turnoOp = Optional.of(turno);
 
 		String nomeCurso2 = "nome curso2";
 		String descurso2 = "descricao curso";
@@ -194,7 +200,7 @@ public class Principal {
 		curso.setTipoModalidade(modal2);
 		curso.setTipoTurno(turno2);
 		curso.setArea(area);
-		curso.setInstituicao(instituicao2);
+		curso.setInstituicao(instituicao);
 
 		cursoDAO.inserirCurso(curso);
 
@@ -218,6 +224,7 @@ public class Principal {
 		aluno.adicionarCursoFavorito(curso);
 
 		alunoDAO.inserirAluno(aluno);
+		Optional<Double> notaAluno = Optional.of(notaCorte);
 
 		String telefonea = "3332-9898";
 		String celulara = "2341-3232";
@@ -256,8 +263,8 @@ public class Principal {
 					" Exibir instituicao ", " Exibir aluno ", " Exibir cursos favoritos", " Exibir enderecos",
 					" Exibir Cursos", " Exibir Cursos por instituicao", " Exibir Cursos por area",
 					"Exibir Cursos por nota de corte", "Exibir Cursos por modalidade", "Exibir Cursos por preco",
-					"Exibir Cursos por turno" };
-			for (int i = 1; i < 14; i++) {
+					"Exibir Cursos por turno", "Exibir filtros de Cursos" };
+			for (int i = 1; i < 15; i++) {
 				System.out.println(i + " - " + opc[i]);
 			}
 
@@ -461,6 +468,24 @@ public class Principal {
 					System.out.println("Area: " + area.getNomeArea());
 					System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
 					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
+					System.out.println("Preco: " + cursosCadastrado.getPreco());
+					System.out.println();
+				}
+				break;
+			}
+			
+			case 14:{
+				
+				System.out.println("Informe o o preco: ");
+				double custo = leitor.nextDouble();
+				Optional<Double> precoAluno = Optional.of(custo);
+				
+				consultascurso = cursoDAO.consultaFiltroCurso(idInstituicao, idArea, notaAluno, turnoOp, modalidadeOp, precoAluno);
+				
+				for (Curso cursosCadastrado : consultascurso) {
+					System.out.println("Nome: " + cursosCadastrado.getNomeCurso());
+					System.out.println("Area: " + area.getNomeArea());
+					System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
 					System.out.println("Preco: " + cursosCadastrado.getPreco());
 					System.out.println();
 				}

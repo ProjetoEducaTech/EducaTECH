@@ -1,11 +1,14 @@
 package sistema.modelo.dao.curso;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
@@ -19,14 +22,14 @@ import sistema.modelo.enumeracao.modalidade.Modalidade;
 import sistema.modelo.factory.conexao.FactoryConexao;
 
 public class CursoDAOlmpl implements CursoDAO {
-	
+
 	private FactoryConexao banco;
 
 	public CursoDAOlmpl() {
-		
+
 		banco = new FactoryConexao();
-		
-		}
+
+	}
 
 	public void inserirCurso(Curso curso) {
 
@@ -153,7 +156,7 @@ public class CursoDAOlmpl implements CursoDAO {
 
 		return curso;
 	}
-	
+
 	public List<Curso> consultaInstituicaoCurso(Instituicao instituicao) {
 
 		Session sessao = null;
@@ -195,15 +198,15 @@ public class CursoDAOlmpl implements CursoDAO {
 
 		return consultaCurso;
 	}
-	
-public List<Curso> consultaAreaCurso(Area area) {
-		
+
+	public List<Curso> consultaAreaCurso(Area area) {
+
 		Session sessao = null;
 		List<Curso> consultaArea = null;
 
 		try {
 
-			sessao =  banco.getConectarBanco().openSession();
+			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
@@ -237,7 +240,7 @@ public List<Curso> consultaAreaCurso(Area area) {
 
 		return consultaArea;
 	}
-	
+
 	public List<Curso> consultaNotaCurso(Aluno aluno) {
 
 		Session sessao = null;
@@ -245,14 +248,14 @@ public List<Curso> consultaAreaCurso(Area area) {
 
 		try {
 
-			sessao =  banco.getConectarBanco().openSession();
+			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
 
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteria.from(Curso.class);
-			
+
 			criteria.where(construtor.lessThanOrEqualTo(raizCurso.get("notaCorte"), aluno.getNota()));
 
 			consultaNota = sessao.createQuery(criteria).getResultList();
@@ -276,31 +279,30 @@ public List<Curso> consultaAreaCurso(Area area) {
 
 		return consultaNota;
 	}
-		
-		public List<Curso> exibirCursosFavoritos(Aluno aluno) {
-			
-			Session sessao = null;
-			List<Curso> favoritos = null;
+
+	public List<Curso> exibirCursosFavoritos(Aluno aluno) {
+
+		Session sessao = null;
+		List<Curso> favoritos = null;
 
 		try {
 
-			sessao =  banco.getConectarBanco().openSession();
+			sessao = banco.getConectarBanco().openSession();
 			sessao.beginTransaction();
 
 			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
 
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizFavorito = criteria.from(Curso.class);
-					
+
 			Join<Curso, Aluno> juncaoAluno = raizFavorito.join("alunos");
-			
+
 			ParameterExpression<Long> idaluno = construtor.parameter(Long.class);
 			criteria.where(construtor.equal(juncaoAluno.get("id"), idaluno));
-			
+
 			favoritos = sessao.createQuery(criteria).setParameter(idaluno, aluno.getId()).getResultList();
 
 			sessao.getTransaction().commit();
-			
 
 		} catch (Exception sqlException) {
 
@@ -319,46 +321,46 @@ public List<Curso> consultaAreaCurso(Area area) {
 
 		return favoritos;
 	}
-		
-	public	List<Curso> consultaPrecoCurso(double custo){
-		
+
+	public List<Curso> consultaPrecoCurso(double custo) {
+
 		Session sessao = null;
 		List<Curso> cursos = null;
 
-	try {
+		try {
 
-		sessao =  banco.getConectarBanco().openSession();
-		sessao.beginTransaction();
+			sessao = banco.getConectarBanco().openSession();
+			sessao.beginTransaction();
 
-		CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
 
-		CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
-		Root<Curso> raizCurso = criteria.from(Curso.class);
-				
-		criteria.where(construtor.between(raizCurso.get("preco"), 50.0, custo));
-		
-		cursos = sessao.createQuery(criteria).getResultList();
+			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
+			Root<Curso> raizCurso = criteria.from(Curso.class);
 
-		sessao.getTransaction().commit();
-		
+			criteria.where(construtor.between(raizCurso.get("preco"), 50.0, custo));
 
-	} catch (Exception sqlException) {
+			cursos = sessao.createQuery(criteria).getResultList();
 
-		sqlException.printStackTrace();
+			sessao.getTransaction().commit();
 
-		if (sessao.getTransaction() != null) {
-			sessao.getTransaction().rollback();
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
 		}
 
-	} finally {
-
-		if (sessao != null) {
-			sessao.close();
-		}
+		return cursos;
 	}
 
-	return cursos;
-}
 	public List<Curso> consultaModalidadeCurso(Modalidade modalidade) {
 
 		Session sessao = null;
@@ -397,7 +399,7 @@ public List<Curso> consultaAreaCurso(Area area) {
 
 		return consultaModalidadeCurso;
 	}
-	
+
 	public List<Curso> consultaTurnoCurso(Turno turno) {
 
 		Session sessao = null;
@@ -436,4 +438,74 @@ public List<Curso> consultaAreaCurso(Area area) {
 
 		return consultaTurnoCurso;
 	}
+
+	public List<Curso> consultaFiltroCurso(Optional<Long> idInsti, Optional<Long> isArea, Optional<Double> notaAluno, Optional<Turno> turno, Optional<Modalidade> modalidade, Optional<Double> precoAluno) {
+
+		Session sessao = null;
+		List<Curso> consultaFiltroCurso = null;
+		List<Predicate> predicates = new ArrayList<>();
+		try {
+
+			sessao = banco.getConectarBanco().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
+			Root<Curso> raizCurso = criteria.from(Curso.class);
+
+			if (idInsti.isPresent() && (idInsti.get() > 0)) {
+				
+				Join<Curso, Instituicao> juncaoInstituicao = raizCurso.join("instituicao");
+				
+				predicates.add(construtor.or(construtor.equal(juncaoInstituicao.get("id"), idInsti.get())));
+			}
+			
+			if (isArea.isPresent() && (isArea.get() > 0)) {
+				
+				Join<Curso, Area> juncaoInstituicao = raizCurso.join("area");
+				
+				predicates.add(construtor.or(construtor.equal(juncaoInstituicao.get("idArea"), isArea.get())));
+			}
+			
+			if (notaAluno.isPresent()) {
+				predicates.add(construtor.or(construtor.lessThanOrEqualTo(raizCurso.get("notaCorte"), notaAluno.get())));
+			}
+
+			if (turno.isPresent()) {
+				predicates.add(construtor.or(construtor.equal(raizCurso.get("tipoTurno"), turno.get())));
+			}
+
+			if (modalidade.isPresent()) {
+				predicates.add(construtor.or(construtor.equal(raizCurso.get("tipoModalidade"), modalidade.get())));
+			}
+			
+			if (precoAluno.isPresent() && (precoAluno.get() != 0)) {
+				predicates.add(construtor.or(construtor.between(raizCurso.get("preco"), 50.0, precoAluno.get())));
+			}
+
+			criteria.where(construtor.and(predicates.toArray(new Predicate[predicates.size()])));
+
+			consultaFiltroCurso = sessao.createQuery(criteria).getResultList();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return consultaFiltroCurso;
+	}
+
 }

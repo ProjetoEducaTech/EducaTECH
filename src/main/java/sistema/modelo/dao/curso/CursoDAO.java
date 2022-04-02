@@ -1,6 +1,7 @@
 package sistema.modelo.dao.curso;
 
 import java.util.List;
+import java.util.Optional;
 
 import sistema.modelo.entidade.aluno.Aluno;
 import sistema.modelo.entidade.area.Area;
@@ -31,5 +32,7 @@ public interface CursoDAO {
 	List<Curso> consultaModalidadeCurso(Modalidade modalidade);
 	
 	List<Curso> consultaTurnoCurso(Turno turno);
+	
+	List<Curso> consultaFiltroCurso(Optional<Long> idInsti, Optional<Long> isArea, Optional<Double> notaAluno, Optional<Turno> turno, Optional<Modalidade> modalidade, Optional<Double> precoAluno);
 	
 }
