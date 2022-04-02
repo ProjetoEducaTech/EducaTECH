@@ -75,6 +75,7 @@ public class Principal {
 
 		area.setNomeArea(nomeArea);
 		areaDAO.inserirArea(area);
+		Optional<Long> idArea = Optional.of(area.getIdArea());
 
 		endereco.setLogradouro(logradouro);
 		endereco.setNumero(numero);
@@ -156,7 +157,7 @@ public class Principal {
 		double preco = 120.3;
 		double nota = 300.4;
 		String link = "link";
-		Modalidade modal = Modalidade.AOVIVO;
+		Modalidade modal = Modalidade.PRESENCIAL;
 		Turno turno = Turno.NOTURNO;
 
 		Curso curso = new Curso();
@@ -185,7 +186,7 @@ public class Principal {
 		double nota2 = 450.4;
 		String link2 = "link teste";
 		Modalidade modal2 = Modalidade.PRESENCIAL;
-		Turno turno2 = Turno.MATUTINO;
+		Turno turno2 = Turno.NOTURNO;
 
 		curso = new Curso();
 
@@ -223,6 +224,7 @@ public class Principal {
 		aluno.adicionarCursoFavorito(curso);
 
 		alunoDAO.inserirAluno(aluno);
+		Optional<Double> notaAluno = Optional.of(notaCorte);
 
 		String telefonea = "3332-9898";
 		String celulara = "2341-3232";
@@ -473,7 +475,12 @@ public class Principal {
 			}
 			
 			case 14:{
-				consultascurso = cursoDAO.consultaFiltroCurso(idInstituicao, turnoOp, modalidadeOp);
+				
+				System.out.println("Informe o o preco: ");
+				double custo = leitor.nextDouble();
+				Optional<Double> precoAluno = Optional.of(custo);
+				
+				consultascurso = cursoDAO.consultaFiltroCurso(idInstituicao, idArea, notaAluno, turnoOp, modalidadeOp, precoAluno);
 				
 				for (Curso cursosCadastrado : consultascurso) {
 					System.out.println("Nome: " + cursosCadastrado.getNomeCurso());

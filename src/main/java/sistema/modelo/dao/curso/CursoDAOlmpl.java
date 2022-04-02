@@ -439,7 +439,7 @@ public class CursoDAOlmpl implements CursoDAO {
 		return consultaTurnoCurso;
 	}
 
-	public List<Curso> consultaFiltroCurso(Optional<Long> idInsti, Optional<Turno> turno,Optional<Modalidade> modalidade) {
+	public List<Curso> consultaFiltroCurso(Optional<Long> idInsti, Optional<Long> isArea, Optional<Double> notaAluno, Optional<Turno> turno, Optional<Modalidade> modalidade, Optional<Double> precoAluno) {
 
 		Session sessao = null;
 		List<Curso> consultaFiltroCurso = null;
@@ -458,18 +458,33 @@ public class CursoDAOlmpl implements CursoDAO {
 				
 				Join<Curso, Instituicao> juncaoInstituicao = raizCurso.join("instituicao");
 				
-				predicates.add(construtor.and(construtor.equal(juncaoInstituicao.get("id"), idInsti.get())));
+				predicates.add(construtor.or(construtor.equal(juncaoInstituicao.get("id"), idInsti.get())));
+			}
+			
+			if (isArea.isPresent() && (isArea.get() > 0)) {
+				
+				Join<Curso, Area> juncaoInstituicao = raizCurso.join("area");
+				
+				predicates.add(construtor.or(construtor.equal(juncaoInstituicao.get("idArea"), isArea.get())));
+			}
+			
+			if (notaAluno.isPresent()) {
+				predicates.add(construtor.or(construtor.lessThanOrEqualTo(raizCurso.get("notaCorte"), notaAluno.get())));
 			}
 
 			if (turno.isPresent()) {
-				predicates.add(construtor.and(construtor.equal(raizCurso.get("tipoTurno"), turno.get())));
+				predicates.add(construtor.or(construtor.equal(raizCurso.get("tipoTurno"), turno.get())));
 			}
 
 			if (modalidade.isPresent()) {
-				predicates.add(construtor.and(construtor.equal(raizCurso.get("tipoModalidade"), modalidade.get())));
+				predicates.add(construtor.or(construtor.equal(raizCurso.get("tipoModalidade"), modalidade.get())));
+			}
+			
+			if (precoAluno.isPresent() && (precoAluno.get() != 0)) {
+				predicates.add(construtor.or(construtor.between(raizCurso.get("preco"), 50.0, precoAluno.get())));
 			}
 
-			criteria.where(construtor.or(predicates.toArray(new Predicate[predicates.size()])));
+			criteria.where(construtor.and(predicates.toArray(new Predicate[predicates.size()])));
 
 			consultaFiltroCurso = sessao.createQuery(criteria).getResultList();
 

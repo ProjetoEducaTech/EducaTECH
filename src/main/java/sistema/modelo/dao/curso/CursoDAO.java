@@ -33,6 +33,6 @@ public interface CursoDAO {
 	
 	List<Curso> consultaTurnoCurso(Turno turno);
 	
-	List<Curso> consultaFiltroCurso(Optional<Long> idInsti, Optional<Turno> turno, Optional<Modalidade> modalidade);
+	List<Curso> consultaFiltroCurso(Optional<Long> idInsti, Optional<Long> isArea, Optional<Double> notaAluno, Optional<Turno> turno, Optional<Modalidade> modalidade, Optional<Double> precoAluno);
 	
 }
