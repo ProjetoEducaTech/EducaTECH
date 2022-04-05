@@ -110,6 +110,7 @@ public class Curso implements Serializable {
 		setDuracaoCurso(duracaoCurso);
 		setMetodoEntrada(metodoEntrada);
 		setPreco(preco);
+		setNotaCorte(notaCorte);
 		setLink(link);
 		setTipoModalidade(tipoModalidade);
 		setTipoTurno(tipoTurno);
@@ -173,7 +174,7 @@ public class Curso implements Serializable {
 		this.preco = preco;
 	}
 	
-	public double setNotaCorte() {
+	public double getNotaCorte() {
 		return notaCorte;
 	}
 	
@@ -181,7 +182,7 @@ public class Curso implements Serializable {
 		this.notaCorte = notaCorte;
 	}
 
-	public String link() {
+	public String getlink() {
 		return link;
 	}
 

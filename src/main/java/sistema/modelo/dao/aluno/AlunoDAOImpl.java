@@ -156,6 +156,8 @@ public class AlunoDAOImpl implements AlunoDAO {
 			Root<Aluno> raizAluno = criteria.from(Aluno.class);
 
 			criteria.select(raizAluno);
+			
+			criteria.orderBy(construtor.asc(raizAluno.get("nome")));
 
 			aluno = sessao.createQuery(criteria).getResultList();
 
