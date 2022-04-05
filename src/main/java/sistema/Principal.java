@@ -155,7 +155,7 @@ public class Principal {
 		int duracao = 23;
 		MetodoEntrada enem = MetodoEntrada.ENEM;
 		double preco = 120.3;
-		double nota = 300.4;
+		double nota = 500.4;
 		String link = "link";
 		Modalidade modal = Modalidade.PRESENCIAL;
 		Turno turno = Turno.NOTURNO;
@@ -178,7 +178,7 @@ public class Principal {
 		Optional<Modalidade> modalidadeOp = Optional.of(modal);
 		Optional<Turno> turnoOp = Optional.of(turno);
 
-		String nomeCurso2 = "nome curso2";
+		String nomeCurso2 = " curso";
 		String descurso2 = "descricao curso";
 		int duracao2 = 230;
 		MetodoEntrada enem2 = MetodoEntrada.FINACIAMENTO;
@@ -348,6 +348,7 @@ public class Principal {
 					System.out.println("Area: " + area.getNomeArea());
 					System.out.println("Metodo de entrada: " + cursosCadastrados.getMetodoEntrada());
 					System.out.println("Preco: " + cursosCadastrados.getPreco());
+					System.out.println("nota: " + cursosCadastrados.getNotaCorte());
 					System.out.println();
 
 				}
@@ -371,6 +372,7 @@ public class Principal {
 					System.out.println("Area: " + area.getNomeArea());
 					System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
 					System.out.println("Preco: " + cursosCadastrado.getPreco());
+					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
 					System.out.println();
 
 				}
@@ -391,6 +393,7 @@ public class Principal {
 						System.out.println("Area: " + area.getNomeArea());
 						System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
 						System.out.println("Preco: " + cursosCadastrado.getPreco());
+						System.out.println("nota: " + cursosCadastrado.getNotaCorte());
 						System.out.println();
 					}
 				}
@@ -407,6 +410,7 @@ public class Principal {
 					System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
 					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
 					System.out.println("Preco: " + cursosCadastrado.getPreco());
+					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
 					System.out.println();
 				}
 				break;
@@ -422,6 +426,7 @@ public class Principal {
 					System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
 					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
 					System.out.println("Preco: " + cursosCadastrado.getPreco());
+					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
 					System.out.println();
 				}
 				break;
@@ -437,6 +442,7 @@ public class Principal {
 					System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
 					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
 					System.out.println("Preco: " + cursosCadastrado.getPreco());
+					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
 					System.out.println();
 				}
 				break;
@@ -455,6 +461,7 @@ public class Principal {
 					System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
 					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
 					System.out.println("Preco: " + cursosCadastrado.getPreco());
+					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
 					System.out.println();
 				}
 				break;
@@ -469,6 +476,7 @@ public class Principal {
 					System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
 					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
 					System.out.println("Preco: " + cursosCadastrado.getPreco());
+					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
 					System.out.println();
 				}
 				break;
@@ -487,6 +495,7 @@ public class Principal {
 					System.out.println("Area: " + area.getNomeArea());
 					System.out.println("Metodo de entrada: " + cursosCadastrado.getMetodoEntrada());
 					System.out.println("Preco: " + cursosCadastrado.getPreco());
+					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
 					System.out.println();
 				}
 			}
