@@ -10,29 +10,31 @@ import sistema.modelo.entidade.instituicao.Instituicao;
 import sistema.modelo.enumeracao.Turno;
 import sistema.modelo.enumeracao.modalidade.Modalidade;
 
-
 public interface CursoDAO {
 
 	void inserirCurso(Curso curso);
+
 	void deletarCurso(Curso curso);
+
 	void atualizarCurso(Curso curso);
-	
+
 	List<Curso> recuperarCursos();
-	
+
 	List<Curso> consultaInstituicaoCurso(Instituicao instituicao);
-	
+
 	List<Curso> consultaAreaCurso(Area area);
-	
+
 	List<Curso> consultaNotaCurso(Aluno aluno);
-	
+
 	List<Curso> exibirCursosFavoritos(Aluno aluno);
-	
+
 	List<Curso> consultaPrecoCurso(double custo);
 
 	List<Curso> consultaModalidadeCurso(Modalidade modalidade);
-	
+
 	List<Curso> consultaTurnoCurso(Turno turno);
-	
-	List<Curso> consultaFiltroCurso(Optional<Long> idInsti, Optional<Long> isArea, Optional<Double> notaAluno, Optional<Turno> turno, Optional<Modalidade> modalidade, Optional<Double> precoAluno);
-	
+
+	List<Curso> consultaFiltroCurso(Optional<Long> idInsti, Optional<Long> isArea, Optional<Double> notaAluno,
+			Optional<Turno> turno, Optional<Modalidade> modalidade, Optional<Double> precoAluno);
+
 }

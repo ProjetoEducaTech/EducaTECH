@@ -19,13 +19,12 @@ import sistema.modelo.entidade.usuario.Usuario;
 public class Instituicao extends Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Column(name = "cnpj_instituicao", length = 45, nullable = false, unique = true)
 	private String cnpj;
 
 	@Column(name = "descricao_instituicao", length = 45, nullable = false)
 	private String descricao;
-
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "instituicao", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Curso> cursos;
@@ -34,8 +33,8 @@ public class Instituicao extends Usuario implements Serializable {
 	}
 
 	public Instituicao(Long id, String nome, String senha, String cnpj) {
-		super (id, nome, senha);
-		setNome(cnpj);
+		super(id, nome, senha);
+		setCnpj(cnpj);
 		setDescricao(descricao);
 		cursos = new ArrayList<Curso>();
 	}
@@ -47,21 +46,17 @@ public class Instituicao extends Usuario implements Serializable {
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
 	}
-	
+
 	public String getDescricao() {
 		return descricao;
 	}
-	
+
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	
+
 	public List<Curso> getCursos() {
 		return cursos;
-	}
-
-	public void setCursos(List<Curso> cursos) {
-		this.cursos = cursos;
 	}
 
 	public void inserirCurso(Curso curso) {
