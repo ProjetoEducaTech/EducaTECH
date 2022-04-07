@@ -14,6 +14,6 @@ public interface InstituicaoDAO {
 	void atualizarInstituicao(Instituicao instuicao);
 
 	List<Instituicao> recuperarInstituicoes();
-	
+
 	Usuario loginUsuarioInstituicao(Instituicao instituicao);
 }

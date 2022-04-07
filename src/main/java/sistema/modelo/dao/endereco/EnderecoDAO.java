@@ -6,11 +6,15 @@ import sistema.modelo.entidade.endereco.Endereco;
 import sistema.modelo.entidade.instituicao.Instituicao;
 
 public interface EnderecoDAO {
-	
+
 	void inserirEndereco(Endereco endereco);
+
 	void atualizarEndereco(Endereco endereco);
+
 	void deletarEndereco(Endereco endereco);
+
 	List<Endereco> recuperarEndereco();
+
 	List<Endereco> recuperarEnderecoInstituicao(Instituicao instituicao);
 
 }

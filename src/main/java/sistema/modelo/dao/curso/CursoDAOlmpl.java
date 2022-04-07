@@ -177,7 +177,7 @@ public class CursoDAOlmpl implements CursoDAO {
 
 			ParameterExpression<Long> idinst = construtor.parameter(Long.class);
 			criteria.where(construtor.equal(juncaoInstituicao.get("id"), idinst));
-			
+
 			criteria.orderBy(construtor.asc(raizCurso.get("nomeCurso")));
 
 			consultaCurso = sessao.createQuery(criteria).setParameter(idinst, instituicao.getId()).getResultList();
@@ -221,7 +221,7 @@ public class CursoDAOlmpl implements CursoDAO {
 
 			ParameterExpression<Long> idArea = construtor.parameter(Long.class);
 			criteria.where(construtor.equal(juncaoArea.get("idArea"), idArea));
-			
+
 			criteria.orderBy(construtor.asc(raizCurso.get("nomeCurso")));
 
 			consultaArea = sessao.createQuery(criteria).setParameter(idArea, area.getIdArea()).getResultList();
@@ -262,8 +262,8 @@ public class CursoDAOlmpl implements CursoDAO {
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 
 			criteria.where(construtor.lessThanOrEqualTo(raizCurso.get("notaCorte"), aluno.getNota()));
-			
-			criteria.orderBy(construtor.desc(raizCurso.get("notaCorte")),construtor.asc(raizCurso.get("nomeCurso")));
+
+			criteria.orderBy(construtor.desc(raizCurso.get("notaCorte")), construtor.asc(raizCurso.get("nomeCurso")));
 
 			consultaNota = sessao.createQuery(criteria).getResultList();
 
@@ -306,7 +306,7 @@ public class CursoDAOlmpl implements CursoDAO {
 
 			ParameterExpression<Long> idaluno = construtor.parameter(Long.class);
 			criteria.where(construtor.equal(juncaoAluno.get("id"), idaluno));
-			
+
 			criteria.orderBy(construtor.asc(juncaoAluno.get("nomeCurso")));
 
 			favoritos = sessao.createQuery(criteria).setParameter(idaluno, aluno.getId()).getResultList();
@@ -347,8 +347,8 @@ public class CursoDAOlmpl implements CursoDAO {
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 
 			criteria.where(construtor.between(raizCurso.get("preco"), 50.0, custo));
-			
-			criteria.orderBy(construtor.desc(raizCurso.get("preco")),construtor.asc(raizCurso.get("nomeCurso")));
+
+			criteria.orderBy(construtor.desc(raizCurso.get("preco")), construtor.asc(raizCurso.get("nomeCurso")));
 
 			cursos = sessao.createQuery(criteria).getResultList();
 
@@ -388,7 +388,7 @@ public class CursoDAOlmpl implements CursoDAO {
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 
 			criteria.where(construtor.equal(raizCurso.get("tipoModalidade"), modalidade));
-			
+
 			criteria.orderBy(construtor.asc(raizCurso.get("nomeCurso")));
 
 			consultaModalidadeCurso = sessao.createQuery(criteria).getResultList();
@@ -429,7 +429,7 @@ public class CursoDAOlmpl implements CursoDAO {
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 
 			criteria.where(construtor.equal(raizCurso.get("tipoTurno"), turno));
-			
+
 			criteria.orderBy(construtor.asc(raizCurso.get("nomeCurso")));
 
 			consultaTurnoCurso = sessao.createQuery(criteria).getResultList();
@@ -454,7 +454,8 @@ public class CursoDAOlmpl implements CursoDAO {
 		return consultaTurnoCurso;
 	}
 
-	public List<Curso> consultaFiltroCurso(Optional<Long> idInsti, Optional<Long> isArea, Optional<Double> notaAluno, Optional<Turno> turno, Optional<Modalidade> modalidade, Optional<Double> precoAluno) {
+	public List<Curso> consultaFiltroCurso(Optional<Long> idInsti, Optional<Long> isArea, Optional<Double> notaAluno,
+			Optional<Turno> turno, Optional<Modalidade> modalidade, Optional<Double> precoAluno) {
 
 		Session sessao = null;
 		List<Curso> consultaFiltroCurso = null;
@@ -470,21 +471,22 @@ public class CursoDAOlmpl implements CursoDAO {
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 
 			if (idInsti.isPresent() && (idInsti.get() > 0)) {
-				
+
 				Join<Curso, Instituicao> juncaoInstituicao = raizCurso.join("instituicao");
-				
+
 				predicates.add(construtor.or(construtor.equal(juncaoInstituicao.get("id"), idInsti.get())));
 			}
-			
+
 			if (isArea.isPresent() && (isArea.get() > 0)) {
-				
-				Join<Curso, Area> juncaoInstituicao = raizCurso.join("area");
-				
-				predicates.add(construtor.or(construtor.equal(juncaoInstituicao.get("idArea"), isArea.get())));
+
+				Join<Curso, Area> juncaoArea = raizCurso.join("area");
+
+				predicates.add(construtor.or(construtor.equal(juncaoArea.get("idArea"), isArea.get())));
 			}
-			
+
 			if (notaAluno.isPresent()) {
-				predicates.add(construtor.or(construtor.lessThanOrEqualTo(raizCurso.get("notaCorte"), notaAluno.get())));
+				predicates
+						.add(construtor.or(construtor.lessThanOrEqualTo(raizCurso.get("notaCorte"), notaAluno.get())));
 			}
 
 			if (turno.isPresent()) {
@@ -494,14 +496,15 @@ public class CursoDAOlmpl implements CursoDAO {
 			if (modalidade.isPresent()) {
 				predicates.add(construtor.or(construtor.equal(raizCurso.get("tipoModalidade"), modalidade.get())));
 			}
-			
+
 			if (precoAluno.isPresent() && (precoAluno.get() != 0)) {
 				predicates.add(construtor.or(construtor.between(raizCurso.get("preco"), 50.0, precoAluno.get())));
 			}
 
 			criteria.where(construtor.and(predicates.toArray(new Predicate[predicates.size()])));
-			
-			criteria.orderBy(construtor.desc(raizCurso.get("notaCorte")),construtor.desc(raizCurso.get("preco")),construtor.asc(raizCurso.get("nomeCurso")));
+
+			criteria.orderBy(construtor.desc(raizCurso.get("notaCorte")), construtor.desc(raizCurso.get("preco")),
+					construtor.asc(raizCurso.get("nomeCurso")));
 
 			consultaFiltroCurso = sessao.createQuery(criteria).getResultList();
 

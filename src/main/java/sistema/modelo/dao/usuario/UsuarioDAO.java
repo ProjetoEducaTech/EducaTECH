@@ -10,9 +10,7 @@ public interface UsuarioDAO {
 	void atualizarUsuario(Usuario usuario);
 
 	void inserirUsuario(Usuario usuario);
-	
-	List<Usuario> recuperarUsuario();//controle de usuarios
-	
-	//Usuario loginUsuario(Usuario usuario);
-	
+
+	List<Usuario> recuperarUsuario();
+
 }

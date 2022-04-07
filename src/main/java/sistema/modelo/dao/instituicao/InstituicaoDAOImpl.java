@@ -1,6 +1,5 @@
 package sistema.modelo.dao.instituicao;
 
-
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -15,11 +14,11 @@ import sistema.modelo.entidade.usuario.Usuario;
 import sistema.modelo.factory.conexao.FactoryConexao;
 
 public class InstituicaoDAOImpl implements InstituicaoDAO {
-	
+
 	private FactoryConexao banco;
 
 	public InstituicaoDAOImpl() {
-		
+
 		banco = new FactoryConexao();
 	}
 
@@ -124,7 +123,7 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 
 			CriteriaQuery<Instituicao> criteria = construtor.createQuery(Instituicao.class);
 			Root<Instituicao> raizInstituicao = criteria.from(Instituicao.class);
-			
+
 			criteria.orderBy(construtor.asc(raizInstituicao.get("nome")));
 
 			criteria.select(raizInstituicao);
@@ -150,7 +149,7 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 
 		return instituicao;
 	}
-	
+
 	public Usuario loginUsuarioInstituicao(Instituicao instituicao) {
 
 		Session sessao = null;
@@ -175,8 +174,7 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 			loginUsuarioAluno = sessao.createQuery(criteria).getSingleResult();
 
 			sessao.getTransaction().commit();
-		}
-		catch (Exception sqlException) {
+		} catch (Exception sqlException) {
 
 			sqlException.printStackTrace();
 
