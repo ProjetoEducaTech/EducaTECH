@@ -307,7 +307,7 @@ public class CursoDAOlmpl implements CursoDAO {
 			ParameterExpression<Long> idaluno = construtor.parameter(Long.class);
 			criteria.where(construtor.equal(juncaoAluno.get("id"), idaluno));
 
-			criteria.orderBy(construtor.asc(juncaoAluno.get("nomeCurso")));
+			criteria.orderBy(construtor.asc(raizFavorito.get("nomeCurso")));
 
 			favoritos = sessao.createQuery(criteria).setParameter(idaluno, aluno.getId()).getResultList();
 

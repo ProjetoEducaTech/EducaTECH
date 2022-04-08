@@ -218,7 +218,11 @@ public class Curso implements Serializable {
 		return alunos;
 	}
 
-	public void adicionarAlunos(Aluno alunos) {
+	public void setAlunos(Aluno alunos) {
 		this.alunos.add(alunos);
+	}
+	
+	public void removerAluno(Aluno alunos) {
+		this.alunos.remove(alunos);
 	}
 }

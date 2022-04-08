@@ -64,11 +64,10 @@ public class Principal {
 		instituicao.setSenha(senha);
 		instituicao.setCnpj(cnpj);
 		instituicao.setDescricao(desc);
-		
 
 		instituicaoDAO.inserirInstituicao(instituicao);
 		Optional<Long> idInstituicao = Optional.of(instituicao.getId());
-		
+
 		String nomeArea = "teste";
 
 		Area area = new Area();
@@ -221,7 +220,7 @@ public class Principal {
 		aluno.setDataNascimento(dataNasc);
 		aluno.setNota(notaCorte);
 		aluno.setGenero(genero);
-		aluno.adicionarCursoFavorito(curso);
+		aluno.setCursoFavorito(curso);
 
 		alunoDAO.inserirAluno(aluno);
 		Optional<Double> notaAluno = Optional.of(notaCorte);
@@ -263,8 +262,8 @@ public class Principal {
 					" Exibir instituicao ", " Exibir aluno ", " Exibir cursos favoritos", " Exibir enderecos",
 					" Exibir Cursos", " Exibir Cursos por instituicao", " Exibir Cursos por area",
 					"Exibir Cursos por nota de corte", "Exibir Cursos por modalidade", "Exibir Cursos por preco",
-					"Exibir Cursos por turno", "Exibir filtros de Cursos" };
-			for (int i = 1; i < 15; i++) {
+					"Exibir Cursos por turno", "Exibir filtros de Cursos", "Remover curso favorito" };
+			for (int i = 1; i < opc.length; i++) {
 				System.out.println(i + " - " + opc[i]);
 			}
 
@@ -313,7 +312,6 @@ public class Principal {
 						System.out.println("Referencia: " + enderecoRecuperado.getReferencia());
 						System.out.println("Numero: " + enderecoRecuperado.getNumero());
 						System.out.println();
-
 					}
 				}
 				break;
@@ -336,7 +334,6 @@ public class Principal {
 					System.out.println("Celular: " + contatoRecuperado.getCelular());
 					System.out.println("E-mail: " + contatoRecuperado.getEmail());
 					System.out.println();
-
 				}
 				break;
 
@@ -361,7 +358,6 @@ public class Principal {
 					System.out.println("Referencia: " + enderecosCadastrado.getReferencia());
 					System.out.println("Numero: " + enderecosCadastrado.getNumero());
 					System.out.println();
-
 				}
 				break;
 			}
@@ -374,7 +370,6 @@ public class Principal {
 					System.out.println("Preco: " + cursosCadastrado.getPreco());
 					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
 					System.out.println();
-
 				}
 				break;
 			}
@@ -481,15 +476,16 @@ public class Principal {
 				}
 				break;
 			}
-			
-			case 14:{
-				
+
+			case 14: {
+
 				System.out.println("Informe o o preco: ");
 				double custo = leitor.nextDouble();
 				Optional<Double> precoAluno = Optional.of(custo);
-				
-				consultascurso = cursoDAO.consultaFiltroCurso(idInstituicao, idArea, notaAluno, turnoOp, modalidadeOp, precoAluno);
-				
+
+				consultascurso = cursoDAO.consultaFiltroCurso(idInstituicao, idArea, notaAluno, turnoOp, modalidadeOp,
+						precoAluno);
+
 				for (Curso cursosCadastrado : consultascurso) {
 					System.out.println("Nome: " + cursosCadastrado.getNomeCurso());
 					System.out.println("Area: " + area.getNomeArea());
@@ -498,6 +494,15 @@ public class Principal {
 					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
 					System.out.println();
 				}
+				break;
+			}
+
+			case 15: {
+				aluno.removerCursoFavorito(curso);
+				curso.removerAluno(aluno);
+				alunoDAO.atualizarAluno(aluno);
+				cursoDAO.atualizarCurso(curso);
+				break;
 			}
 			}
 

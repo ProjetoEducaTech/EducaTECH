@@ -139,6 +139,35 @@ public class AlunoDAOImpl implements AlunoDAO {
 			}
 		}
 	}
+	
+	public void removerCursoFavorito(Curso curso) {
+
+		Session sessao = null;
+
+		try {
+
+			sessao = banco.getConectarBanco().openSession();
+			sessao.beginTransaction();
+			
+			sessao.remove(curso);
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+	}
 
 	public List<Aluno> recuperarAlunos() {
 
