@@ -176,33 +176,7 @@ public class Principal {
 		cursoDAO.inserirCurso(curso);
 		Optional<Modalidade> modalidadeOp = Optional.of(modal);
 		Optional<Turno> turnoOp = Optional.of(turno);
-
-		String nomeCurso2 = " curso";
-		String descurso2 = "descricao curso";
-		int duracao2 = 230;
-		MetodoEntrada enem2 = MetodoEntrada.FINACIAMENTO;
-		double preco2 = 320.50;
-		double nota2 = 450.4;
-		String link2 = "link teste";
-		Modalidade modal2 = Modalidade.PRESENCIAL;
-		Turno turno2 = Turno.NOTURNO;
-
-		curso = new Curso();
-
-		curso.setNomeCurso(nomeCurso2);
-		curso.setDescricaoCurso(descurso2);
-		curso.setDuracaoCurso(duracao2);
-		curso.setMetodoEntrada(enem2);
-		curso.setPreco(preco2);
-		curso.setNotaCorte(nota2);
-		curso.setLink(link2);
-		curso.setTipoModalidade(modal2);
-		curso.setTipoTurno(turno2);
-		curso.setArea(area);
-		curso.setInstituicao(instituicao);
-
-		cursoDAO.inserirCurso(curso);
-
+		
 		String alunoNome = "Aluno";
 		String alunoSenha = "12345";
 		String cpf = "342";
@@ -221,7 +195,6 @@ public class Principal {
 		aluno.setNota(notaCorte);
 		aluno.setGenero(genero);
 		aluno.setCursoFavorito(curso);
-
 		alunoDAO.inserirAluno(aluno);
 		Optional<Double> notaAluno = Optional.of(notaCorte);
 
@@ -235,6 +208,69 @@ public class Principal {
 		contato.setCelular(celulara);
 		contato.setEmail(emaila);
 		contato.setUsuario(aluno);
+
+		contatoDAO.inserirContato(contato);
+
+		String nomeCurso2 = " curso";
+		String descurso2 = "descricao curso";
+		int duracao2 = 230;
+		MetodoEntrada enem2 = MetodoEntrada.FINACIAMENTO;
+		double preco2 = 320.50;
+		double nota2 = 450.4;
+		String link2 = "link teste";
+		Modalidade modal2 = Modalidade.PRESENCIAL;
+		Turno turno2 = Turno.NOTURNO;
+
+		Curso curso2 = new Curso();
+
+		curso2.setNomeCurso(nomeCurso2);
+		curso2.setDescricaoCurso(descurso2);
+		curso2.setDuracaoCurso(duracao2);
+		curso2.setMetodoEntrada(enem2);
+		curso2.setPreco(preco2);
+		curso2.setNotaCorte(nota2);
+		curso2.setLink(link2);
+		curso2.setTipoModalidade(modal2);
+		curso2.setTipoTurno(turno2);
+		curso2.setArea(area);
+		curso2.setInstituicao(instituicao);
+
+		cursoDAO.inserirCurso(curso2);
+		
+		aluno.setCursoFavorito(curso2);
+		alunoDAO.atualizarAluno(aluno);
+		
+		 alunoNome = "Aluno2";
+		 alunoSenha = "senha123";
+		 cpf = "342435";
+		 sobrenome = "sobrenome2";
+		 dataNasc = LocalDate.parse("2022-04-25");
+		 notaCorte = 500.5;
+		 genero = Genero.FEMININO;
+
+		Aluno aluno2 = new Aluno();
+
+		aluno2.setNome(alunoNome);
+		aluno2.setSenha(alunoSenha);
+		aluno2.setCpf(cpf);
+		aluno2.setSobrenome(sobrenome);
+		aluno2.setDataNascimento(dataNasc);
+		aluno2.setNota(notaCorte);
+		aluno2.setGenero(genero);
+		aluno2.setCursoFavorito(curso);
+
+		alunoDAO.inserirAluno(aluno2);
+
+		 telefonea = "3124-9898";
+		 celulara = "2341-2543";
+		 emaila = "testealuno2@email.com.br";
+
+		contato = new Contato();
+
+		contato.setTelefone(telefonea);
+		contato.setCelular(celulara);
+		contato.setEmail(emaila);
+		contato.setUsuario(aluno2);
 
 		contatoDAO.inserirContato(contato);
 
@@ -499,9 +535,15 @@ public class Principal {
 
 			case 15: {
 				aluno.removerCursoFavorito(curso);
+				aluno.removerCursoFavorito(curso2);
 				curso.removerAluno(aluno);
+				curso2.removerAluno(aluno);
+				aluno2.removerCursoFavorito(curso);
+				curso.removerAluno(aluno2);
 				alunoDAO.atualizarAluno(aluno);
+				alunoDAO.atualizarAluno(aluno2);
 				cursoDAO.atualizarCurso(curso);
+				cursoDAO.atualizarCurso(curso2);
 				break;
 			}
 			}
