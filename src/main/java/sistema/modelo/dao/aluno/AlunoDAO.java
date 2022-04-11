@@ -19,5 +19,7 @@ public interface AlunoDAO {
 	List<Aluno> recuperarAlunos();
 
 	Usuario loginUsuarioAluno(Aluno aluno);
+	
+	void removerCursoFavorito(Curso curso);
 
 }

@@ -95,8 +95,12 @@ public class Aluno extends Usuario implements Serializable {
 		return cursosFavorito;
 	}
 
-	public void adicionarCursoFavorito(Curso cursosFavorito) {
+	public void setCursoFavorito(Curso cursosFavorito) {
 		this.cursosFavorito.add(cursosFavorito);
+	}
+	
+	public void removerCursoFavorito(Curso cursosFavorito) {
+		this.cursosFavorito.remove(cursosFavorito);
 	}
 
 	public Genero getGenero() {

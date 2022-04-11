@@ -64,11 +64,10 @@ public class Principal {
 		instituicao.setSenha(senha);
 		instituicao.setCnpj(cnpj);
 		instituicao.setDescricao(desc);
-		
 
 		instituicaoDAO.inserirInstituicao(instituicao);
 		Optional<Long> idInstituicao = Optional.of(instituicao.getId());
-		
+
 		String nomeArea = "teste";
 
 		Area area = new Area();
@@ -177,33 +176,7 @@ public class Principal {
 		cursoDAO.inserirCurso(curso);
 		Optional<Modalidade> modalidadeOp = Optional.of(modal);
 		Optional<Turno> turnoOp = Optional.of(turno);
-
-		String nomeCurso2 = " curso";
-		String descurso2 = "descricao curso";
-		int duracao2 = 230;
-		MetodoEntrada enem2 = MetodoEntrada.FINACIAMENTO;
-		double preco2 = 320.50;
-		double nota2 = 450.4;
-		String link2 = "link teste";
-		Modalidade modal2 = Modalidade.PRESENCIAL;
-		Turno turno2 = Turno.NOTURNO;
-
-		curso = new Curso();
-
-		curso.setNomeCurso(nomeCurso2);
-		curso.setDescricaoCurso(descurso2);
-		curso.setDuracaoCurso(duracao2);
-		curso.setMetodoEntrada(enem2);
-		curso.setPreco(preco2);
-		curso.setNotaCorte(nota2);
-		curso.setLink(link2);
-		curso.setTipoModalidade(modal2);
-		curso.setTipoTurno(turno2);
-		curso.setArea(area);
-		curso.setInstituicao(instituicao);
-
-		cursoDAO.inserirCurso(curso);
-
+		
 		String alunoNome = "Aluno";
 		String alunoSenha = "12345";
 		String cpf = "342";
@@ -221,8 +194,7 @@ public class Principal {
 		aluno.setDataNascimento(dataNasc);
 		aluno.setNota(notaCorte);
 		aluno.setGenero(genero);
-		aluno.adicionarCursoFavorito(curso);
-
+		aluno.setCursoFavorito(curso);
 		alunoDAO.inserirAluno(aluno);
 		Optional<Double> notaAluno = Optional.of(notaCorte);
 
@@ -236,6 +208,69 @@ public class Principal {
 		contato.setCelular(celulara);
 		contato.setEmail(emaila);
 		contato.setUsuario(aluno);
+
+		contatoDAO.inserirContato(contato);
+
+		String nomeCurso2 = " curso";
+		String descurso2 = "descricao curso";
+		int duracao2 = 230;
+		MetodoEntrada enem2 = MetodoEntrada.FINACIAMENTO;
+		double preco2 = 320.50;
+		double nota2 = 450.4;
+		String link2 = "link teste";
+		Modalidade modal2 = Modalidade.PRESENCIAL;
+		Turno turno2 = Turno.NOTURNO;
+
+		Curso curso2 = new Curso();
+
+		curso2.setNomeCurso(nomeCurso2);
+		curso2.setDescricaoCurso(descurso2);
+		curso2.setDuracaoCurso(duracao2);
+		curso2.setMetodoEntrada(enem2);
+		curso2.setPreco(preco2);
+		curso2.setNotaCorte(nota2);
+		curso2.setLink(link2);
+		curso2.setTipoModalidade(modal2);
+		curso2.setTipoTurno(turno2);
+		curso2.setArea(area);
+		curso2.setInstituicao(instituicao);
+
+		cursoDAO.inserirCurso(curso2);
+		
+		aluno.setCursoFavorito(curso2);
+		alunoDAO.atualizarAluno(aluno);
+		
+		 alunoNome = "Aluno2";
+		 alunoSenha = "senha123";
+		 cpf = "342435";
+		 sobrenome = "sobrenome2";
+		 dataNasc = LocalDate.parse("2022-04-25");
+		 notaCorte = 500.5;
+		 genero = Genero.FEMININO;
+
+		Aluno aluno2 = new Aluno();
+
+		aluno2.setNome(alunoNome);
+		aluno2.setSenha(alunoSenha);
+		aluno2.setCpf(cpf);
+		aluno2.setSobrenome(sobrenome);
+		aluno2.setDataNascimento(dataNasc);
+		aluno2.setNota(notaCorte);
+		aluno2.setGenero(genero);
+		aluno2.setCursoFavorito(curso);
+
+		alunoDAO.inserirAluno(aluno2);
+
+		 telefonea = "3124-9898";
+		 celulara = "2341-2543";
+		 emaila = "testealuno2@email.com.br";
+
+		contato = new Contato();
+
+		contato.setTelefone(telefonea);
+		contato.setCelular(celulara);
+		contato.setEmail(emaila);
+		contato.setUsuario(aluno2);
 
 		contatoDAO.inserirContato(contato);
 
@@ -263,8 +298,8 @@ public class Principal {
 					" Exibir instituicao ", " Exibir aluno ", " Exibir cursos favoritos", " Exibir enderecos",
 					" Exibir Cursos", " Exibir Cursos por instituicao", " Exibir Cursos por area",
 					"Exibir Cursos por nota de corte", "Exibir Cursos por modalidade", "Exibir Cursos por preco",
-					"Exibir Cursos por turno", "Exibir filtros de Cursos" };
-			for (int i = 1; i < 15; i++) {
+					"Exibir Cursos por turno", "Exibir filtros de Cursos", "Remover curso favorito" };
+			for (int i = 1; i < opc.length; i++) {
 				System.out.println(i + " - " + opc[i]);
 			}
 
@@ -313,7 +348,6 @@ public class Principal {
 						System.out.println("Referencia: " + enderecoRecuperado.getReferencia());
 						System.out.println("Numero: " + enderecoRecuperado.getNumero());
 						System.out.println();
-
 					}
 				}
 				break;
@@ -336,7 +370,6 @@ public class Principal {
 					System.out.println("Celular: " + contatoRecuperado.getCelular());
 					System.out.println("E-mail: " + contatoRecuperado.getEmail());
 					System.out.println();
-
 				}
 				break;
 
@@ -361,7 +394,6 @@ public class Principal {
 					System.out.println("Referencia: " + enderecosCadastrado.getReferencia());
 					System.out.println("Numero: " + enderecosCadastrado.getNumero());
 					System.out.println();
-
 				}
 				break;
 			}
@@ -374,7 +406,6 @@ public class Principal {
 					System.out.println("Preco: " + cursosCadastrado.getPreco());
 					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
 					System.out.println();
-
 				}
 				break;
 			}
@@ -481,15 +512,16 @@ public class Principal {
 				}
 				break;
 			}
-			
-			case 14:{
-				
+
+			case 14: {
+
 				System.out.println("Informe o o preco: ");
 				double custo = leitor.nextDouble();
 				Optional<Double> precoAluno = Optional.of(custo);
-				
-				consultascurso = cursoDAO.consultaFiltroCurso(idInstituicao, idArea, notaAluno, turnoOp, modalidadeOp, precoAluno);
-				
+
+				consultascurso = cursoDAO.consultaFiltroCurso(idInstituicao, idArea, notaAluno, turnoOp, modalidadeOp,
+						precoAluno);
+
 				for (Curso cursosCadastrado : consultascurso) {
 					System.out.println("Nome: " + cursosCadastrado.getNomeCurso());
 					System.out.println("Area: " + area.getNomeArea());
@@ -498,6 +530,21 @@ public class Principal {
 					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
 					System.out.println();
 				}
+				break;
+			}
+
+			case 15: {
+				aluno.removerCursoFavorito(curso);
+				aluno.removerCursoFavorito(curso2);
+				curso.removerAluno(aluno);
+				curso2.removerAluno(aluno);
+				aluno2.removerCursoFavorito(curso);
+				curso.removerAluno(aluno2);
+				alunoDAO.atualizarAluno(aluno);
+				alunoDAO.atualizarAluno(aluno2);
+				cursoDAO.atualizarCurso(curso);
+				cursoDAO.atualizarCurso(curso2);
+				break;
 			}
 			}
 
