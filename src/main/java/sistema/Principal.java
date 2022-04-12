@@ -56,7 +56,7 @@ public class Principal {
 		Endereco endereco = new Endereco();
 
 		String cnpj = "1223";
-		String desc = "Somo uma instituicao de teste";
+		String desc = "Somos uma instituicao de teste";
 
 		Instituicao instituicao = new Instituicao();
 
@@ -174,9 +174,10 @@ public class Principal {
 		curso.setInstituicao(instituicao);
 
 		cursoDAO.inserirCurso(curso);
+		instituicao.inserirCurso(curso);
 		Optional<Modalidade> modalidadeOp = Optional.of(modal);
 		Optional<Turno> turnoOp = Optional.of(turno);
-		
+
 		String alunoNome = "Aluno";
 		String alunoSenha = "12345";
 		String cpf = "342";
@@ -236,17 +237,19 @@ public class Principal {
 		curso2.setInstituicao(instituicao);
 
 		cursoDAO.inserirCurso(curso2);
-		
+
+		instituicao.inserirCurso(curso2);
+
 		aluno.setCursoFavorito(curso2);
 		alunoDAO.atualizarAluno(aluno);
-		
-		 alunoNome = "Aluno2";
-		 alunoSenha = "senha123";
-		 cpf = "342435";
-		 sobrenome = "sobrenome2";
-		 dataNasc = LocalDate.parse("2022-04-25");
-		 notaCorte = 500.5;
-		 genero = Genero.FEMININO;
+
+		alunoNome = "Aluno2";
+		alunoSenha = "senha123";
+		cpf = "342435";
+		sobrenome = "sobrenome2";
+		dataNasc = LocalDate.parse("2022-04-25");
+		notaCorte = 500.5;
+		genero = Genero.FEMININO;
 
 		Aluno aluno2 = new Aluno();
 
@@ -261,9 +264,9 @@ public class Principal {
 
 		alunoDAO.inserirAluno(aluno2);
 
-		 telefonea = "3124-9898";
-		 celulara = "2341-2543";
-		 emaila = "testealuno2@email.com.br";
+		telefonea = "3124-9898";
+		celulara = "2341-2543";
+		emaila = "testealuno2@email.com.br";
 
 		contato = new Contato();
 
@@ -298,7 +301,7 @@ public class Principal {
 					" Exibir instituicao ", " Exibir aluno ", " Exibir cursos favoritos", " Exibir enderecos",
 					" Exibir Cursos", " Exibir Cursos por instituicao", " Exibir Cursos por area",
 					"Exibir Cursos por nota de corte", "Exibir Cursos por modalidade", "Exibir Cursos por preco",
-					"Exibir Cursos por turno", "Exibir filtros de Cursos", "Remover curso favorito" };
+					"Exibir Cursos por turno", "Exibir filtros de Cursos", "Remover curso favorito", "Sair" };
 			for (int i = 1; i < opc.length; i++) {
 				System.out.println(i + " - " + opc[i]);
 			}
@@ -546,11 +549,13 @@ public class Principal {
 				cursoDAO.atualizarCurso(curso2);
 				break;
 			}
+
+			case 16: {
+				System.out.println("Saindo");
+				sair = 1;
+				break;
 			}
-
-			System.out.println("sair");
-			sair = leitor.nextInt();
-
+			}
 		}
 
 		resposta = 0;
@@ -560,10 +565,10 @@ public class Principal {
 
 			System.out.print("\n O que você gostaria de executar? \n");
 			String[] opc2 = new String[] { "", " atualizar area ", " atualizar endereço ", " atualizar instituicao ",
-					" atualizar curso ", " deletar area ", " deletar endereco, instituica e contato ",
-					" deletar tudo" };
+					" atualizar curso ", " deletar area ", " deletar endereco, instituica e contato ", " deletar tudo",
+					"Sair" };
 
-			for (int i = 1; i < 8; i++) {
+			for (int i = 1; i < opc2.length; i++) {
 				System.out.println(i + " - " + opc2[i]);
 			}
 			resposta = leitor.nextInt();
@@ -665,26 +670,31 @@ public class Principal {
 			}
 
 			case 7: {
-
+				instituicao.removerCursoInstituicao(curso);
+				instituicao.removerCursoInstituicao(curso2);
+				enderecoDAO.deletarEndereco(endereco);
 				enderecoDAO.deletarEndereco(endereco);
 				contatoDAO.deletarContato(contato);
 				contatoDAO.deletarContato(contato);
 				instituicaoDAO.deletarInstituicao(instituicao);
+				instituicaoDAO.deletarInstituicao(instituicao2);
 				alunoDAO.deletarAluno(aluno);
+				alunoDAO.deletarAluno(aluno2);
 				cursoDAO.deletarCurso(curso);
+				cursoDAO.deletarCurso(curso2);
 				areaDAO.deletarArea(area);
-				instituicaoDAO.deletarInstituicao(instituicao);
-
 				break;
 
 			}
-			}
 
-			System.out.println("sair");
-			sair = leitor.nextInt();
+			case 8: {
+				System.out.println("Saindo");
+				sair = 1;
+				break;
+			}
+			}
 		}
 
 		leitor.close();
 	}
-
 }
