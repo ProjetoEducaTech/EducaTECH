@@ -27,7 +27,7 @@ public class Instituicao extends Usuario implements Serializable {
 	private String descricao;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "instituicao", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Curso> cursos;
+	private List<Curso> cursos =  new ArrayList<Curso>();
 
 	public Instituicao() {
 	}
@@ -59,7 +59,11 @@ public class Instituicao extends Usuario implements Serializable {
 		return cursos;
 	}
 
-	public void inserirCurso(Curso curso) {
-		cursos.add(curso);
+	public void inserirCurso(Curso cursos) {
+		this.cursos.add(cursos);
+	}
+	
+	public void removerCursoInstituicao(Curso cursos) {
+		this.cursos.remove(cursos);
 	}
 }
