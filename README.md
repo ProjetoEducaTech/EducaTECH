@@ -7,9 +7,13 @@ O sistema visa facilitar a busca por cursos superiores. Ele é composto, princip
 👨‍🎓 Desta forma, o aluno não precisa garimpar diversas instituições, pois o sistema irá recomendar as melhores vagas para a área/nota do usuário, levando-os até o melhor curso.
 
 Integrantes:
-
-Emylli Sousa Lima
+Amanda Beatriz Bandoch,
+Cláudio Roberto de Carvalho Tiburcio,
+Eduardo Aguiar Mathioni,
+Eduardo Silva Hadlich,
+Emylli Sousa Lima,
 Mariana Cézar da Silva,
 Mateus Nunc-NFôoro Nascimento,
+Rafael Willi Rosá,
 Victor Gabriel Zampieri,
 Vítor Quagliotto de Souza.
