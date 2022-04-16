@@ -237,7 +237,6 @@ public class Principal {
 		curso2.setInstituicao(instituicao);
 
 		cursoDAO.inserirCurso(curso2);
-
 		instituicao.inserirCurso(curso2);
 
 		aluno.setCursoFavorito(curso2);

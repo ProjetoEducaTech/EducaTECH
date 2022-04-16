@@ -25,27 +25,28 @@ public class Contato implements Serializable {
 
 	@Column(name = "telefone_contato", length = 20, nullable = true, unique = true)
 	private String telefone;
-	
+
 	@Column(name = "celular_contato", length = 20, nullable = false, unique = true)
 	private String celular;
 
 	@Column(name = "email_contato", length = 40, nullable = false, unique = true)
 	private String email;
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@MapsId
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
-	
-	public Contato() {}
-	
-	public Contato(String telefone, String celular,String email) {
+
+	public Contato() {
+	}
+
+	public Contato(String telefone, String celular, String email, Usuario usuario) {
 		setTelefone(telefone);
 		setCelular(celular);
 		setEmail(email);
 	}
 
-	public Contato(Long id, String telefone, String celular, String email) {
+	public Contato(Long id, String telefone, String celular, String email, Usuario usuario) {
 		setId(id);
 		setTelefone(telefone);
 		setCelular(celular);
@@ -67,7 +68,7 @@ public class Contato implements Serializable {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-	
+
 	public String getCelular() {
 		return celular;
 	}
@@ -90,5 +91,24 @@ public class Contato implements Serializable {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		if (this == obj)
+			return true;
+
+		if (obj == null)
+			return false;
+
+		if (!(this instanceof Contato))
+			return false;
+
+		Contato contato = (Contato) obj;
+
+		return this.getId().equals(contato.getId()) && this.getTelefone().equals(contato.getTelefone())
+				&& this.getCelular().equals(contato.getCelular()) && this.getEmail().equals(contato.getEmail())
+				&& this.getUsuario().equals(contato.getUsuario());
 	}
 }
