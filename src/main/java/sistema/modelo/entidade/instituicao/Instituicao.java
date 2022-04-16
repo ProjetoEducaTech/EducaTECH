@@ -27,12 +27,12 @@ public class Instituicao extends Usuario implements Serializable {
 	private String descricao;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "instituicao", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Curso> cursos =  new ArrayList<Curso>();
+	private List<Curso> cursos = new ArrayList<Curso>();
 
 	public Instituicao() {
 	}
 
-	public Instituicao(Long id, String nome, String senha, String cnpj) {
+	public Instituicao(Long id, String nome, String senha, String cnpj, String descrcao) {
 		super(id, nome, senha);
 		setCnpj(cnpj);
 		setDescricao(descricao);
@@ -62,8 +62,27 @@ public class Instituicao extends Usuario implements Serializable {
 	public void inserirCurso(Curso cursos) {
 		this.cursos.add(cursos);
 	}
-	
+
 	public void removerCursoInstituicao(Curso cursos) {
 		this.cursos.remove(cursos);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		if (this == obj)
+			return true;
+
+		if (obj == null)
+			return false;
+
+		if (!(this instanceof Instituicao))
+			return false;
+
+		Instituicao instituicao = (Instituicao) obj;
+
+		return this.getId().equals(instituicao.getId()) && this.getNome().equals(instituicao.getNome())
+				&& this.getSenha().equals(instituicao.getSenha()) && this.getCnpj().equals(instituicao.getCnpj())
+				&& this.getDescricao().equals(instituicao.getDescricao());
 	}
 }

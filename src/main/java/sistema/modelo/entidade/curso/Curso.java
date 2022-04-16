@@ -44,12 +44,12 @@ public class Curso implements Serializable {
 
 	@Column(name = "duracao_curso", nullable = false)
 	private int duracaoCurso;
-	
+
 	@Column(name = "tipo_metodo_entrada_curso", nullable = false)
 	@Enumerated(EnumType.ORDINAL)
-	private MetodoEntrada metodoEntrada;
-	
-	@Column(name = "nota_corte_curso", scale = 5, precision = 2,nullable = false)
+	private MetodoEntrada tipoMetodoEntrada;
+
+	@Column(name = "nota_corte_curso", scale = 5, precision = 2, nullable = false)
 	private double notaCorte;
 
 	@Column(name = "preco_curso", scale = 6, precision = 2, nullable = false)
@@ -61,11 +61,11 @@ public class Curso implements Serializable {
 	@Column(name = "tipo_modalidade_curso", nullable = false)
 	@Enumerated(EnumType.ORDINAL)
 	private Modalidade tipoModalidade;
-	
+
 	@Column(name = "tipo_turno_curso", nullable = false)
 	@Enumerated(EnumType.ORDINAL)
 	private Turno tipoTurno;
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "area_curso", nullable = false)
 	private Area area;
@@ -73,23 +73,23 @@ public class Curso implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_usuario")
 	private Instituicao instituicao;
-	
+
 	@ManyToMany(mappedBy = "cursosFavorito")
 	private List<Aluno> alunos = new ArrayList<Aluno>();
 
 	public Curso() {
 
 	}
-	
-	public Curso(String nomeCurso, Area area, String descricaoCurso, int duracaoCurso,
-			MetodoEntrada metodoEntrada, double preco, double notaCorte,String link, Modalidade tipoModalidade, Turno tipoTurno,
+
+	public Curso(String nomeCurso, Area area, String descricaoCurso, int duracaoCurso, MetodoEntrada tipoMetodoEntrada,
+			double preco, double notaCorte, String link, Modalidade tipoModalidade, Turno tipoTurno,
 			Instituicao instituicao) {
 
 		setNomeCurso(nomeCurso);
 		setArea(area);
 		setDescricaoCurso(descricaoCurso);
 		setDuracaoCurso(duracaoCurso);
-		setMetodoEntrada(metodoEntrada);
+		setMetodoEntrada(tipoMetodoEntrada);
 		setPreco(preco);
 		setNotaCorte(notaCorte);
 		setLink(link);
@@ -100,15 +100,15 @@ public class Curso implements Serializable {
 	}
 
 	public Curso(Long idCurso, String nomeCurso, Area area, String descricaoCurso, int duracaoCurso,
-			MetodoEntrada metodoEntrada, double preco, double notaCorte,String link, Modalidade tipoModalidade, Turno tipoTurno,
-			Instituicao instituicao) {
+			MetodoEntrada tipoMetodoEntrada, double preco, double notaCorte, String link, Modalidade tipoModalidade,
+			Turno tipoTurno, Instituicao instituicao) {
 
 		setIdCurso(idCurso);
 		setNomeCurso(nomeCurso);
 		setArea(area);
 		setDescricaoCurso(descricaoCurso);
 		setDuracaoCurso(duracaoCurso);
-		setMetodoEntrada(metodoEntrada);
+		setMetodoEntrada(tipoMetodoEntrada);
 		setPreco(preco);
 		setNotaCorte(notaCorte);
 		setLink(link);
@@ -159,11 +159,11 @@ public class Curso implements Serializable {
 	}
 
 	public MetodoEntrada getMetodoEntrada() {
-		return metodoEntrada;
+		return tipoMetodoEntrada;
 	}
 
-	public void setMetodoEntrada(MetodoEntrada metodoEntrada) {
-		this.metodoEntrada = metodoEntrada;
+	public void setMetodoEntrada(MetodoEntrada tipoMetodoEntrada) {
+		this.tipoMetodoEntrada = tipoMetodoEntrada;
 	}
 
 	public double getPreco() {
@@ -173,11 +173,11 @@ public class Curso implements Serializable {
 	public void setPreco(double preco) {
 		this.preco = preco;
 	}
-	
+
 	public double getNotaCorte() {
 		return notaCorte;
 	}
-	
+
 	public void setNotaCorte(double notaCorte) {
 		this.notaCorte = notaCorte;
 	}
@@ -213,7 +213,7 @@ public class Curso implements Serializable {
 	public void setInstituicao(Instituicao instituicao) {
 		this.instituicao = instituicao;
 	}
-	
+
 	public List<Aluno> getAlunos() {
 		return alunos;
 	}
@@ -221,8 +221,30 @@ public class Curso implements Serializable {
 	public void setAlunos(Aluno alunos) {
 		this.alunos.add(alunos);
 	}
-	
+
 	public void removerAluno(Aluno alunos) {
 		this.alunos.remove(alunos);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		if (this == obj)
+			return true;
+
+		if (obj == null)
+			return false;
+
+		if (!(this instanceof Curso))
+			return false;
+
+		Curso curso = (Curso) obj;
+
+		return this.getIdCurso().equals(curso.getIdCurso()) && this.getNomeCurso().equals(curso.getNomeCurso())
+				&& this.getArea().equals(curso.getArea()) && this.getDescricaoCurso().equals(curso.getDescricaoCurso())
+				&& this.getDuracaoCurso() == curso.getDuracaoCurso() && this.getMetodoEntrada().equals(curso.getMetodoEntrada())
+				&& this.getPreco() == curso.getPreco() && this.getNotaCorte() == curso.getNotaCorte()
+				&& this.getlink().equals(curso.getlink()) && this.getTipoModalidade().equals(curso.getTipoModalidade())
+				&& this.getTipoTurno().equals(curso.getTipoTurno()) && this.getInstituicao().equals(curso.getInstituicao());
 	}
 }
