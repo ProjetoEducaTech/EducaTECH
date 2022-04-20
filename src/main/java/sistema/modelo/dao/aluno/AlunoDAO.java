@@ -4,7 +4,6 @@ import java.util.List;
 
 import sistema.modelo.entidade.aluno.Aluno;
 import sistema.modelo.entidade.curso.Curso;
-import sistema.modelo.entidade.usuario.Usuario;
 
 public interface AlunoDAO {
 
@@ -18,7 +17,7 @@ public interface AlunoDAO {
 
 	List<Aluno> recuperarAlunos();
 
-	Usuario loginUsuarioAluno(Aluno aluno);
+	Aluno loginUsuarioAluno(Long id);
 	
 	void removerCursoFavorito(Curso curso);
 

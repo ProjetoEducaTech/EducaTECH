@@ -4,10 +4,13 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 
+import sistema.modelo.entidade.contato.Contato;
 import sistema.modelo.entidade.usuario.Usuario;
 import sistema.modelo.factory.conexao.FactoryConexao;
 
@@ -146,7 +149,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		return usuario;
 	}
 
-	/*public Usuario loginUsuario(Usuario usuario) {
+	public Usuario loginUsuario(String email,String senha) {
 
 		Session sessao = null;
 		Usuario loginUsuario = null;
@@ -160,11 +163,16 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 			CriteriaQuery<Usuario> criteria = construtor.createQuery(Usuario.class);
 			Root<Usuario> raizUsuario = criteria.from(Usuario.class);
+			
+			Join<Usuario,Contato> juncaoContato = raizUsuario.join("contato");
 
-			ParameterExpression<String> senha = construtor.parameter(String.class);
-			criteria.where(construtor.equal(Usuario.get(Usuario_.SENHA), senha));
+			Predicate predicateEmail = construtor.equal(juncaoContato.get("email"), email);
+			Predicate predicateSenha = construtor.equal(juncaoContato.get("senha"), senha);
+			Predicate predicateLogin = construtor.and(predicateEmail, predicateSenha);
+			
+			criteria.where(predicateLogin);
 
-			loginUsuario = sessao.createQuery(criteria).setParameter(senha, usuario.getSenha()).getResultList();
+			loginUsuario = sessao.createQuery(criteria).getSingleResult();
 
 			sessao.getTransaction().commit();
 
@@ -184,6 +192,6 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		}
 
 		return loginUsuario;
-	}*/
+	}
 
 }

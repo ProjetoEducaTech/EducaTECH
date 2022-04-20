@@ -40,13 +40,13 @@ public class Contato implements Serializable {
 	public Contato() {
 	}
 
-	public Contato(String telefone, String celular, String email, Usuario usuario) {
+	public Contato(String telefone, String celular, String email) {
 		setTelefone(telefone);
 		setCelular(celular);
 		setEmail(email);
 	}
 
-	public Contato(Long id, String telefone, String celular, String email, Usuario usuario) {
+	public Contato(Long id, String telefone, String celular, String email) {
 		setId(id);
 		setTelefone(telefone);
 		setCelular(celular);

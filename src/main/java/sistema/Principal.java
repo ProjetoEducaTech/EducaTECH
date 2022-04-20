@@ -17,6 +17,8 @@ import sistema.modelo.dao.endereco.EnderecoDAO;
 import sistema.modelo.dao.endereco.EnderecoDAOImpl;
 import sistema.modelo.dao.instituicao.InstituicaoDAO;
 import sistema.modelo.dao.instituicao.InstituicaoDAOImpl;
+import sistema.modelo.dao.usuario.UsuarioDAO;
+import sistema.modelo.dao.usuario.UsuarioDAOImpl;
 import sistema.modelo.entidade.aluno.Aluno;
 import sistema.modelo.entidade.area.Area;
 import sistema.modelo.entidade.contato.Contato;
@@ -24,10 +26,10 @@ import sistema.modelo.entidade.curso.Curso;
 import sistema.modelo.entidade.endereco.Endereco;
 import sistema.modelo.entidade.instituicao.Instituicao;
 import sistema.modelo.entidade.usuario.Usuario;
-import sistema.modelo.enumeracao.Turno;
 import sistema.modelo.enumeracao.genero.Genero;
 import sistema.modelo.enumeracao.metodoentrada.MetodoEntrada;
 import sistema.modelo.enumeracao.modalidade.Modalidade;
+import sistema.modelo.enumeracao.turno.Turno;
 
 public class Principal {
 
@@ -41,6 +43,7 @@ public class Principal {
 		AreaDAO areaDAO = new AreaDAOImpl();
 		CursoDAO cursoDAO = new CursoDAOlmpl();
 		AlunoDAO alunoDAO = new AlunoDAOImpl();
+		UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
 
 		String nome = "Teste ";
 		String senha = "13ee3";
@@ -292,15 +295,16 @@ public class Principal {
 			List<Curso> consultascurso = null;
 			List<Curso> favoritos = cursoDAO.exibirCursosFavoritos(aluno);
 			List<Curso> cursos = cursoDAO.recuperarCursos();
-			Usuario loginUsuarioInstituicao = null;
-			Usuario loginUsuarioAluno = null;
+			Instituicao loginUsuarioInstituicao = null;
+			Aluno loginUsuarioAluno = null;
+			Usuario login = null;
 
 			System.out.print("\n Qual funcao voce deseja acessar? \n");
-			String[] opc = new String[] { "", " Fazer login Instituicao ", " Fazer login Aluno ",
-					" Exibir instituicao ", " Exibir aluno ", " Exibir cursos favoritos", " Exibir enderecos",
-					" Exibir Cursos", " Exibir Cursos por instituicao", " Exibir Cursos por area",
-					"Exibir Cursos por nota de corte", "Exibir Cursos por modalidade", "Exibir Cursos por preco",
-					"Exibir Cursos por turno", "Exibir filtros de Cursos", "Remover curso favorito", "Sair" };
+			String[] opc = new String[] { "", " Fazer login no sistema", " Exibir instituicao ", " Exibir aluno ",
+					" Exibir cursos favoritos", " Exibir enderecos", " Exibir Cursos", " Exibir Cursos por instituicao",
+					" Exibir Cursos por area", " Exibir Cursos por nota de corte", "Exibir Cursos por modalidade",
+					"Exibir Cursos por preco", "Exibir Cursos por turno", "Exibir filtros de Cursos",
+					"Remover curso favorito", "Sair" };
 			for (int i = 1; i < opc.length; i++) {
 				System.out.println(i + " - " + opc[i]);
 			}
@@ -310,22 +314,34 @@ public class Principal {
 			switch (resposta) {
 
 			case 1: {
-				loginUsuarioInstituicao = instituicaoDAO.loginUsuarioInstituicao(instituicao);
+				email = "testealuno@email.com.br";
+				senha = "12345";
+				login = usuarioDAO.loginUsuario(email,senha);
 
-				System.out.println("Nome: " + loginUsuarioInstituicao.getNome());
-				System.out.println("Senha: " + loginUsuarioInstituicao.getSenha());
+				if (login != null) {
+					loginUsuarioAluno = alunoDAO.loginUsuarioAluno(login.getId());
+					loginUsuarioInstituicao = instituicaoDAO.loginUsuarioInstituicao(login.getId());
+
+					if (loginUsuarioAluno != null) {
+						System.out.println("cpf: " + loginUsuarioAluno.getCpf());
+						System.out.println("Nome: " + loginUsuarioAluno.getNome());
+						System.out.println("Senha: " + loginUsuarioAluno.getSenha());
+					}
+
+					if (loginUsuarioInstituicao != null) {
+						System.out.println("cnpj: " + loginUsuarioInstituicao.getCnpj());
+						System.out.println("Nome: " + loginUsuarioInstituicao.getNome());
+						System.out.println("Senha: " + loginUsuarioInstituicao.getSenha());
+					} else {
+						System.out.println("Login Invalido");
+					}
+				} else {
+					System.out.println("Email ou senha invalidos");
+				}
 				break;
 			}
 
 			case 2: {
-				loginUsuarioAluno = alunoDAO.loginUsuarioAluno(aluno);
-
-				System.out.println("Nome: " + loginUsuarioAluno.getNome());
-				System.out.println("Senha: " + loginUsuarioAluno.getSenha());
-				break;
-			}
-
-			case 3: {
 				for (Instituicao instituicaoCadastrado : instituicoes) {
 					System.out.println("Nome: " + instituicaoCadastrado.getNome());
 					System.out.println("Descricao: " + instituicaoCadastrado.getDescricao());
@@ -356,7 +372,7 @@ public class Principal {
 
 			}
 
-			case 4: {
+			case 3: {
 				for (Aluno alunosCadastrados : alunos) {
 					System.out.println("Nome: " + alunosCadastrados.getNome());
 					System.out.println("Sobrenome: " + alunosCadastrados.getSobrenome());
@@ -377,7 +393,7 @@ public class Principal {
 
 			}
 
-			case 5: {
+			case 4: {
 				for (Curso cursosCadastrados : favoritos) {
 					System.out.println("Nome: " + cursosCadastrados.getNomeCurso());
 					System.out.println("Area: " + area.getNomeArea());
@@ -390,7 +406,7 @@ public class Principal {
 				break;
 			}
 
-			case 6: {
+			case 5: {
 				for (Endereco enderecosCadastrado : enderecos) {
 					System.out.println("Logradouro: " + enderecosCadastrado.getLogradouro());
 					System.out.println("Referencia: " + enderecosCadastrado.getReferencia());
@@ -400,7 +416,7 @@ public class Principal {
 				break;
 			}
 
-			case 7: {
+			case 6: {
 				for (Curso cursosCadastrado : cursos) {
 					System.out.println("Nome: " + cursosCadastrado.getNomeCurso());
 					System.out.println("Area: " + area.getNomeArea());
@@ -412,7 +428,7 @@ public class Principal {
 				break;
 			}
 
-			case 8: {
+			case 7: {
 				for (Instituicao instituicaoCadastrado : instituicoes) {
 					System.out.println("Nome: " + instituicaoCadastrado.getNome());
 					System.out.println("Descricao: " + instituicaoCadastrado.getDescricao());
@@ -433,7 +449,7 @@ public class Principal {
 				break;
 			}
 
-			case 9: {
+			case 8: {
 
 				consultascurso = cursoDAO.consultaAreaCurso(area);
 
@@ -449,7 +465,7 @@ public class Principal {
 				break;
 			}
 
-			case 10: {
+			case 9: {
 
 				consultascurso = cursoDAO.consultaNotaCurso(aluno);
 
@@ -465,7 +481,7 @@ public class Principal {
 				break;
 			}
 
-			case 11: {
+			case 10: {
 
 				consultascurso = cursoDAO.consultaModalidadeCurso(modal2);
 
@@ -481,7 +497,7 @@ public class Principal {
 				break;
 			}
 
-			case 12: {
+			case 11: {
 
 				System.out.println("Informe o o preco: ");
 				double custo = leitor.nextDouble();
@@ -500,7 +516,7 @@ public class Principal {
 				break;
 			}
 
-			case 13: {
+			case 12: {
 				consultascurso = cursoDAO.consultaTurnoCurso(turno);
 
 				for (Curso cursosCadastrado : consultascurso) {
@@ -515,7 +531,7 @@ public class Principal {
 				break;
 			}
 
-			case 14: {
+			case 13: {
 
 				System.out.println("Informe o o preco: ");
 				double custo = leitor.nextDouble();
@@ -535,7 +551,7 @@ public class Principal {
 				break;
 			}
 
-			case 15: {
+			case 14: {
 				aluno.removerCursoFavorito(curso);
 				aluno.removerCursoFavorito(curso2);
 				curso.removerAluno(aluno);
@@ -549,7 +565,7 @@ public class Principal {
 				break;
 			}
 
-			case 16: {
+			case 15: {
 				System.out.println("Saindo");
 				sair = 1;
 				break;

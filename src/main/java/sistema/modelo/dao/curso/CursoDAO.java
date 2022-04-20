@@ -7,8 +7,8 @@ import sistema.modelo.entidade.aluno.Aluno;
 import sistema.modelo.entidade.area.Area;
 import sistema.modelo.entidade.curso.Curso;
 import sistema.modelo.entidade.instituicao.Instituicao;
-import sistema.modelo.enumeracao.Turno;
 import sistema.modelo.enumeracao.modalidade.Modalidade;
+import sistema.modelo.enumeracao.turno.Turno;
 
 public interface CursoDAO {
 
