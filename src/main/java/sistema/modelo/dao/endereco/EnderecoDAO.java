@@ -15,6 +15,6 @@ public interface EnderecoDAO {
 
 	List<Endereco> recuperarEndereco();
 
-	List<Endereco> recuperarEnderecoInstituicao(Instituicao instituicao);
+	Endereco recuperarEnderecoInstituicao(Instituicao instituicao);
 
 }

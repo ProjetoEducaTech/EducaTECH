@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -251,5 +253,45 @@ public class AlunoDAOImpl implements AlunoDAO {
 		}
 
 		return loginUsuarioAluno;
+	}
+	
+public List<Aluno> recuperarAlunosFavoritaramCurso(Curso curso) {
+		
+		Session sessao = null;
+		List<Aluno> alunos = null;
+		
+		try {
+			sessao = banco.getConectarBanco().openSession();
+			sessao.beginTransaction();
+			
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+			
+			CriteriaQuery<Aluno> criteria = construtor.createQuery(Aluno.class);
+			Root<Aluno> raizAluno = criteria.from(Aluno.class);
+			
+			Join<Aluno, Curso> joinCurso = raizAluno.join("cursosFavorito");
+			ParameterExpression<Long> idCurso = construtor.parameter(Long.class);
+			
+			criteria.where(construtor.equal(joinCurso.get("idCurso"), idCurso));
+			
+			alunos = sessao.createQuery(criteria).setParameter(idCurso, curso.getIdCurso()).getResultList();
+			
+			sessao.getTransaction().commit();
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+		
+		return alunos;
 	}
 }

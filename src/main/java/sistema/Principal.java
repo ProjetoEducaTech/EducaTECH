@@ -288,7 +288,7 @@ public class Principal {
 			List<Aluno> alunos = alunoDAO.recuperarAlunos();
 			List<Endereco> enderecos = enderecoDAO.recuperarEndereco();
 			Contato contatoRecuperado = null;
-			List<Endereco> enderecosRecuperados = null;
+			Endereco enderecoRecuperado;
 			List<Curso> consultascurso = null;
 			List<Curso> favoritos = cursoDAO.exibirCursosFavoritos(aluno);
 			List<Curso> cursos = cursoDAO.recuperarCursos();
@@ -344,8 +344,8 @@ public class Principal {
 					System.out.println("Enderecos: ");
 					System.out.println();
 
-					enderecosRecuperados = enderecoDAO.recuperarEnderecoInstituicao(instituicaoCadastrado);
-					for (Endereco enderecoRecuperado : enderecosRecuperados) {
+					enderecoRecuperado = enderecoDAO.recuperarEnderecoInstituicao(instituicaoCadastrado);
+					
 						System.out.println("Logradouro: " + enderecoRecuperado.getLogradouro());
 						System.out.println("Referencia: " + enderecoRecuperado.getReferencia());
 						System.out.println("Numero: " + enderecoRecuperado.getNumero());
@@ -354,7 +354,7 @@ public class Principal {
 				}
 				break;
 
-			}
+			
 
 			case 4: {
 				for (Aluno alunosCadastrados : alunos) {
@@ -565,7 +565,7 @@ public class Principal {
 			System.out.print("\n O que você gostaria de executar? \n");
 			String[] opc2 = new String[] { "", " atualizar area ", " atualizar endereço ", " atualizar instituicao ",
 					" atualizar curso ", " deletar area ", " deletar endereco, instituica e contato ", " deletar tudo",
-					"Sair" };
+					" deletar aluno", " deletar instituição ", "Sair" };
 
 			for (int i = 1; i < opc2.length; i++) {
 				System.out.println(i + " - " + opc2[i]);
@@ -687,6 +687,46 @@ public class Principal {
 			}
 
 			case 8: {
+				
+				List<Curso> cursosFavoritos = cursoDAO.exibirCursosFavoritos(aluno);
+				
+				for(Curso selectCursosFavoritos : cursosFavoritos) {
+					aluno2.removerCursoFavorito(selectCursosFavoritos);
+					//selectCursosFavoritos.removerAluno(aluno2);
+					alunoDAO.atualizarAluno(aluno);
+					cursoDAO.atualizarCurso(selectCursosFavoritos);
+				}
+				contatoDAO.deletarContato(contatoDAO.recuperarContatoUsuario(aluno));
+				alunoDAO.deletarAluno(aluno);
+				
+				break;
+			}
+			case 9: {
+				List<Curso> cursosInstituicao = cursoDAO.consultaInstituicaoCurso(instituicao);
+				
+				for(Curso selectCursoInstituicao : cursosInstituicao) {
+					
+					
+					List<Aluno> alunosCursoFavoritado = alunoDAO.recuperarAlunosFavoritaramCurso(selectCursoInstituicao);
+//					
+					for(Aluno selectAlunoCursoFavoritado : alunosCursoFavoritado) {
+						if(selectAlunoCursoFavoritado.getId() == 0/*so coloquei esse zero pra 
+																	tirar o aviso de erro.equals()*/) {
+							selectAlunoCursoFavoritado.removerCursoFavorito(selectCursoInstituicao);
+							alunoDAO.atualizarAluno(selectAlunoCursoFavoritado);
+							cursoDAO.atualizarCurso(selectCursoInstituicao);
+						}					
+					}				
+					cursoDAO.deletarCurso(selectCursoInstituicao);
+				}
+				enderecoDAO.deletarEndereco(enderecoDAO.recuperarEnderecoInstituicao(instituicao));
+				contatoDAO.deletarContato(contatoDAO.recuperarContatoUsuario(instituicao));
+				instituicaoDAO.deletarInstituicao(instituicao);
+				
+				break;
+			}
+			
+			case 10: {
 				System.out.println("Saindo");
 				sair = 1;
 				break;

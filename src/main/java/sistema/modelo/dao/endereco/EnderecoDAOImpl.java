@@ -150,10 +150,10 @@ public class EnderecoDAOImpl implements EnderecoDAO {
 		return enderecos;
 	}
 	
-public List<Endereco> recuperarEnderecoInstituicao(Instituicao instituicao) {
+public Endereco recuperarEnderecoInstituicao(Instituicao instituicao) {
 		
 		Session sessao = null;
-		List<Endereco> enderecos = null;
+		Endereco endereco = null;
 
 		try {
 
@@ -170,7 +170,7 @@ public List<Endereco> recuperarEnderecoInstituicao(Instituicao instituicao) {
 			ParameterExpression<Long> idUsuario = construtor.parameter(Long.class);
 			criteria.where(construtor.equal(juncaoUsuario.get("id"), idUsuario));
 
-			enderecos = sessao.createQuery(criteria).setParameter(idUsuario, instituicao.getId()).getResultList();
+			endereco = sessao.createQuery(criteria).setParameter(idUsuario, instituicao.getId()).getSingleResult();
 
 			sessao.getTransaction().commit();
 
@@ -189,6 +189,6 @@ public List<Endereco> recuperarEnderecoInstituicao(Instituicao instituicao) {
 			}
 		}
 
-		return enderecos;
+		return endereco;
 	}
 }

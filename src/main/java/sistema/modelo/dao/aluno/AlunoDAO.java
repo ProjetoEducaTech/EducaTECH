@@ -21,5 +21,7 @@ public interface AlunoDAO {
 	Usuario loginUsuarioAluno(Aluno aluno);
 	
 	void removerCursoFavorito(Curso curso);
+	
+	public List<Aluno> recuperarAlunosFavoritaramCurso(Curso curso); 
 
 }
