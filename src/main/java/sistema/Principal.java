@@ -9,6 +9,8 @@ import sistema.modelo.dao.aluno.AlunoDAO;
 import sistema.modelo.dao.aluno.AlunoDAOImpl;
 import sistema.modelo.dao.area.AreaDAO;
 import sistema.modelo.dao.area.AreaDAOImpl;
+import sistema.modelo.dao.avaliacao.AvaliacaoDAO;
+import sistema.modelo.dao.avaliacao.AvaliacaoDAOImpl;
 import sistema.modelo.dao.contato.ContatoDAO;
 import sistema.modelo.dao.contato.ContatoDAOImpl;
 import sistema.modelo.dao.curso.CursoDAO;
@@ -21,6 +23,7 @@ import sistema.modelo.dao.usuario.UsuarioDAO;
 import sistema.modelo.dao.usuario.UsuarioDAOImpl;
 import sistema.modelo.entidade.aluno.Aluno;
 import sistema.modelo.entidade.area.Area;
+import sistema.modelo.entidade.avaliacao.Avaliacao;
 import sistema.modelo.entidade.contato.Contato;
 import sistema.modelo.entidade.curso.Curso;
 import sistema.modelo.entidade.endereco.Endereco;
@@ -44,6 +47,7 @@ public class Principal {
 		CursoDAO cursoDAO = new CursoDAOlmpl();
 		AlunoDAO alunoDAO = new AlunoDAOImpl();
 		UsuarioDAO usuarioDAO = new UsuarioDAOImpl();
+		AvaliacaoDAO avaliacaoDAO = new AvaliacaoDAOImpl();
 
 		String nome = "Teste ";
 		String senha = "13ee3";
@@ -201,6 +205,17 @@ public class Principal {
 		aluno.setCursoFavorito(curso);
 		alunoDAO.inserirAluno(aluno);
 		Optional<Double> notaAluno = Optional.of(notaCorte);
+		
+		int notaAvaliacao = 5;
+		String comentario = "Adorei testar esse curso muito bom";
+		
+		Avaliacao avaliacao = new Avaliacao();
+		
+		avaliacao.setNota(notaAvaliacao);
+		avaliacao.setComentario(comentario);
+		avaliacao.setAluno(aluno);
+		avaliacao.setCursosAvaliados(curso);
+		avaliacaoDAO.inserirAvaliacao(avaliacao);
 
 		String telefonea = "3332-9898";
 		String celulara = "2341-3232";
@@ -326,16 +341,15 @@ public class Principal {
 						System.out.println("cpf: " + loginUsuarioAluno.getCpf());
 						System.out.println("Nome: " + loginUsuarioAluno.getNome());
 						System.out.println("Senha: " + loginUsuarioAluno.getSenha());
-					}
+					} 
 
 					if (loginUsuarioInstituicao != null) {
 						System.out.println("cnpj: " + loginUsuarioInstituicao.getCnpj());
 						System.out.println("Nome: " + loginUsuarioInstituicao.getNome());
 						System.out.println("Senha: " + loginUsuarioInstituicao.getSenha());
-					} else {
-						System.out.println("Login Invalido");
 					}
-				} else {
+					}
+				 else {
 					System.out.println("Email ou senha invalidos");
 				}
 				break;

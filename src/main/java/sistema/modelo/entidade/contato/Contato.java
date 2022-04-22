@@ -5,10 +5,11 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import sistema.modelo.entidade.usuario.Usuario;
@@ -20,7 +21,8 @@ public class Contato implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "id_usuario")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_contato")
 	private Long id;
 
 	@Column(name = "telefone_contato", length = 20, nullable = true, unique = true)
@@ -31,9 +33,8 @@ public class Contato implements Serializable {
 
 	@Column(name = "email_contato", length = 40, nullable = false, unique = true)
 	private String email;
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@MapsId
+	
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
 

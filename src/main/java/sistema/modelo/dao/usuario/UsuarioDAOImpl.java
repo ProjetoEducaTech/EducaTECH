@@ -164,16 +164,16 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			CriteriaQuery<Usuario> criteria = construtor.createQuery(Usuario.class);
 			Root<Usuario> raizUsuario = criteria.from(Usuario.class);
 			
-			Join<Usuario,Contato> juncaoContato = raizUsuario.join("contato");
+			Join<Usuario,Contato> juncaoContato = raizUsuario.join("contatos");
 
 			Predicate predicateEmail = construtor.equal(juncaoContato.get("email"), email);
-			Predicate predicateSenha = construtor.equal(juncaoContato.get("senha"), senha);
+			Predicate predicateSenha = construtor.equal(raizUsuario.get("senha"), senha);
 			Predicate predicateLogin = construtor.and(predicateEmail, predicateSenha);
 			
 			criteria.where(predicateLogin);
 
 			loginUsuario = sessao.createQuery(criteria).getSingleResult();
-
+			
 			sessao.getTransaction().commit();
 
 		} catch (Exception sqlException) {
