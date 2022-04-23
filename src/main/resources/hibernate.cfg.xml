@@ -19,5 +19,6 @@
 		<mapping class="sistema.modelo.entidade.instituicao.Instituicao" />
 		<mapping class="sistema.modelo.entidade.turno.Turno" />
 		<mapping class="sistema.modelo.entidade.aluno.Aluno" />
+		<mapping class="sistema.modelo.entidade.avaliacao.Avaliacao" />
 	</session-factory>
 </hibernate-configuration>

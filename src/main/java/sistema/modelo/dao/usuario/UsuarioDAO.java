@@ -12,5 +12,6 @@ public interface UsuarioDAO {
 	void inserirUsuario(Usuario usuario);
 
 	List<Usuario> recuperarUsuario();
-
+	
+	Usuario loginUsuario(String email ,String senha);
 }

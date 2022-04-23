@@ -20,10 +20,11 @@ import javax.persistence.Table;
 
 import sistema.modelo.entidade.aluno.Aluno;
 import sistema.modelo.entidade.area.Area;
+import sistema.modelo.entidade.avaliacao.Avaliacao;
 import sistema.modelo.entidade.instituicao.Instituicao;
-import sistema.modelo.enumeracao.Turno;
 import sistema.modelo.enumeracao.metodoentrada.MetodoEntrada;
 import sistema.modelo.enumeracao.modalidade.Modalidade;
+import sistema.modelo.enumeracao.turno.Turno;
 
 @Entity
 @Table(name = "curso")
@@ -77,6 +78,9 @@ public class Curso implements Serializable {
 	@ManyToMany(mappedBy = "cursosFavorito")
 	private List<Aluno> alunos = new ArrayList<Aluno>();
 
+	@ManyToMany(mappedBy = "cursosAvaliados")
+	private List<Avaliacao> avaliacao = new ArrayList<Avaliacao>();
+	
 	public Curso() {
 
 	}
@@ -224,6 +228,14 @@ public class Curso implements Serializable {
 
 	public void removerAluno(Aluno alunos) {
 		this.alunos.remove(alunos);
+	}
+	
+	public List<Avaliacao> getAvaliacao() {
+		return avaliacao;
+	}
+
+	public void setAvaliacao(List<Avaliacao> avaliacao) {
+		this.avaliacao = avaliacao;
 	}
 
 	@Override

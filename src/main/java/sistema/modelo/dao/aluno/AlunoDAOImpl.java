@@ -4,16 +4,17 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Predicate;
+
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 
 import sistema.modelo.entidade.aluno.Aluno;
 import sistema.modelo.entidade.curso.Curso;
-import sistema.modelo.entidade.usuario.Usuario;
 import sistema.modelo.factory.conexao.FactoryConexao;
 
 public class AlunoDAOImpl implements AlunoDAO {
@@ -212,10 +213,10 @@ public class AlunoDAOImpl implements AlunoDAO {
 		return aluno;
 	}
 
-	public Usuario loginUsuarioAluno(Aluno aluno) {
+	public Aluno loginUsuarioAluno(Long id) {
 
 		Session sessao = null;
-		Usuario loginUsuarioAluno = null;
+		Aluno loginUsuarioAluno = null;
 
 		try {
 
@@ -227,11 +228,7 @@ public class AlunoDAOImpl implements AlunoDAO {
 			CriteriaQuery<Aluno> criteria = construtor.createQuery(Aluno.class);
 			Root<Aluno> raizAluno = criteria.from(Aluno.class);
 
-			Predicate predicateCpfAluno = construtor.equal(raizAluno.get("cpf"), aluno.getCpf());
-			Predicate predicateSenhaAluno = construtor.equal(raizAluno.get("senha"), aluno.getSenha());
-			Predicate predicateLoginAluno = construtor.and(predicateCpfAluno, predicateSenhaAluno);
-
-			criteria.where(predicateLoginAluno);
+			criteria.where(construtor.equal(raizAluno.get("id"), id));
 
 			loginUsuarioAluno = sessao.createQuery(criteria).getSingleResult();
 

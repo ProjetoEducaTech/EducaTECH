@@ -4,13 +4,11 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 
 import sistema.modelo.entidade.instituicao.Instituicao;
-import sistema.modelo.entidade.usuario.Usuario;
 import sistema.modelo.factory.conexao.FactoryConexao;
 
 public class InstituicaoDAOImpl implements InstituicaoDAO {
@@ -150,10 +148,10 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 		return instituicao;
 	}
 
-	public Usuario loginUsuarioInstituicao(Instituicao instituicao) {
+	public Instituicao loginUsuarioInstituicao(Long id) {
 
 		Session sessao = null;
-		Usuario loginUsuarioAluno = null;
+		Instituicao loginUsuarioAluno = null;
 
 		try {
 
@@ -165,11 +163,7 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 			CriteriaQuery<Instituicao> criteria = construtor.createQuery(Instituicao.class);
 			Root<Instituicao> raizInstuicao = criteria.from(Instituicao.class);
 
-			Predicate predicateCnpjInstituicao = construtor.equal(raizInstuicao.get("cnpj"), instituicao.getCnpj());
-			Predicate predicateSenhaInstituicao = construtor.equal(raizInstuicao.get("senha"), instituicao.getSenha());
-			Predicate predicateLoginInstituicao = construtor.and(predicateCnpjInstituicao, predicateSenhaInstituicao);
-
-			criteria.where(predicateLoginInstituicao);
+			criteria.where(construtor.equal(raizInstuicao.get("id"), id));
 
 			loginUsuarioAluno = sessao.createQuery(criteria).getSingleResult();
 

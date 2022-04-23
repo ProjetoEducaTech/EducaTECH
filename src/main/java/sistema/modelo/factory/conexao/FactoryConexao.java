@@ -18,6 +18,7 @@ public class FactoryConexao {
 		configuracao.addAnnotatedClass(sistema.modelo.entidade.aluno.Aluno.class);
 		configuracao.addAnnotatedClass(sistema.modelo.entidade.contato.Contato.class);
 		configuracao.addAnnotatedClass(sistema.modelo.entidade.endereco.Endereco.class);
+		configuracao.addAnnotatedClass(sistema.modelo.entidade.avaliacao.Avaliacao.class);
 
 		configuracao.configure("hibernate.cfg.xml");
 

@@ -14,8 +14,10 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import sistema.modelo.entidade.avaliacao.Avaliacao;
 import sistema.modelo.entidade.curso.Curso;
 import sistema.modelo.entidade.usuario.Usuario;
 import sistema.modelo.enumeracao.genero.Genero;
@@ -41,6 +43,9 @@ public class Aluno extends Usuario implements Serializable {
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "aluno_curso_favorito", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_curso"))
 	private List<Curso> cursosFavorito = new ArrayList<Curso>();
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
 
 	@Column(name = "genero_aluno", nullable = false)
 	@Enumerated(EnumType.ORDINAL)
@@ -58,6 +63,7 @@ public class Aluno extends Usuario implements Serializable {
 		setGenero(genero);
 		setDataNascimento(dataNascimento);
 		cursosFavorito = new ArrayList<Curso>();
+		avaliacoes = new ArrayList<Avaliacao>();
 	}
 
 	public String getCpf() {
@@ -111,6 +117,14 @@ public class Aluno extends Usuario implements Serializable {
 
 	public void setGenero(Genero genero) {
 		this.genero = genero;
+	}
+	
+	public List<Avaliacao> getAvaliacoes() {
+		return avaliacoes;
+	}
+
+	public void setAvaliacoes(List<Avaliacao> avaliacoes) {
+		this.avaliacoes = avaliacoes;
 	}
 
 	@Override

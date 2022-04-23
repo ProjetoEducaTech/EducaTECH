@@ -3,7 +3,6 @@ package sistema.modelo.dao.instituicao;
 import java.util.List;
 
 import sistema.modelo.entidade.instituicao.Instituicao;
-import sistema.modelo.entidade.usuario.Usuario;
 
 public interface InstituicaoDAO {
 
@@ -15,5 +14,5 @@ public interface InstituicaoDAO {
 
 	List<Instituicao> recuperarInstituicoes();
 
-	Usuario loginUsuarioInstituicao(Instituicao instituicao);
+	Instituicao loginUsuarioInstituicao(Long id);
 }
