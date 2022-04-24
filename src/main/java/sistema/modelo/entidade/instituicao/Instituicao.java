@@ -32,8 +32,8 @@ public class Instituicao extends Usuario implements Serializable {
 	public Instituicao() {
 	}
 
-	public Instituicao(Long id, String nome, String senha, String cnpj, String descrcao) {
-		super(id, nome, senha);
+	public Instituicao(Long id, String nome, String senha, byte[] sal, String cnpj, String descrcao) {
+		super(id, nome, senha, sal);
 		setCnpj(cnpj);
 		setDescricao(descricao);
 		cursos = new ArrayList<Curso>();

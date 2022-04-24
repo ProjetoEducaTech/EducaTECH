@@ -54,9 +54,9 @@ public class Aluno extends Usuario implements Serializable {
 	public Aluno() {
 	}
 
-	public Aluno(Long id, String nome, String senha, String cpf, String sobrenome, double nota, Genero genero,
+	public Aluno(Long id, String nome, String senha, byte[] sal, String cpf, String sobrenome, double nota, Genero genero,
 			LocalDate dataNascimento) {
-		super(id, nome, senha);
+		super(id, nome, senha, sal);
 		setCpf(cpf);
 		setSobrenome(sobrenome);
 		setNota(nota);
