@@ -1,5 +1,7 @@
 package sistema;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -33,10 +35,11 @@ import sistema.modelo.enumeracao.genero.Genero;
 import sistema.modelo.enumeracao.metodoentrada.MetodoEntrada;
 import sistema.modelo.enumeracao.modalidade.Modalidade;
 import sistema.modelo.enumeracao.turno.Turno;
+import sistema.modelo.util.hash.Hash;
 
 public class Principal {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InvalidKeySpecException, NoSuchAlgorithmException {
 
 		Scanner leitor = new Scanner(System.in);
 
@@ -51,6 +54,7 @@ public class Principal {
 
 		String nome = "Teste ";
 		String senha = "13ee3";
+		byte[] sal = Hash.gerarSal();
 
 		String logradouro = "teste";
 		int numero = 43;
@@ -68,7 +72,8 @@ public class Principal {
 		Instituicao instituicao = new Instituicao();
 
 		instituicao.setNome(nome);
-		instituicao.setSenha(senha);
+		instituicao.setSenha(Hash.gerarHash(sal, senha));
+		instituicao.setSal(sal);
 		instituicao.setCnpj(cnpj);
 		instituicao.setDescricao(desc);
 
@@ -109,6 +114,8 @@ public class Principal {
 
 		nome = "Teste instituicao";
 		senha = "senha";
+		sal = Hash.gerarSal();
+		
 
 		logradouro = "rua teste";
 		numero = 34;
@@ -126,7 +133,8 @@ public class Principal {
 		Instituicao instituicao2 = new Instituicao();
 
 		instituicao2.setNome(nome);
-		instituicao2.setSenha(senha);
+		instituicao2.setSenha(Hash.gerarHash(sal, senha));
+		instituicao2.setSal(sal);
 		instituicao2.setCnpj(cnpj);
 		instituicao2.setDescricao(desc);
 
@@ -190,13 +198,16 @@ public class Principal {
 		String cpf = "342";
 		String sobrenome = "sobrenome";
 		LocalDate dataNasc = LocalDate.parse("2022-05-25");
+		sal = Hash.gerarSal();
 		double notaCorte = 500.5;
 		Genero genero = Genero.MASCULINO;
 
 		Aluno aluno = new Aluno();
-
+		
+		
 		aluno.setNome(alunoNome);
-		aluno.setSenha(alunoSenha);
+		aluno.setSenha(Hash.gerarHash(sal, alunoSenha));
+		aluno.setSal(sal);
 		aluno.setCpf(cpf);
 		aluno.setSobrenome(sobrenome);
 		aluno.setDataNascimento(dataNasc);
@@ -262,6 +273,7 @@ public class Principal {
 
 		alunoNome = "Aluno2";
 		alunoSenha = "senha123";
+		sal = Hash.gerarSal();
 		cpf = "342435";
 		sobrenome = "sobrenome2";
 		dataNasc = LocalDate.parse("2022-04-25");
@@ -271,7 +283,8 @@ public class Principal {
 		Aluno aluno2 = new Aluno();
 
 		aluno2.setNome(alunoNome);
-		aluno2.setSenha(alunoSenha);
+		aluno2.setSenha(Hash.gerarHash(sal, alunoSenha));
+		aluno2.setSal(sal);
 		aluno2.setCpf(cpf);
 		aluno2.setSobrenome(sobrenome);
 		aluno2.setDataNascimento(dataNasc);

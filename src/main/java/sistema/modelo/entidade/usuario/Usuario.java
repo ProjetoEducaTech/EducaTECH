@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -33,12 +34,17 @@ public class Usuario implements Serializable {
 	@Column(name = "nome_usuario", length = 25, nullable = false, unique = false)
 	private String nome;
 
-	@Column(name = "senha_usuario", length = 20, nullable = false, unique = false)
+	@Column(name = "senha_usuario", length = 32, nullable = false, unique = false)
 	private String senha;
+	
+	@Lob
+	@Column(name = "sal_usuario", nullable = false, unique = true)
+	private byte[] sal;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Contato> contatos = new ArrayList<Contato>();
 	
+
 	public Usuario() {
 	}
 
@@ -48,11 +54,12 @@ public class Usuario implements Serializable {
 		setSenha(senha);
 	}
 
-	public Usuario(Long id, String nome, String senha) {
+	public Usuario(Long id, String nome, String senha, byte[] sal) {
 
 		setId(id);
 		setNome(nome);
 		setSenha(senha);
+		setSal(sal);
 	}
 
 	public Long getId() {
@@ -77,6 +84,14 @@ public class Usuario implements Serializable {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	
+	public byte[] getSal() {
+		return sal;
+	}
+
+	public void setSal(byte[] sal) {
+		this.sal = sal;
 	}
 
 	@Override
