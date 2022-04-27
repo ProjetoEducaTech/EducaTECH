@@ -18,7 +18,7 @@ public interface CursoDAO {
 
 	void atualizarCurso(Curso curso);
 
-	List<Curso> recuperarCursos();
+	List<Curso> consultaCursos();
 
 	List<Curso> consultaInstituicaoCurso(Instituicao instituicao);
 

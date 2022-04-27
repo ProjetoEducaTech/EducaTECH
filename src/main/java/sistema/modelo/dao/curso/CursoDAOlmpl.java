@@ -118,7 +118,7 @@ public class CursoDAOlmpl implements CursoDAO {
 		}
 	}
 
-	public List<Curso> recuperarCursos() {
+	public List<Curso> consultaCursos() {
 
 		Session sessao = null;
 		List<Curso> curso = null;

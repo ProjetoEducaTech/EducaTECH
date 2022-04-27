@@ -1,10 +1,7 @@
 package sistema.modelo.entidade.avaliacao;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,8 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -41,9 +36,9 @@ public class Avaliacao implements Serializable {
 	@JoinColumn(name = "id_usuario")
 	private Aluno aluno;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "cursos_avaliados", joinColumns = @JoinColumn(name = "id_avaliacao"), inverseJoinColumns = @JoinColumn(name = "id_curso"))
-	private List<Curso> cursosAvaliados = new ArrayList<Curso>();
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_curso")
+	private Curso curso;
 
 	public Avaliacao() {
 	}
@@ -53,11 +48,11 @@ public class Avaliacao implements Serializable {
 		setComentario(comentario);
 	}
 
-	public Avaliacao(Long id, int nota, String comentario) {
+	public Avaliacao(Long id, int nota, String comentario, Curso curso) {
 		setId(id);
 		setNota(nota);
 		setComentario(comentario);
-		cursosAvaliados = new ArrayList<Curso>();
+		setCurso(curso);
 	}
 
 	public Long getId() {
@@ -92,16 +87,12 @@ public class Avaliacao implements Serializable {
 		this.aluno = aluno;
 	}
 
-	public List<Curso> getCursosAvaliados() {
-		return cursosAvaliados;
+	public Curso getCurso() {
+		return curso;
 	}
 
-	public void setCursosAvaliados(Curso cursosAvaliados) {
-		this.cursosAvaliados.add(cursosAvaliados);
-	}
-	
-	public void removerCursosAvaliados(Curso cursosAvaliados) {
-		this.cursosAvaliados.remove(cursosAvaliados);
+	public void setCurso(Curso curso) {
+		this.curso = curso;
 	}
 
 	@Override

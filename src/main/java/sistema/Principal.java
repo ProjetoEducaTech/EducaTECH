@@ -3,6 +3,7 @@ package sistema;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -225,7 +226,7 @@ public class Principal {
 		avaliacao.setNota(notaAvaliacao);
 		avaliacao.setComentario(comentario);
 		avaliacao.setAluno(aluno);
-		avaliacao.setCursosAvaliados(curso);
+		avaliacao.setCurso(curso);
 		avaliacaoDAO.inserirAvaliacao(avaliacao);
 
 		String telefonea = "3332-9898";
@@ -293,6 +294,19 @@ public class Principal {
 		aluno2.setCursoFavorito(curso);
 
 		alunoDAO.inserirAluno(aluno2);
+		
+		avaliacao = new Avaliacao();
+
+		notaAvaliacao = 4;
+		comentario = "Amei esse curso";
+		avaliacao.setNota(notaAvaliacao);
+
+		avaliacao.setComentario(comentario);
+		avaliacao.setAluno(aluno2);
+		avaliacao.setCurso(curso);
+		avaliacaoDAO.inserirAvaliacao(avaliacao);
+
+
 
 		telefonea = "3124-9898";
 		celulara = "2341-2543";
@@ -318,11 +332,14 @@ public class Principal {
 			List<Instituicao> instituicoes = instituicaoDAO.recuperarInstituicoes();
 			List<Aluno> alunos = alunoDAO.recuperarAlunos();
 			List<Endereco> enderecos = enderecoDAO.recuperarEndereco();
+			List<Integer> media = new ArrayList<Integer>();
 			Contato contatoRecuperado = null;
 			Endereco enderecoRecuperado;
 			List<Curso> consultascurso = null;
+			List<Avaliacao> consultasAvaliacoes = null;
 			List<Curso> favoritos = cursoDAO.exibirCursosFavoritos(aluno);
-			List<Curso> cursos = cursoDAO.recuperarCursos();
+			List<Curso> cursos = cursoDAO.consultaCursos();
+			double mediaCurso;	
 			Instituicao loginUsuarioInstituicao = null;
 			Aluno loginUsuarioAluno = null;
 			Usuario login = null;
@@ -332,7 +349,7 @@ public class Principal {
 					" Exibir cursos favoritos", " Exibir enderecos", " Exibir Cursos", " Exibir Cursos por instituicao",
 					" Exibir Cursos por area", " Exibir Cursos por nota de corte", "Exibir Cursos por modalidade",
 					"Exibir Cursos por preco", "Exibir Cursos por turno", "Exibir filtros de Cursos",
-					"Remover curso favorito", "Sair" };
+					"Remover curso favorito", "Avaliacoes do curso", "Sair" }; 
 			for (int i = 1; i < opc.length; i++) {
 				System.out.println(i + " - " + opc[i]);
 			}
@@ -344,7 +361,7 @@ public class Principal {
 			case 1: {
 				email = "testealuno@email.com.br";
 				senha = "12345";
-				login = usuarioDAO.loginUsuario(email,senha);
+				login = usuarioDAO.loginUsuario(email, senha);
 
 				if (login != null) {
 					loginUsuarioAluno = alunoDAO.loginUsuarioAluno(login.getId());
@@ -361,8 +378,8 @@ public class Principal {
 						System.out.println("Nome: " + loginUsuarioInstituicao.getNome());
 						System.out.println("Senha: " + loginUsuarioInstituicao.getSenha());
 					}
-					}
-				 else {
+					
+				} else {
 					System.out.println("Email ou senha invalidos");
 				}
 				break;
@@ -591,8 +608,24 @@ public class Principal {
 				cursoDAO.atualizarCurso(curso2);
 				break;
 			}
-
+			
 			case 15: {
+				consultasAvaliacoes = avaliacaoDAO.avaliacoesCurso(curso);
+
+				for (Avaliacao avaliacoes : consultasAvaliacoes) {
+					System.out.println("Nota: " + avaliacoes.getNota());
+					System.out.println("Comentario: " + avaliacoes.getComentario());
+					System.out.println("");
+
+					media.add(avaliacoes.getNota());
+				}
+
+				mediaCurso = avaliacaoDAO.mediaAvaliacoesCurso(media);
+				System.out.println("Media do curso: " + mediaCurso);
+				break;
+			}
+			
+			case 16: {
 				System.out.println("Saindo");
 				sair = 1;
 				break;

@@ -1,6 +1,9 @@
 package sistema.modelo.dao.avaliacao;
 
+import java.util.List;
+
 import sistema.modelo.entidade.avaliacao.Avaliacao;
+import sistema.modelo.entidade.curso.Curso;
 
 public interface AvaliacaoDAO {
 
@@ -10,4 +13,7 @@ public interface AvaliacaoDAO {
 
 	void atualizarAvaliacao(Avaliacao avaliacao);
 
+	List<Avaliacao> avaliacoesCurso(Curso curso);
+
+	double mediaAvaliacoesCurso(List<Integer> media);
 }

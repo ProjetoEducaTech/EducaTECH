@@ -32,7 +32,7 @@ public class Instituicao extends Usuario implements Serializable {
 	public Instituicao() {
 	}
 
-	public Instituicao(Long id, String nome, String senha, byte[] sal, String cnpj, String descrcao) {
+	public Instituicao(Long id, String nome, String senha, byte[] sal, String cnpj, String descricao) {
 		super(id, nome, senha, sal);
 		setCnpj(cnpj);
 		setDescricao(descricao);
