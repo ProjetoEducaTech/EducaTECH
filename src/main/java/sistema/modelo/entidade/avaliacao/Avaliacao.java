@@ -1,6 +1,7 @@
 package sistema.modelo.entidade.avaliacao;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,7 +32,10 @@ public class Avaliacao implements Serializable {
 
 	@Column(name = "comentario_avaliacao", length = 45, nullable = false)
 	private String comentario;
-	
+
+	@Column(name = "data_comentario_avaliacao", nullable = false)
+	private LocalDate dataAvaliacao;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_usuario")
 	private Aluno aluno;
@@ -43,15 +47,20 @@ public class Avaliacao implements Serializable {
 	public Avaliacao() {
 	}
 
-	public Avaliacao(int nota, String comentario) {
+	public Avaliacao(int nota, String comentario, LocalDate dataAvaliacao, Aluno aluno, Curso curso) {
 		setNota(nota);
 		setComentario(comentario);
+		setDataAvaliacao(dataAvaliacao);
+		setAluno(aluno);
+		setCurso(curso);
 	}
 
 	public Avaliacao(Long id, int nota, String comentario, Curso curso) {
 		setId(id);
 		setNota(nota);
 		setComentario(comentario);
+		setDataAvaliacao(dataAvaliacao);
+		setAluno(aluno);
 		setCurso(curso);
 	}
 
@@ -78,7 +87,16 @@ public class Avaliacao implements Serializable {
 	public void setComentario(String comentario) {
 		this.comentario = comentario;
 	}
-	
+
+	public LocalDate getDataAvaliacao() {
+
+		return dataAvaliacao;
+	}
+
+	public void setDataAvaliacao(LocalDate dataAvaliacao) {
+		this.dataAvaliacao = dataAvaliacao;
+	}
+
 	public Aluno getAluno() {
 		return aluno;
 	}
@@ -110,6 +128,7 @@ public class Avaliacao implements Serializable {
 		Avaliacao avaliacao = (Avaliacao) obj;
 
 		return this.getId().equals(avaliacao.getId()) && this.getNota() == (avaliacao.getNota())
-				&& this.getComentario().equals(avaliacao.getComentario());
+				&& this.getComentario().equals(avaliacao.getComentario())
+				&& this.getDataAvaliacao().equals(avaliacao.getDataAvaliacao());
 	}
 }

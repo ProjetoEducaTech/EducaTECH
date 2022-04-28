@@ -3,7 +3,6 @@ package sistema;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -220,11 +219,13 @@ public class Principal {
 		
 		int notaAvaliacao = 5;
 		String comentario = "Adorei testar esse curso muito bom";
+		LocalDate dataAvaliacao = LocalDate.now();
 		
 		Avaliacao avaliacao = new Avaliacao();
 		
 		avaliacao.setNota(notaAvaliacao);
 		avaliacao.setComentario(comentario);
+		avaliacao.setDataAvaliacao(dataAvaliacao);
 		avaliacao.setAluno(aluno);
 		avaliacao.setCurso(curso);
 		avaliacaoDAO.inserirAvaliacao(avaliacao);
@@ -297,16 +298,16 @@ public class Principal {
 		
 		avaliacao = new Avaliacao();
 
-		notaAvaliacao = 4;
+		notaAvaliacao = 3;
 		comentario = "Amei esse curso";
+		dataAvaliacao = LocalDate.now();
+		
 		avaliacao.setNota(notaAvaliacao);
-
 		avaliacao.setComentario(comentario);
+		avaliacao.setDataAvaliacao(dataAvaliacao);
 		avaliacao.setAluno(aluno2);
 		avaliacao.setCurso(curso);
 		avaliacaoDAO.inserirAvaliacao(avaliacao);
-
-
 
 		telefonea = "3124-9898";
 		celulara = "2341-2543";
@@ -332,7 +333,6 @@ public class Principal {
 			List<Instituicao> instituicoes = instituicaoDAO.recuperarInstituicoes();
 			List<Aluno> alunos = alunoDAO.recuperarAlunos();
 			List<Endereco> enderecos = enderecoDAO.recuperarEndereco();
-			List<Integer> media = new ArrayList<Integer>();
 			Contato contatoRecuperado = null;
 			Endereco enderecoRecuperado;
 			List<Curso> consultascurso = null;
@@ -617,10 +617,9 @@ public class Principal {
 					System.out.println("Comentario: " + avaliacoes.getComentario());
 					System.out.println("");
 
-					media.add(avaliacoes.getNota());
 				}
 
-				mediaCurso = avaliacaoDAO.mediaAvaliacoesCurso(media);
+				mediaCurso = avaliacaoDAO.mediaAvaliacoesCurso(curso);
 				System.out.println("Media do curso: " + mediaCurso);
 				break;
 			}
