@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -533,6 +534,53 @@ public class CursoDAOImpl implements CursoDAO {
 		}
 
 		return consultaFiltroCurso;
+	}
+
+	public List<Curso> paginaPorAvaliacaoNomePreco(int pageNumber, int pageSize) {
+
+		Session sessao = null;
+		List<Curso> currentPage = new ArrayList<>();
+
+		try{
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Long> queryContador = construtor.createQuery(Long.class);
+
+			queryContador.select(construtor.count(queryContador.from(Curso.class)));
+			Long count = sessao.createQuery(queryContador).getSingleResult();
+
+			CriteriaQuery<Curso> criteriaQuery = construtor.createQuery(Curso.class);
+			Root<Curso> raizCurso = criteriaQuery.from(Curso.class);
+			CriteriaQuery<Curso> select = criteriaQuery.select(raizCurso);
+
+			criteriaQuery.orderBy(construtor.desc(raizCurso.get("avaliacao")), construtor.asc(raizCurso.get("nomeCurso")), construtor.asc(raizCurso.get("preco")));
+			TypedQuery<Curso> typedQuery = sessao.createQuery(select);
+			currentPage.addAll(typedQuery.getResultList());
+			while (pageNumber < count.intValue()) {
+				typedQuery.setFirstResult(pageNumber - 1);
+				typedQuery.setMaxResults(pageSize);
+				System.out.println("Página atual: " + typedQuery.getResultList());
+				pageNumber += pageSize;
+			}
+			
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+		return currentPage;
 	}
 
 }
