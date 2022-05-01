@@ -559,12 +559,6 @@ public class CursoDAOImpl implements CursoDAO {
 			criteriaQuery.orderBy(construtor.desc(raizCurso.get("avaliacao")), construtor.asc(raizCurso.get("nomeCurso")), construtor.asc(raizCurso.get("preco")));
 			TypedQuery<Curso> typedQuery = sessao.createQuery(select);
 			currentPage.addAll(typedQuery.getResultList());
-			while (pageNumber < count.intValue()) {
-				typedQuery.setFirstResult(pageNumber - 1);
-				typedQuery.setMaxResults(pageSize);
-				System.out.println("Página atual: " + typedQuery.getResultList());
-				pageNumber += pageSize;
-			}
 			
 		} catch (Exception sqlException) {
 
