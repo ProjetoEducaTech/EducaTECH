@@ -13,7 +13,7 @@ public interface AvaliacaoDAO {
 
 	Avaliacao deletarAvaliacao(Avaliacao avaliacao);
 
-	double mediaAvaliacoesCurso(List<Integer> media);
+	double mediaAvaliacoesCurso(Curso curso);
 
 	List<Avaliacao> avaliacaoCurso(Curso curso);
 	

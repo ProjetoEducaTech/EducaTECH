@@ -115,16 +115,45 @@ public class AvaliacaoDAOImpl implements AvaliacaoDAO {
 		return avaliacao;
 	}
 
-	public double mediaAvaliacoesCurso(List<Integer> media) {
+	public double mediaAvaliacoesCurso(Curso curso) {
 
 		double mediaCurso = 0;
-		int somatorio = 0;
+		Session sessao = null;
 
-		for (int i = 0; i < media.size(); i++) {
-			somatorio += media.get(i);
+		try {
+
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Double> criteria = construtor.createQuery(Double.class);
+			Root<Avaliacao> raizAvaliacao = criteria.from(Avaliacao.class);
+
+			Join<Avaliacao, Curso> juncaoCurso = raizAvaliacao.join("curso");
+
+			ParameterExpression<Long> idCurso = construtor.parameter(Long.class);
+			criteria.select(construtor.avg(raizAvaliacao.<Double>get("nota")))
+					.where(construtor.equal(juncaoCurso.get("idCurso"), idCurso)).groupBy(juncaoCurso.get("id"));
+
+			mediaCurso = sessao.createQuery(criteria).setParameter(idCurso, curso.getId()).getSingleResult();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
 		}
-
-		mediaCurso = somatorio / media.size();
 
 		return mediaCurso;
 	}
