@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.com.educatech.modelo.entidade.aluno.Aluno;
 import br.com.educatech.modelo.entidade.curso.Curso;
+import br.com.educatech.modelo.entidade.usuario.Usuario;
 
 public interface AlunoDAO {
 
@@ -20,5 +21,7 @@ public interface AlunoDAO {
 	Aluno loginUsuarioAluno(Long id);
 
 	List<Aluno> recuperarAlunos();
+
+	Aluno recuperarAlunoPorID(Usuario usuario);
 
 }

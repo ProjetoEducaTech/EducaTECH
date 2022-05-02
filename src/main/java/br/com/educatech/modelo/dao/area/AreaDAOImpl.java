@@ -1,5 +1,11 @@
 package br.com.educatech.modelo.dao.area;
 
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.Session;
 
 import br.com.educatech.modelo.entidade.area.Area;
@@ -106,4 +112,42 @@ public class AreaDAOImpl implements AreaDAO {
 		return area;
 	}
 
+	public List<Area> recuperarArea() {
+
+		Session sessao = null;
+		List<Area> areas = null;
+
+		try {
+
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Area> criteria = construtor.createQuery(Area.class);
+			Root<Area> raizArea = criteria.from(Area.class);
+
+			criteria.select(raizArea);
+
+			areas = sessao.createQuery(criteria).getResultList();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return areas;
+	}
 }

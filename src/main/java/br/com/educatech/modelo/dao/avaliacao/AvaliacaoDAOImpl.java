@@ -171,4 +171,42 @@ public class AvaliacaoDAOImpl implements AvaliacaoDAO {
 		return avaliacoes;
 	}
 
+	public Avaliacao recuperarAvaliacaoPorID(Avaliacao avaliacao) {
+
+		Session sessao = null;
+		Avaliacao avalicaoesRecuperadas = null;
+
+		try {
+
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Avaliacao> criteria = construtor.createQuery(Avaliacao.class);
+			Root<Avaliacao> raizAvaliacao = criteria.from(Avaliacao.class);
+
+			criteria.where(construtor.equal(raizAvaliacao.get("id"), raizAvaliacao));
+
+			avalicaoesRecuperadas = sessao.createQuery(criteria).getSingleResult();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return avalicaoesRecuperadas;
+	}
 }

@@ -16,5 +16,6 @@ public interface AvaliacaoDAO {
 	double mediaAvaliacoesCurso(List<Integer> media);
 
 	List<Avaliacao> avaliacaoCurso(Curso curso);
-
+	
+	Avaliacao recuperarAvaliacaoPorID (Avaliacao avaliacao);
 }
