@@ -10,6 +10,7 @@ import org.hibernate.Session;
 
 import br.com.educatech.modelo.entidade.aluno.Aluno;
 import br.com.educatech.modelo.entidade.curso.Curso;
+import br.com.educatech.modelo.entidade.usuario.Usuario;
 import br.com.educatech.modelo.factory.conexao.ConexaoFactory;
 
 public class AlunoDAOImpl implements AlunoDAO {
@@ -251,4 +252,42 @@ public class AlunoDAOImpl implements AlunoDAO {
 		return aluno;
 	}
 
+	public Aluno recuperarAlunoPorID(Usuario usuario) {
+
+		Session sessao = null;
+		Aluno alunos = null;
+
+		try {
+
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Aluno> criteria = construtor.createQuery(Aluno.class);
+			Root<Aluno> raizAluno = criteria.from(Aluno.class);
+
+			criteria.where(construtor.equal(raizAluno.get("id"), raizAluno));
+
+			alunos = sessao.createQuery(criteria).getSingleResult();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return alunos;
+	}
 }
