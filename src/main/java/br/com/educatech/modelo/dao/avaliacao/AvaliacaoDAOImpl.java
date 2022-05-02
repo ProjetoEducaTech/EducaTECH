@@ -186,7 +186,7 @@ public class AvaliacaoDAOImpl implements AvaliacaoDAO {
 			CriteriaQuery<Avaliacao> criteria = construtor.createQuery(Avaliacao.class);
 			Root<Avaliacao> raizAvaliacao = criteria.from(Avaliacao.class);
 
-			criteria.where(construtor.equal(raizAvaliacao.get("id"), raizAvaliacao));
+			criteria.where(construtor.equal(raizAvaliacao.get("id"), avaliacao.getId()));
 
 			avalicaoesRecuperadas = sessao.createQuery(criteria).getSingleResult();
 
