@@ -128,6 +128,45 @@ public class CursoDAOImpl implements CursoDAO {
 
 		return curso;
 	}
+	
+	public Curso recuperarCursoPorId(Curso curso) {
+
+		Session sessao = null;
+		Curso  cursosRecuperadas = null;
+
+		try {
+
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
+			Root<Curso> raizCurso = criteria.from(Curso.class);
+
+			criteria.where(construtor.equal(raizCurso.get(Curso_.ID), curso.getId()));
+
+			cursosRecuperadas = sessao.createQuery(criteria).getSingleResult();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return cursosRecuperadas;
+	}
 
 	public List<Curso> recuperarCurso() {
 

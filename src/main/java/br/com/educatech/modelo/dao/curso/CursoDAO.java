@@ -17,6 +17,8 @@ public interface CursoDAO {
 	Curso atualizarCurso(Curso curso);
 
 	Curso deletarCurso(Curso curso);
+	
+	Curso recuperarCursoPorId(Curso curso);
 
 	List<Curso> recuperarCurso();
 

@@ -159,6 +159,45 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		return loginUsuario;
 	}
 
+	public Usuario recuperarUsuarioPorId(Usuario usuario) {
+
+		Session sessao = null;
+		Usuario usuariosRecuperadas = null;
+
+		try {
+
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Usuario> criteria = construtor.createQuery(Usuario.class);
+			Root<Usuario> raizUsuario = criteria.from(Usuario.class);
+
+			criteria.where(construtor.equal(raizUsuario.get(Usuario_.ID), usuario.getId()));
+
+			usuariosRecuperadas = sessao.createQuery(criteria).getSingleResult();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return usuariosRecuperadas;
+	}
+	
 	public List<Usuario> recuperarUsuario() {
 
 		Session sessao = null;

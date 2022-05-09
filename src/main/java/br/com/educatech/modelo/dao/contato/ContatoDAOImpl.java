@@ -197,5 +197,44 @@ public class ContatoDAOImpl implements ContatoDAO {
 
 		return contatos;
 	}
+	
+	public Contato recuperarContatoPorId(Contato contato) {
+
+		Session sessao = null;
+		Contato contatosRecuperadas = null;
+
+		try {
+
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Contato> criteria = construtor.createQuery(Contato.class);
+			Root<Contato> raizContato = criteria.from(Contato.class);
+
+			criteria.where(construtor.equal(raizContato.get(Contato_.ID), contato.getId()));
+
+			contatosRecuperadas = sessao.createQuery(criteria).getSingleResult();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return contatosRecuperadas;
+	}
 
 }

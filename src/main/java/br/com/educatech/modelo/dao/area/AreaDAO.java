@@ -13,5 +13,7 @@ public interface AreaDAO {
 	Area deletarArea(Area area);
 
 	List<Area> recuperarArea();
+	
+	Area recuperarAreaPorId(Area area);
 
 }

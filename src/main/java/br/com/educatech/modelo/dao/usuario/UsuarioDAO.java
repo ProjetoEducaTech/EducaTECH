@@ -13,6 +13,8 @@ public interface UsuarioDAO {
 	Usuario deletarUsuario(Usuario usuario);
 
 	Usuario loginUsuario(String email, String senha);
+	
+	Usuario recuperarUsuarioPorId(Usuario usuario);
 
 	List<Usuario> recuperarUsuario();
 

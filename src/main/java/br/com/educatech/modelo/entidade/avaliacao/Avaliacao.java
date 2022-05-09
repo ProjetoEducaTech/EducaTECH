@@ -1,6 +1,7 @@
 package br.com.educatech.modelo.entidade.avaliacao;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,23 +43,28 @@ public class Avaliacao implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_curso", nullable = false)
 	private Curso curso;
+	
+	@Column(name = "data_comentario_avaliacao", nullable = false)
+	private LocalDate dataComentario; 
 
 	public Avaliacao() {
 	}
 
-	public Avaliacao(int nota, String comentario, Aluno aluno, Curso curso) {
+	public Avaliacao(int nota, String comentario, Aluno aluno, Curso curso, LocalDate dataComentario) {
 		setNota(nota);
 		setComentario(comentario);
 		setAluno(aluno);
 		setCurso(curso);
+		setDataComentario(dataComentario);
 	}
 
-	public Avaliacao(Long id, int nota, String comentario, Aluno aluno, Curso curso) {
+	public Avaliacao(Long id, int nota, String comentario, Aluno aluno, Curso curso, LocalDate dataComentario) {
 		setId(id);
 		setNota(nota);
 		setComentario(comentario);
 		setAluno(aluno);
 		setCurso(curso);
+		setDataComentario(dataComentario);
 	}
 
 	public Avaliacao(Long id) {
@@ -106,4 +112,11 @@ public class Avaliacao implements Serializable {
 		this.curso = curso;
 	}
 
+	public LocalDate getDataComentario() {
+		return dataComentario;
+	}
+
+	public void setDataComentario(LocalDate dataComentario) {
+		this.dataComentario = dataComentario;
+	}
 }

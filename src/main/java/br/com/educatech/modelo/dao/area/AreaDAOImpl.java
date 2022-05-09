@@ -9,6 +9,7 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 
 import br.com.educatech.modelo.entidade.area.Area;
+import br.com.educatech.modelo.entidade.area.Area_;
 import br.com.educatech.modelo.factory.conexao.ConexaoFactory;
 
 public class AreaDAOImpl implements AreaDAO {
@@ -150,5 +151,42 @@ public class AreaDAOImpl implements AreaDAO {
 
 		return areas;
 	}
+	public Area recuperarAreaPorId(Area area) {
 
+		Session sessao = null;
+		Area areasRecuperadas = null;
+
+		try {
+
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Area> criteria = construtor.createQuery(Area.class);
+			Root<Area> raizArea = criteria.from(Area.class);
+
+			criteria.where(construtor.equal(raizArea.get(Area_.ID), area.getId()));
+
+			areasRecuperadas = sessao.createQuery(criteria).getSingleResult();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return areasRecuperadas;
+	}
 }

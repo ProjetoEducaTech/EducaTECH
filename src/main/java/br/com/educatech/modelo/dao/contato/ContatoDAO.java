@@ -16,5 +16,7 @@ public interface ContatoDAO {
 	Contato recuperarPorContatoUsuario(Usuario usuario);
 
 	List<Contato> recuperarContato();
+	
+	Contato recuperarContatoPorId(Contato contato);
 
 }
