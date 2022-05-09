@@ -3,7 +3,6 @@ package br.com.educatech.educatech;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -15,6 +14,7 @@ import br.com.educatech.casodeuso.atualizarcontato.AtualizarContatoCasoDeUso;
 import br.com.educatech.casodeuso.atualizarcurso.AtualizarCursoCasoDeUso;
 import br.com.educatech.casodeuso.atualizarendereco.AtualizarEnderecoCasoDeUso;
 import br.com.educatech.casodeuso.atualizarinstituicao.AtualizarInstituicaoCasoDeUso;
+import br.com.educatech.casodeuso.deletarUsuario.DeletarUsuarioCasoDeUso;
 import br.com.educatech.casodeuso.deletararea.DeletarAreaCasoDeUso;
 import br.com.educatech.casodeuso.deletaravaliacao.DeletarAvaliacaoCasoDeUso;
 import br.com.educatech.casodeuso.deletarcontato.DeletarContatoCasoDeUso;
@@ -27,7 +27,10 @@ import br.com.educatech.casodeuso.inserircontato.InserirContatoCasoDeUso;
 import br.com.educatech.casodeuso.inserircurso.InserirCursoCasoDeUso;
 import br.com.educatech.casodeuso.inserirendereco.InserirEnderecoCasoDeUso;
 import br.com.educatech.casodeuso.inseririnstituicao.InserirInstituicaoCasoDeUso;
-import br.com.educatech.casodeuso.solicitarlogin.SolicitarLoginCasoDeUso;
+import br.com.educatech.casodeuso.loginusuario.LoginUsuarioCasoDeUso;
+import br.com.educatech.casodeuso.recuperarporcurso.RecuperarPorCursoCasoDeUso;
+import br.com.educatech.casodeuso.recuperarporendereco.RecuperarPorEnderecoCasoDeUso;
+import br.com.educatech.casodeuso.recuperarporinstituicao.RecuperarPorInstituicaoCasoDeUso;
 import br.com.educatech.modelo.dao.aluno.AlunoDAO;
 import br.com.educatech.modelo.dao.aluno.AlunoDAOImpl;
 import br.com.educatech.modelo.dao.area.AreaDAO;
@@ -53,7 +56,11 @@ import br.com.educatech.modelo.entidade.endereco.Endereco;
 import br.com.educatech.modelo.entidade.instituicao.Instituicao;
 import br.com.educatech.modelo.entidade.usuario.Usuario;
 import br.com.educatech.modelo.enumeraco.genero.TipoGenero;
-import br.com.educatech.modelo.enumeraco.metodoentrada.TipoMetodoEntrada;
+import br.com.educatech.modelo.enumeraco.ingresso.TipoIngresso;
+import br.com.educatech.modelo.enumeraco.menualuno.TipoMenuAluno;
+import br.com.educatech.modelo.enumeraco.menuinicio.TipoMenuInicio;
+import br.com.educatech.modelo.enumeraco.menuinstituicao.TipoMenuInstituicao;
+import br.com.educatech.modelo.enumeraco.menuusuario.TipoMenuUsuario;
 import br.com.educatech.modelo.enumeraco.modalidade.TipoModalidade;
 import br.com.educatech.modelo.enumeraco.turno.TipoTurno;
 import br.com.educatech.modelo.util.hash.Hash;
@@ -88,126 +95,75 @@ public class Principal {
 		avaliacaoDAO = new AvaliacaoDAOImpl();
 		leitor = new Scanner(System.in);
 
-		Instituicao instituicao = new Instituicao();
-		Area area = new Area();
-		Endereco endereco = new Endereco();
-		Contato contato = new Contato();
-		Instituicao instituicao2 = new Instituicao();
-		Endereco endereco2 = new Endereco();
-		Contato contato2 = new Contato();
-		Curso curso1 = new Curso();
-		Aluno aluno = new Aluno();
-		Avaliacao avaliacao1 = new Avaliacao();
-		Contato contato3 = new Contato();
-		Curso curso2 = new Curso();
-		Aluno alunoAtualizado = new Aluno();
-		Aluno aluno2 = new Aluno();
-		Avaliacao avaliacao2 = new Avaliacao();
-		Contato contato4 = new Contato();
-		Usuario usuario = new Usuario();
+		TipoMenuInicio menuInicio = null;
+		TipoMenuUsuario menuUsuario = null;
+		TipoMenuAluno menuAluno = null;
+		TipoMenuInstituicao menuInstituicao = null;
 
-		instituicao = inserirInstituicao1();
-		area = inserirArea();
-		endereco = inserirEndereco1(instituicao);
-		contato = inserirContato1(instituicao);
-		instituicao2 = inserirInstituicao2();
-		endereco2 = inserirEndereco2(instituicao2);
-		contato2 = inserirContato2(instituicao2);
-		curso1 = inserirCurso1(area, instituicao);
-		aluno = inserirAluno1();
-		avaliacao1 = inserirAvalicao1(aluno, curso1);
-		contato3 = inserirContato3(aluno);
-		curso2 = inserirCurso2(area, instituicao);
-		alunoAtualizado = atualizarAluno(aluno);
-		aluno2 = inserirAluno2();
-		avaliacao2 = inserirAvaliacao2(aluno2, curso1);
-		contato4 = inserirContato4(aluno2);
-		usuario = new Usuario();
+		System.out.println("Olá, obrigado por usar nosso sistema!");
+		System.out.println("=====================================");
 
-		instituicao.inserirCurso(curso1);
+		do {
 
-		TipoTurno turno = curso1.getTipoTurno();
-		TipoModalidade modal = curso1.getTipoModalidade();
-		TipoModalidade modal2 = curso2.getTipoModalidade();
+			try {
+				menuInicio();
 
-		Optional<Long> idInstituicao = Optional.of(instituicao.getId());
-		Optional<Long> idArea = Optional.of(area.getId());
-		Optional<TipoModalidade> modalidadeOp = Optional.of(modal);
-		Optional<TipoTurno> turnoOp = Optional.of(turno);
-		Optional<Double> notaAluno = Optional.of(aluno.getNota());
+				menuInicio = TipoMenuInicio.values()[Integer.parseInt(leitor.nextLine()) - 1];
 
-		instituicao.inserirCurso(curso2);
+				switch (menuInicio) {
 
-		aluno.setCursoFavorito(curso2);
+				case CADASTRAR:
+					menuUsuario();
 
-		int resposta;
+					menuUsuario = TipoMenuUsuario.values()[Integer.parseInt(leitor.nextLine()) - 1];
 
+					if (menuUsuario == TipoMenuUsuario.ALUNO)
+						inserirUsuarioAluno();
+					else
+						inserirUsuarioInstituicao();
+					break;
+
+				case LOGAR:
+					loginUsuario();
+					break;
+
+				default:
+					break;
+
+				}
+
+			} catch (Exception e) {
+				System.err.println("Opção inválida!");
+			}
+
+		} while (menuInicio != TipoMenuInicio.SAIR);
+
+		leitor.close();
+
+	}
+
+	public void menuInstituicao(Instituicao instituicao, Endereco endereco, Area area, Curso curso)
+			throws InvalidKeySpecException, NoSuchAlgorithmException {
+		List<Instituicao> instituicoes = recuperarInstituicao();
+		List<Curso> cursos = recuperarCurso();
+		List<Endereco> enderecos = recuperarEndereco();
+		Contato contatoRecuperado = null;
+		Endereco enderecoRecuperado;
 		int sair = 0;
 
 		while (sair != 1) {
 
-			resposta = 0;
-
-			List<Instituicao> instituicoes = instituicaoDAO.recuperarInstituicao();
-			List<Aluno> alunos = alunoDAO.recuperarAlunos();
-			List<Endereco> enderecos = enderecoDAO.recuperarEndereco();
-			List<Integer> media = new ArrayList<>();
-			Contato contatoRecuperado = null;
-			List<Endereco> enderecosRecuperados = null;
-			List<Curso> consultascurso = null;
-			List<Avaliacao> consultasAvaliacoes = null;
-			List<Curso> favoritos = cursoDAO.recuperarPorCursoFavorito(aluno);
-			List<Curso> cursos = cursoDAO.recuperarCurso();
-			double mediaCurso;
-			Instituicao loginUsuarioInstituicao = null;
-			Aluno loginUsuarioAluno = null;
-			Usuario login = null;
-
 			System.out.print("\n Qual funcao voce deseja acessar? \n");
-			String[] opc = new String[] { "", " Fazer login no sistema", " Exibir instituicao ", " Exibir aluno ",
-					" Exibir cursos favoritos", " Exibir enderecos", " Exibir Cursos", " Exibir Cursos por instituicao",
-					" Exibir Cursos por area", " Exibir Cursos por nota de corte", "Exibir Cursos por modalidade",
-					"Exibir Cursos por preco", "Exibir Cursos por turno", "Exibir filtros de Cursos",
-					"Remover curso favorito", "Avaliacoes do curso", "Sair" };
-
+			String[] opc = new String[] { "", " Exibir instituicao ", " Exibir enderecos", " Exibir Cursos",
+					"Cadastrar curso", " atualizar area ", " atualizar endereço ", " atualizar instituicao ",
+					" atualizar curso ", "Sair" };
 			for (int i = 1; i < opc.length; i++) {
 				System.out.println(i + " - " + opc[i]);
 			}
 
-			resposta = leitor.nextInt();
-
-			switch (resposta) {
+			switch (leitor.nextInt()) {
 
 			case 1: {
-				String email = "testealuno@email.com.br";
-				String senha = "12345";
-
-				SolicitarLoginCasoDeUso solicitarLoginCasoDeUso = new SolicitarLoginCasoDeUso(alunoDAO);
-
-				login = usuarioDAO.loginUsuario(email, senha);
-
-				if (login != null) {
-					loginUsuarioAluno = alunoDAO.loginUsuarioAluno(login.getId());
-					loginUsuarioInstituicao = instituicaoDAO.loginUsuarioInstituicao(login.getId());
-
-					if (loginUsuarioAluno != null) {
-						System.out.println("cpf: " + loginUsuarioAluno.getCpf());
-						System.out.println("Nome: " + loginUsuarioAluno.getNome());
-						System.out.println("Senha: " + loginUsuarioAluno.getSenha());
-					}
-
-					if (loginUsuarioInstituicao != null) {
-						System.out.println("cnpj: " + loginUsuarioInstituicao.getCnpj());
-						System.out.println("Nome: " + loginUsuarioInstituicao.getNome());
-						System.out.println("Senha: " + loginUsuarioInstituicao.getSenha());
-					}
-				} else {
-					System.out.println("Email ou senha invalidos");
-				}
-				break;
-			}
-
-			case 2: {
 				for (Instituicao instituicaoCadastrado : instituicoes) {
 					System.out.println("Nome: " + instituicaoCadastrado.getNome());
 					System.out.println("Descricao: " + instituicaoCadastrado.getDescricao());
@@ -226,19 +182,156 @@ public class Principal {
 					System.out.println("Enderecos: ");
 					System.out.println();
 
-					enderecosRecuperados = enderecoDAO.recuperarPorEnderecoInstituicao(instituicaoCadastrado);
-					for (Endereco enderecoRecuperado : enderecosRecuperados) {
-						System.out.println("Logradouro: " + enderecoRecuperado.getLogradouro());
-						System.out.println("Referencia: " + enderecoRecuperado.getReferencia());
-						System.out.println("Numero: " + enderecoRecuperado.getNumero());
-						System.out.println();
-					}
+					enderecoRecuperado = enderecoDAO.recuperarPorEnderecoInstituicao(instituicaoCadastrado);
+
+					System.out.println("Logradouro: " + enderecoRecuperado.getLogradouro());
+					System.out.println("Referencia: " + enderecoRecuperado.getReferencia());
+					System.out.println("Numero: " + enderecoRecuperado.getNumero());
+					System.out.println();
 				}
 				break;
+			}
 
+			case 2: {
+				for (Endereco enderecosCadastrado : enderecos) {
+					System.out.println("Logradouro: " + enderecosCadastrado.getLogradouro());
+					System.out.println("Referencia: " + enderecosCadastrado.getReferencia());
+					System.out.println("Numero: " + enderecosCadastrado.getNumero());
+					System.out.println();
+				}
+				break;
 			}
 
 			case 3: {
+				for (Curso cursosCadastrado : cursos) {
+					System.out.println("Nome: " + cursosCadastrado.getNome());
+					System.out.println("Metodo de entrada: " + cursosCadastrado.getTipoIngresso());
+					System.out.println("Preco: " + cursosCadastrado.getPreco());
+					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
+					System.out.println();
+				}
+				break;
+			}
+
+			case 4: {
+				inserirCurso(area, instituicao);
+				break;
+			}
+
+			case 5: {
+
+				String areaNome = "testenome";
+
+				area.setNome(areaNome);
+				atualizarArea(area);
+				break;
+			}
+
+			case 6: {
+
+				String logeradourotu = "teste t";
+				int numerotu = 3;
+				String ceptu = "1234567";
+				String bairrotu = "bairro teste t";
+				String cidadetu = "blumenau t";
+				String estadotu = "Santa Catarina t";
+				String referenciatu = "referencia teste t";
+
+				endereco.setLogradouro(logeradourotu);
+				endereco.setNumero(numerotu);
+				endereco.setCep(ceptu);
+				endereco.setBairro(bairrotu);
+				endereco.setCidade(cidadetu);
+				endereco.setEstado(estadotu);
+				endereco.setReferencia(referenciatu);
+
+				atualizarEndereco(endereco);
+				break;
+			}
+
+			case 7: {
+				String nometu = "Teste instituicao t";
+				String senhatu = "13ee3 t";
+				String cnpjtu = "1223 t";
+				String desctu = "Somo uma instituicao t";
+
+				instituicao.setNome(nometu);
+				instituicao.setSenha(senhatu);
+				instituicao.setCnpj(cnpjtu);
+				instituicao.setDescricao(desctu);
+
+				atualizarInstituicao(instituicao);
+				System.out.println("nome da instituicao" + instituicao.getNome());
+				break;
+			}
+
+			case 8: {
+				String nomeCursot = "nomet cursot";
+				String descursot = "descrit cursot";
+				int duracaot = 27;
+				TipoIngresso enemt = TipoIngresso.FINANCIAMENTO;
+				double precot = 11.3;
+				String linkt = "linkt";
+				TipoModalidade tipoModalt = TipoModalidade.SEMI_PRESENCIAL;
+				TipoTurno tipoTurnot = TipoTurno.INTEGRAL;
+
+				curso.setNome(nomeCursot);
+				curso.setDescricao(descursot);
+				curso.setDuracao(duracaot);
+				curso.setTipoIngresso(enemt);
+				curso.setPreco(precot);
+				curso.setLink(linkt);
+				curso.setTipoModalidade(tipoModalt);
+				curso.setTipoTurno(tipoTurnot);
+				curso.setArea(area);
+				curso.setInstituicao(instituicao);
+
+				atualizarCurso(curso);
+				break;
+			}
+			}
+		}
+	}
+
+	public void menuAluno(Usuario usuario, Area area, Curso curso, Instituicao instituicao)
+			throws InvalidKeySpecException, NoSuchAlgorithmException {
+		Aluno aluno = alunoDAO.recuperarAlunoPorId(usuario.getId());
+		List<Instituicao> instituicoes = instituicaoDAO.recuperarInstituicao();
+		List<Aluno> alunos = alunoDAO.recuperarAlunos();
+		Contato contatoRecuperado = null;
+		List<Curso> consultascurso = null;
+		List<Avaliacao> consultasAvaliacoes = null;
+		List<Curso> favoritos = cursoDAO.recuperarPorCursoFavorito(aluno);
+		List<Curso> cursos = cursoDAO.recuperarCurso();
+		double mediaCurso;
+		int resposta;
+		int sair = 0;
+
+		Optional<Long> idInstituicao = Optional.of(instituicao.getId());
+		Optional<Long> idArea = Optional.of(area.getId());
+		Optional<TipoModalidade> tipoModalidadeOp = Optional.of(curso.getTipoModalidade());
+		Optional<TipoTurno> tipoTurnoOp = Optional.of(curso.getTipoTurno());
+		Optional<Double> notaAluno = Optional.of(aluno.getNota());
+
+		leitor = new Scanner(System.in);
+
+		while (sair != 1) {
+			System.out.print("\n Qual funcao voce deseja acessar? \n");
+			String[] opc = new String[] { "", " Exibir aluno ", " Exibir cursos favoritos", " Exibir Cursos",
+					" Exibir Cursos por instituicao", " Exibir Cursos por area", " Exibir Cursos por nota de corte",
+					"Exibir Cursos por modalidade", "Exibir Cursos por preco", "Exibir Cursos por turno",
+					"Exibir filtros de Cursos", "Remover curso favorito", "Avaliacoes do curso", "Sair" };
+
+			for (int i = 1; i < opc.length; i++) {
+				System.out.println(i + " - " + opc[i]);
+			}
+
+			resposta = leitor.nextInt();
+
+			switch (resposta) {
+
+			case 1: {
+
 				for (Aluno alunosCadastrados : alunos) {
 					System.out.println("Nome: " + alunosCadastrados.getNome());
 					System.out.println("Sobrenome: " + alunosCadastrados.getSobrenome());
@@ -259,11 +352,11 @@ public class Principal {
 
 			}
 
-			case 4: {
+			case 2: {
 				for (Curso cursosCadastrados : favoritos) {
 					System.out.println("Nome: " + cursosCadastrados.getNome());
 					System.out.println("Area: " + area.getNome());
-					System.out.println("Metodo de entrada: " + cursosCadastrados.getTipoMetodoEntrada());
+					System.out.println("Metodo de entrada: " + cursosCadastrados.getTipoIngresso());
 					System.out.println("Preco: " + cursosCadastrados.getPreco());
 					System.out.println("nota: " + cursosCadastrados.getNotaCorte());
 					System.out.println();
@@ -272,21 +365,12 @@ public class Principal {
 				break;
 			}
 
-			case 5: {
-				for (Endereco enderecosCadastrado : enderecos) {
-					System.out.println("Logradouro: " + enderecosCadastrado.getLogradouro());
-					System.out.println("Referencia: " + enderecosCadastrado.getReferencia());
-					System.out.println("Numero: " + enderecosCadastrado.getNumero());
-					System.out.println();
-				}
-				break;
-			}
-
-			case 6: {
+			case 3: {
 				for (Curso cursosCadastrado : cursos) {
 					System.out.println("Nome: " + cursosCadastrado.getNome());
 					System.out.println("Area: " + area.getNome());
-					System.out.println("Metodo de entrada: " + cursosCadastrado.getTipoMetodoEntrada());
+					System.out.println("Metodo de entrada: " + cursosCadastrado.getTipoIngresso());
+					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
 					System.out.println("Preco: " + cursosCadastrado.getPreco());
 					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
 					System.out.println();
@@ -294,7 +378,7 @@ public class Principal {
 				break;
 			}
 
-			case 7: {
+			case 4: {
 				for (Instituicao instituicaoCadastrado : instituicoes) {
 					System.out.println("Nome: " + instituicaoCadastrado.getNome());
 					System.out.println("Descricao: " + instituicaoCadastrado.getDescricao());
@@ -306,7 +390,8 @@ public class Principal {
 					for (Curso cursosCadastrado : consultascurso) {
 						System.out.println("Nome: " + cursosCadastrado.getNome());
 						System.out.println("Area: " + area.getNome());
-						System.out.println("Metodo de entrada: " + cursosCadastrado.getTipoMetodoEntrada());
+						System.out.println("Metodo de entrada: " + cursosCadastrado.getTipoIngresso());
+						System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
 						System.out.println("Preco: " + cursosCadastrado.getPreco());
 						System.out.println("nota: " + cursosCadastrado.getNotaCorte());
 						System.out.println();
@@ -315,14 +400,65 @@ public class Principal {
 				break;
 			}
 
-			case 8: {
+			case 5: {
 
 				consultascurso = cursoDAO.recuperarPorAreaCurso(area);
 
 				for (Curso cursosCadastrado : consultascurso) {
 					System.out.println("Nome: " + cursosCadastrado.getNome());
 					System.out.println("Area: " + area.getNome());
-					System.out.println("Metodo de entrada: " + cursosCadastrado.getTipoMetodoEntrada());
+					System.out.println("Metodo de entrada: " + cursosCadastrado.getTipoIngresso());
+					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
+					System.out.println("Preco: " + cursosCadastrado.getPreco());
+					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
+					System.out.println();
+				}
+				break;
+			}
+
+			case 6: {
+
+				consultascurso = cursoDAO.recuperarPorNotaCurso(aluno);
+
+				for (Curso cursosCadastrado : consultascurso) {
+					System.out.println("Nome: " + cursosCadastrado.getNome());
+					System.out.println("Area: " + area.getNome());
+					System.out.println("Metodo de entrada: " + cursosCadastrado.getTipoIngresso());
+					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
+					System.out.println("Preco: " + cursosCadastrado.getPreco());
+					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
+					System.out.println();
+				}
+				break;
+			}
+
+			case 7: {
+
+				consultascurso = cursoDAO.recuperarPorModalidadeCurso(curso.getTipoModalidade());
+
+				for (Curso cursosCadastrado : consultascurso) {
+					System.out.println("Nome: " + cursosCadastrado.getNome());
+					System.out.println("Area: " + area.getNome());
+					System.out.println("Metodo de entrada: " + cursosCadastrado.getTipoIngresso());
+					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
+					System.out.println("Preco: " + cursosCadastrado.getPreco());
+					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
+					System.out.println();
+				}
+				break;
+			}
+
+			case 8: {
+
+				System.out.println("Informe o o preco: ");
+				double custo = leitor.nextDouble();
+
+				consultascurso = cursoDAO.recuperarPorPrecoCurso(custo);
+
+				for (Curso cursosCadastrado : consultascurso) {
+					System.out.println("Nome: " + cursosCadastrado.getNome());
+					System.out.println("Area: " + area.getNome());
+					System.out.println("Metodo de entrada: " + cursosCadastrado.getTipoIngresso());
 					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
 					System.out.println("Preco: " + cursosCadastrado.getPreco());
 					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
@@ -332,13 +468,12 @@ public class Principal {
 			}
 
 			case 9: {
-
-				consultascurso = cursoDAO.recuperarPorNotaCurso(aluno);
+				consultascurso = cursoDAO.recuperarPorTurnoCurso(curso.getTipoTurno());
 
 				for (Curso cursosCadastrado : consultascurso) {
 					System.out.println("Nome: " + cursosCadastrado.getNome());
 					System.out.println("Area: " + area.getNome());
-					System.out.println("Metodo de entrada: " + cursosCadastrado.getTipoMetodoEntrada());
+					System.out.println("Metodo de entrada: " + cursosCadastrado.getTipoIngresso());
 					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
 					System.out.println("Preco: " + cursosCadastrado.getPreco());
 					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
@@ -349,12 +484,17 @@ public class Principal {
 
 			case 10: {
 
-				consultascurso = cursoDAO.recuperarPorModalidadeCurso(modal2);
+				System.out.println("Informe o o preco: ");
+				double custo = leitor.nextDouble();
+				Optional<Double> precoAluno = Optional.of(custo);
+
+				consultascurso = cursoDAO.recuperarPorFiltroCurso(idInstituicao, idArea, notaAluno, tipoTurnoOp,
+						tipoModalidadeOp, precoAluno);
 
 				for (Curso cursosCadastrado : consultascurso) {
 					System.out.println("Nome: " + cursosCadastrado.getNome());
 					System.out.println("Area: " + area.getNome());
-					System.out.println("Metodo de entrada: " + cursosCadastrado.getTipoMetodoEntrada());
+					System.out.println("Metodo de entrada: " + cursosCadastrado.getTipoIngresso());
 					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
 					System.out.println("Preco: " + cursosCadastrado.getPreco());
 					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
@@ -364,671 +504,427 @@ public class Principal {
 			}
 
 			case 11: {
-
-				System.out.println("Informe o o preco: ");
-				double custo = leitor.nextDouble();
-
-				consultascurso = cursoDAO.recuperarPorPrecoCurso(custo);
-
-				for (Curso cursosCadastrado : consultascurso) {
-					System.out.println("Nome: " + cursosCadastrado.getNome());
-					System.out.println("Area: " + area.getNome());
-					System.out.println("Metodo de entrada: " + cursosCadastrado.getTipoMetodoEntrada());
-					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
-					System.out.println("Preco: " + cursosCadastrado.getPreco());
-					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
-					System.out.println();
-				}
+				aluno.removerCursoFavorito(curso);
+				curso.removerAluno(aluno);
+				alunoDAO.atualizarAluno(aluno);
+				cursoDAO.atualizarCurso(curso);
 				break;
 			}
 
 			case 12: {
-				consultascurso = cursoDAO.recuperarPorTurnoCurso(turno);
-
-				for (Curso cursosCadastrado : consultascurso) {
-					System.out.println("Nome: " + cursosCadastrado.getNome());
-					System.out.println("Area: " + area.getNome());
-					System.out.println("Metodo de entrada: " + cursosCadastrado.getTipoMetodoEntrada());
-					System.out.println("Modalidade: " + cursosCadastrado.getTipoModalidade());
-					System.out.println("Preco: " + cursosCadastrado.getPreco());
-					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
-					System.out.println();
-				}
-				break;
-			}
-
-			case 13: {
-
-				System.out.println("Informe o o preco: ");
-				double custo = leitor.nextDouble();
-				Optional<Double> precoAluno = Optional.of(custo);
-
-				consultascurso = cursoDAO.recuperarPorFiltroCurso(idInstituicao, idArea, notaAluno, turnoOp,
-						modalidadeOp, precoAluno);
-
-				for (Curso cursosCadastrado : consultascurso) {
-					System.out.println("Nome: " + cursosCadastrado.getNome());
-					System.out.println("Area: " + area.getNome());
-					System.out.println("Metodo de entrada: " + cursosCadastrado.getTipoMetodoEntrada());
-					System.out.println("Preco: " + cursosCadastrado.getPreco());
-					System.out.println("nota: " + cursosCadastrado.getNotaCorte());
-					System.out.println();
-				}
-				break;
-			}
-
-			case 14: {
-				aluno.removerCursoFavorito(curso1);
-				aluno.removerCursoFavorito(curso2);
-				curso1.removerAluno(aluno);
-				curso2.removerAluno(aluno);
-				aluno2.removerCursoFavorito(curso1);
-				curso1.removerAluno(aluno2);
-				atualizarAluno(aluno);
-				atualizarAluno(aluno2);
-				atualizarCurso(curso1);
-				atualizarCurso(curso2);
-				break;
-			}
-
-			case 15: {
-				consultasAvaliacoes = avaliacaoDAO.avaliacaoCurso(curso1);
+				consultasAvaliacoes = avaliacaoDAO.recuperarAvaliacaoCurso(curso);
 
 				for (Avaliacao avaliacoes : consultasAvaliacoes) {
 					System.out.println("Nota: " + avaliacoes.getNota());
 					System.out.println("Comentario: " + avaliacoes.getComentario());
 					System.out.println("");
 
-					media.add(avaliacoes.getNota());
 				}
 
-				mediaCurso = avaliacaoDAO.mediaAvaliacoesCurso(media);
+				mediaCurso = avaliacaoDAO.recuperarMediaAvaliacaoCurso(curso);
 				System.out.println("Media do curso: " + mediaCurso);
 				break;
 			}
 
-			case 16: {
+			case 13: {
 				System.out.println("Saindo");
-				sair = 1;
 				break;
 			}
 			}
 		}
-
-		resposta = 0;
-		sair = 0;
-
-		while (sair != 1) {
-
-			System.out.print("\n O que você gostaria de executar? \n");
-			String[] opc2 = new String[] { "", " atualizar area ", " atualizar endere�o ", " atualizar instituicao ",
-					" atualizar curso ", " deletar area ", " deletar endereco, instituica e contato ", " deletar tudo",
-					"Sair" };
-
-			for (int i = 1; i < opc2.length; i++) {
-				System.out.println(i + " - " + opc2[i]);
-			}
-			resposta = leitor.nextInt();
-
-			switch (resposta) {
-
-			case 1: {
-
-				String areaNome = "testenome";
-
-				area.setNome(areaNome);
-				atualizarArea(area);
-
-				break;
-			}
-
-			case 2: {
-
-				String logeradourotu = "teste t";
-				int numerotu = 3;
-				String ceptu = "1234567";
-				String bairrotu = "bairro teste t";
-				String cidadetu = "blumenau t";
-				String estadotu = "Santa Catarina t";
-				String referenciatu = "referencia teste t";
-
-				endereco.setLogradouro(logeradourotu);
-				endereco.setNumero(numerotu);
-				endereco.setCep(ceptu);
-				endereco.setBairro(bairrotu);
-				endereco.setCidade(cidadetu);
-				endereco.setEstado(estadotu);
-				endereco.setReferencia(referenciatu);
-
-				atualizarEndereco(endereco);
-
-				break;
-			}
-
-			case 3: {
-
-				String nometu = "Teste instituicao t";
-				String senhatu = "13ee3 t";
-				String cnpjtu = "1223 t";
-				String desctu = "Somo uma instituicao t";
-
-				instituicao.setNome(nometu);
-				instituicao.setSenha(senhatu);
-				instituicao.setCnpj(cnpjtu);
-				instituicao.setDescricao(desctu);
-
-				atualizarInstituicao(instituicao);
-				System.out.println("nome da instituicao" + instituicao.getNome());
-
-				break;
-			}
-
-			case 4: {
-
-				String nomeCursot = "nomet cursot";
-				String descursot = "descrit cursot";
-				int duracaot = 27;
-				TipoMetodoEntrada enemt = TipoMetodoEntrada.FINANCIAMENTO;
-				double precot = 11.3;
-				String linkt = "linkt";
-				TipoModalidade modalt = TipoModalidade.SEMIPRESENCIAL;
-				TipoTurno turnot = TipoTurno.INTEGRAL;
-
-				curso1.setNome(nomeCursot);
-				curso1.setDescricao(descursot);
-				curso1.setDuracao(duracaot);
-				curso1.setTipoMetodoEntrada(enemt);
-				curso1.setPreco(precot);
-				curso1.setLink(linkt);
-				curso1.setTipoModalidade(modalt);
-				curso1.setTipoTurno(turnot);
-				curso1.setArea(area);
-				curso1.setInstituicao(instituicao);
-
-				atualizarCurso(curso1);
-
-				break;
-
-			}
-
-			case 5: {
-				deletarArea(area);
-
-				break;
-			}
-
-			case 6: {
-				instituicaoDAO.deletarInstituicao(instituicao);
-				deletarEndereco(endereco);
-				deletarContato(contato);
-
-				break;
-			}
-
-			case 7: {
-				instituicao.removerCursoInstituicao(curso1);
-				instituicao.removerCursoInstituicao(curso2);
-				deletarEndereco(endereco);
-				deletarEndereco(endereco);
-				deletarContato(contato);
-				deletarContato(contato);
-				instituicaoDAO.deletarInstituicao(instituicao);
-				instituicaoDAO.deletarInstituicao(instituicao2);
-				alunoDAO.deletarAluno(aluno);
-				alunoDAO.deletarAluno(aluno2);
-				deletarCurso(curso1);
-				deletarCurso(curso2);
-				deletarArea(area);
-				break;
-
-			}
-
-			case 8: {
-				System.out.println("Saindo");
-				sair = 1;
-				break;
-			}
-			}
-		}
-
 		leitor.close();
 	}
 
-	public Endereco inserirEndereco1(Instituicao instituicao) {
+	public void menuInicio() {
 
-		String logradouro = "teste";
-		int numero = 43;
-		String cep = "1234";
-		String bairro = "bairro teste";
-		String cidade = "blumenau";
-		String estado = "Santa Catarina";
-		String referencia = "referencia teste";
+		System.out.println("\nQual opção deseja inciar?\n");
+		System.out.println("1 - Cadastrar Usuário");
+		System.out.println("2 - Logar Usuário");
+		System.out.println("3 - Sair do Sistema");
 
-		Endereco endereco = new Endereco();
-
-		InserirEnderecoCasoDeUso inserirEnderecoCasoDeUso = new InserirEnderecoCasoDeUso(enderecoDAO);
-
-		endereco = inserirEnderecoCasoDeUso.inserirEndereco(
-				new Endereco(logradouro, bairro, numero, cep, cidade, estado, referencia, instituicao));
-
-		return endereco;
 	}
 
-	public Endereco inserirEndereco2(Instituicao instituicao) {
+	public void menuUsuario() {
+		System.out.println("\nQual usuário?\n");
+		System.out.println("1 - Candidato");
+		System.out.println("2 - Recrutador");
 
-		String logradouro = "rua teste";
-		int numero = 34;
-		String cep = "1234567";
-		String bairro = "bairro teste2";
-		String cidade = "Blumenau";
-		String estado = "Santa Catarina";
-		String referencia = "referencia teste";
+	}
 
-		Endereco endereco = new Endereco();
+	public void menuAluno() {
+
+		System.out.println("\nQual opção deseja continuar?\n");
+		System.out.println("1 - Mostrar perfil");
+		System.out.println("2 - Editar perfil");
+		System.out.println("3 - Mostrar currículo");
+		System.out.println("4 - Cadastrar currículo");
+		System.out.println("5 - Sair do usuário");
+
+	}
+
+	public void menuInstituicao() {
+
+		System.out.println("\nQual opção deseja continuar?\n");
+		System.out.println("1 - Mostrar perfil");
+		System.out.println("2 - Editar perfil");
+		System.out.println("3 - Mostrar vagas");
+		System.out.println("4 - Cadastrar vaga");
+		System.out.println("5 - Excluir vaga");
+		System.out.println("6 - Sair do usuário");
+
+	}
+
+	public void inserirUsuarioAluno() throws InvalidKeySpecException, NoSuchAlgorithmException {
+
+		Aluno aluno = inserirAluno();
+		atualizarAluno(aluno);
+
+		Contato contato = inserirContato(aluno);
+		atualizarContato(contato);
+
+	}
+
+	public void inserirUsuarioInstituicao() throws InvalidKeySpecException, NoSuchAlgorithmException {
+
+		Instituicao instituicao = inserirInstituicao();
+		atualizarInstituicao(instituicao);
+
+		Contato contato = inserirContato(instituicao);
+		atualizarContato(contato);
+
+		Endereco endereco = inserirEndereco(instituicao);
+		atualizarEndereco(endereco);
+
+	}
+
+	public void loginUsuario() {
+
+		Usuario login = null;
+
+		System.out.println("Para proseguir digite seu email e senha");
+
+		System.out.println(" Email: ");
+		String email = leitor.next();
+
+		System.out.println(" Senha: ");
+		String senha = leitor.next();
+
+		LoginUsuarioCasoDeUso loginUsuarioCasoDeUso = new LoginUsuarioCasoDeUso(usuarioDAO);
+
+		login = loginUsuarioCasoDeUso.loginUsuario(email, senha);
+
+		Aluno idAluno = alunoDAO.recuperarAlunoPorId(login.getId());
+
+		Instituicao idInstituicao = instituicaoDAO.recuperarInstituicaoPorId(login.getId());
+
+		if (idAluno != null) {
+			menuAluno();
+		} else if (idInstituicao != null) {
+			menuInstituicao();
+		} else
+			System.out.println("Usuário não encontrado!");
+
+	}
+
+	public Endereco inserirEndereco(Instituicao instituicao) {
+
+		System.out.println("Logradouro: ");
+		String logradouro = leitor.next();
+
+		System.out.println("Numero: ");
+		int numero = leitor.nextInt();
+
+		System.out.println("CEP: ");
+		String cep = leitor.next();
+
+		System.out.println("Bairro: ");
+		String bairro = leitor.next();
+
+		System.out.println("Cidade ");
+		String cidade = leitor.next();
+
+		System.out.println("Estado: ");
+		String estado = leitor.next();
+
+		System.out.println("Referencia: ");
+		String referencia = leitor.next();
 
 		InserirEnderecoCasoDeUso inserirEnderecoCasoDeUso = new InserirEnderecoCasoDeUso(enderecoDAO);
 
-		endereco = inserirEnderecoCasoDeUso.inserirEndereco(
+		return inserirEnderecoCasoDeUso.inserirEndereco(
 				new Endereco(logradouro, bairro, numero, cep, cidade, estado, referencia, instituicao));
 
-		return endereco;
+	}
+
+	public List<Endereco> recuperarEndereco() {
+
+		RecuperarPorEnderecoCasoDeUso recuperarPorEnderecoCasoDeUso = new RecuperarPorEnderecoCasoDeUso();
+
+		return recuperarPorEnderecoCasoDeUso.recuperarEndereco();
+
 	}
 
 	public Endereco atualizarEndereco(Endereco endereco) {
 
-		Endereco enderecoAtualizado = new Endereco();
-
 		AtualizarEnderecoCasoDeUso atualizarEnderecoCasoDeUso = new AtualizarEnderecoCasoDeUso(enderecoDAO);
 
-		enderecoAtualizado = atualizarEnderecoCasoDeUso.atualizarEndereco(endereco);
+		return atualizarEnderecoCasoDeUso.atualizarEndereco(endereco);
 
-		return enderecoAtualizado;
 	}
 
 	public Endereco deletarEndereco(Endereco endereco) {
 
-		Endereco enderecoDeletado = new Endereco();
-
 		DeletarEnderecoCasoDeUso deletarEnderecoCasoDeUso = new DeletarEnderecoCasoDeUso(enderecoDAO);
 
-		enderecoDeletado = deletarEnderecoCasoDeUso.deletarEndereco(endereco);
+		return deletarEnderecoCasoDeUso.deletarEndereco(endereco);
 
-		return enderecoDeletado;
 	}
 
-	public Instituicao inserirInstituicao1() {
+	public Contato inserirContato(Usuario usuario) {
 
-		byte[] sal = Hash.gerarSal();
-		String nome = "Teste ";
-		String senha = "13ee3";
-		String cnpj = "1223";
-		String desc = "Somos uma instituicao de teste";
+		System.out.println("Telefone: ");
+		String telefone = leitor.next();
 
-		Instituicao instituicao = new Instituicao();
+		System.out.println("Celular: ");
+		String celular = leitor.next();
 
-		InserirInstituicaoCasoDeUso inserirInstituicaoCasoDeUso = new InserirInstituicaoCasoDeUso(instituicaoDAO);
-
-		try {
-			instituicao = inserirInstituicaoCasoDeUso
-					.inserirInstituicao(new Instituicao(nome, Hash.gerarHash(sal, senha), cnpj, desc, sal));
-		} catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return instituicao;
-	}
-
-	public Instituicao inserirInstituicao2() {
-
-		byte[] sal = Hash.gerarSal();
-		String nome = "Teste instituicao";
-		String senha = "senha";
-		String cnpj = "12236785";
-		String desc = "Somo a segunda instituicao de teste";
-
-		Instituicao instituicao = new Instituicao();
-
-		InserirInstituicaoCasoDeUso inserirInstituicaoCasoDeUso = new InserirInstituicaoCasoDeUso(instituicaoDAO);
-
-		try {
-			instituicao = inserirInstituicaoCasoDeUso
-					.inserirInstituicao(new Instituicao(nome, Hash.gerarHash(sal, senha), cnpj, desc, sal));
-		} catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return instituicao;
-	}
-
-	public Instituicao atualizarInstituicao(Instituicao instituicao) {
-
-		Instituicao instituicaoAtualizado = new Instituicao();
-
-		AtualizarInstituicaoCasoDeUso atualizarInstituicaoCasoDeUso = new AtualizarInstituicaoCasoDeUso(instituicaoDAO);
-
-		instituicaoAtualizado = atualizarInstituicaoCasoDeUso.atualizarInstituicao(instituicao);
-
-		return instituicaoAtualizado;
-	}
-
-//	public Instituicao deletarInstituicao(Instituicao instituicao) {
-//
-//		Instituicao instituicaoDeletado = new Instituicao();
-//
-//		DeletarInstituicaoCasoDeUso deletarInstituicaoCasoDeUso = new DeletarInstituicaoCasoDeUso(instituicaoDAO);
-//
-//		instituicaoDeletado = deletarInstituicaoCasoDeUso.deletarInstituicao(instituicao);
-//
-//		return instituicaoDeletado;
-//	}
-
-	public Area inserirArea() {
-
-		String nomeArea = "teste";
-
-		Area area = new Area();
-
-		InserirAreaCasoDeUso inserirAreaCasoDeUso = new InserirAreaCasoDeUso(areaDAO);
-
-		area = inserirAreaCasoDeUso.inserirArea(new Area(nomeArea));
-
-		return area;
-	}
-
-	public Area atualizarArea(Area area) {
-
-		Area areaAtualizado = new Area();
-
-		AtualizarAreaCasoDeUso atualizarAreaCasoDeUso = new AtualizarAreaCasoDeUso(areaDAO);
-
-		areaAtualizado = atualizarAreaCasoDeUso.atualizarArea(area);
-
-		return areaAtualizado;
-	}
-
-	public Area deletarArea(Area area) {
-
-		Area areaDeletado = new Area();
-
-		DeletarAreaCasoDeUso deletarAreaCasoDeUso = new DeletarAreaCasoDeUso(areaDAO);
-
-		areaDeletado = deletarAreaCasoDeUso.deletarArea(area);
-
-		return areaDeletado;
-	}
-
-	public Contato inserirContato1(Instituicao instituicao) {
-
-		String telefone = "3332-3232";
-		String celular = "5432-3232";
-		String email = "teste@email.com.br";
-
-		Contato contato = new Contato();
+		System.out.println("E-mail:");
+		String email = leitor.next();
 
 		InserirContatoCasoDeUso inserirContatoCasoDeUso = new InserirContatoCasoDeUso(contatoDAO);
 
-		contato = inserirContatoCasoDeUso.inserirContato(new Contato(telefone, celular, email, instituicao));
+		return inserirContatoCasoDeUso.inserirContato(new Contato(telefone, celular, email, usuario));
 
-		return contato;
-	}
-
-	public Contato inserirContato2(Instituicao instituicao) {
-
-		String telefone = "3982-3232";
-		String celular = "5432-2176";
-		String email = "teste2@email.com.br";
-
-		Contato contato = new Contato();
-
-		InserirContatoCasoDeUso inserirContatoCasoDeUso = new InserirContatoCasoDeUso(contatoDAO);
-
-		contato = inserirContatoCasoDeUso.inserirContato(new Contato(telefone, celular, email, instituicao));
-
-		return contato;
-	}
-
-	public Contato inserirContato3(Aluno aluno) {
-
-		String telefonea = "3332-9898";
-		String celulara = "2341-3232";
-		String emaila = "testealuno@email.com.br";
-
-		Contato contato = new Contato();
-
-		InserirContatoCasoDeUso inserirContatoCasoDeUso = new InserirContatoCasoDeUso(contatoDAO);
-
-		contato = inserirContatoCasoDeUso.inserirContato(new Contato(telefonea, celulara, emaila, aluno));
-
-		return contato;
-	}
-
-	public Contato inserirContato4(Aluno aluno) {
-
-		String telefonea = "3124-9898";
-		String celulara = "2341-2543";
-		String emaila = "testealuno2@email.com.br";
-
-		Contato contato = new Contato();
-
-		InserirContatoCasoDeUso inserirContatoCasoDeUso = new InserirContatoCasoDeUso(contatoDAO);
-
-		contato = inserirContatoCasoDeUso.inserirContato(new Contato(telefonea, celulara, emaila, aluno));
-
-		return contato;
 	}
 
 	public Contato atualizarContato(Contato contato) {
 
-		Contato contatoAtualizado = new Contato();
-
 		AtualizarContatoCasoDeUso atualizarContatoCasoDeUso = new AtualizarContatoCasoDeUso(contatoDAO);
 
-		contatoAtualizado = atualizarContatoCasoDeUso.atualizarContato(contato);
+		return atualizarContatoCasoDeUso.atualizarContato(contato);
 
-		return contatoAtualizado;
 	}
 
 	public Contato deletarContato(Contato contato) {
 
-		Contato contatoDeletado = new Contato();
-
 		DeletarContatoCasoDeUso deletarContatoCasoDeUso = new DeletarContatoCasoDeUso(contatoDAO);
 
-		contatoDeletado = deletarContatoCasoDeUso.deletarContato(contato);
+		return deletarContatoCasoDeUso.deletarContato(contato);
 
-		return contatoDeletado;
 	}
 
-	public Curso inserirCurso1(Area area, Instituicao instituicao) {
-
-		String nomeCurso = "nome curso";
-		String descurso = "descri curso";
-		String link = "link";
-		int duracao = 23;
-		double preco = 120.3;
-		double nota = 500.4;
-		TipoMetodoEntrada enem = TipoMetodoEntrada.ENEM;
-		TipoModalidade modal = TipoModalidade.PRESENCIAL;
-		TipoTurno turno = TipoTurno.NOTURNO;
-
-		Curso curso = new Curso();
-
-		InserirCursoCasoDeUso inserirCursoCasoDeUso = new InserirCursoCasoDeUso(cursoDAO);
-
-		curso = inserirCursoCasoDeUso.inserirCurso(
-				new Curso(nomeCurso, descurso, duracao, preco, link, nota, enem, modal, turno, area, instituicao));
-
-		return curso;
-	}
-
-	public Curso inserirCurso2(Area area, Instituicao instituicao) {
-
-		String nomeCurso = " curso";
-		String descurso = "descricao curso";
-		int duracao = 230;
-		TipoMetodoEntrada enem = TipoMetodoEntrada.FINANCIAMENTO;
-		double preco = 320.50;
-		double nota = 450.4;
-		String link = "link teste";
-		TipoModalidade modal = TipoModalidade.PRESENCIAL;
-		TipoTurno turno = TipoTurno.NOTURNO;
-
-		Curso curso = new Curso();
-
-		InserirCursoCasoDeUso inserirCursoCasoDeUso = new InserirCursoCasoDeUso(cursoDAO);
-
-		curso = inserirCursoCasoDeUso.inserirCurso(
-				new Curso(nomeCurso, descurso, duracao, preco, link, nota, enem, modal, turno, area, instituicao));
-
-		return curso;
-	}
-
-	public Curso atualizarCurso(Curso curso) {
-
-		Curso cursoAtualizado = new Curso();
-
-		AtualizarCursoCasoDeUso atualizarCursoCasoDeUso = new AtualizarCursoCasoDeUso(cursoDAO);
-
-		cursoAtualizado = atualizarCursoCasoDeUso.atualizarCurso(curso);
-
-		return cursoAtualizado;
-	}
-
-	public Curso deletarCurso(Curso curso) {
-
-		Curso cursoDeletado = new Curso();
-
-		DeletarCursoCasoDeUso deletarCursoCasoDeUso = new DeletarCursoCasoDeUso(cursoDAO);
-
-		cursoDeletado = deletarCursoCasoDeUso.deletarCurso(curso);
-
-		return cursoDeletado;
-	}
-
-	public Aluno inserirAluno1() {
+	public Instituicao inserirInstituicao() throws InvalidKeySpecException, NoSuchAlgorithmException {
 
 		byte[] sal = Hash.gerarSal();
-		String alunoNome = "Aluno";
-		String alunoSenha = "12345";
-		String cpf = "342";
-		String sobrenome = "sobrenome";
-		LocalDate dataNasc = LocalDate.parse("2022-05-25");
-		double notaCorte = 500.5;
-		TipoGenero genero = TipoGenero.MASCULINO;
 
-		Aluno aluno = new Aluno();
+		System.out.println("Nome: ");
+		String nome = leitor.next();
+
+		System.out.println("Senha: ");
+		String senha = leitor.next();
+
+		System.out.println("CNPJ: ");
+		String cnpj = leitor.next();
+
+		System.out.println("Descricao: ");
+		String desc = leitor.next();
+
+		InserirInstituicaoCasoDeUso inserirInstituicaoCasoDeUso = new InserirInstituicaoCasoDeUso(instituicaoDAO);
+
+		return inserirInstituicaoCasoDeUso
+				.inserirInstituicao(new Instituicao(nome, Hash.gerarHash(sal, senha), sal, cnpj, desc));
+
+	}
+
+	public List<Instituicao> recuperarInstituicao() {
+
+		RecuperarPorInstituicaoCasoDeUso recuperarPorInstituicaoCasoDeUso = new RecuperarPorInstituicaoCasoDeUso();
+
+		return recuperarPorInstituicaoCasoDeUso.recuperarInstituicao();
+
+	}
+
+	public Instituicao atualizarInstituicao(Instituicao instituicao) {
+
+		AtualizarInstituicaoCasoDeUso atualizarInstituicaoCasoDeUso = new AtualizarInstituicaoCasoDeUso(instituicaoDAO);
+
+		return atualizarInstituicaoCasoDeUso.atualizarInstituicao(instituicao);
+
+	}
+
+	public Instituicao deletarInstituicao(Instituicao instituicao) {
+
+		DeletarUsuarioCasoDeUso deletarUsuarioCasoDeUso = new DeletarUsuarioCasoDeUso(usuarioDAO);
+
+		return (Instituicao) deletarUsuarioCasoDeUso.deletarUsuario(instituicao);
+
+	}
+
+	public Aluno inserirAluno() throws InvalidKeySpecException, NoSuchAlgorithmException {
+
+		byte[] sal = Hash.gerarSal();
+
+		System.out.println("Nome: ");
+		String nome = leitor.next();
+
+		System.out.println("Sobrenome: ");
+		String sobrenome = leitor.next();
+
+		System.out.println("CPF: ");
+		String cpf = leitor.next();
+
+		System.out.println("Data de nascimento(AAAA-MM-DD):");
+		String data = leitor.next();
+		LocalDate dataNascimento = LocalDate.parse(data);
+
+		System.out.println("Nota: ");
+		double notaCorte = leitor.nextDouble();
+
+		System.out.println("Senha: ");
+		String senha = leitor.next();
+
+		System.out.println("Qual o seu genero: masculino, feminino ou outro:");
+		String gen = leitor.next();
+		TipoGenero tipoGenero = TipoGenero.valueOf(gen.toUpperCase());
 
 		InserirAlunoCasoDeUso inserirAlunoCasoDeUso = new InserirAlunoCasoDeUso(alunoDAO);
 
-		try {
-			aluno = inserirAlunoCasoDeUso.inserirAluno(new Aluno(alunoNome, Hash.gerarHash(sal, alunoSenha), cpf,
-					sobrenome, notaCorte, dataNasc, genero, sal));
-		} catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		return inserirAlunoCasoDeUso.inserirAluno(new Aluno(nome, Hash.gerarHash(sal, senha), sal, cpf, sobrenome,
+				notaCorte, dataNascimento, tipoGenero));
 
-		return aluno;
-	}
-
-	public Aluno inserirAluno2() {
-
-		byte[] sal = Hash.gerarSal();
-		String alunoNome = "Aluno2";
-		String alunoSenha = "senha123";
-		String cpf = "342435";
-		String sobrenome = "sobrenome2";
-		LocalDate dataNasc = LocalDate.parse("2022-04-25");
-		double notaCorte = 500.5;
-		TipoGenero genero = TipoGenero.FEMININO;
-
-		Aluno aluno = new Aluno();
-
-		InserirAlunoCasoDeUso inserirAlunoCasoDeUso = new InserirAlunoCasoDeUso(alunoDAO);
-
-		try {
-			aluno = inserirAlunoCasoDeUso.inserirAluno(new Aluno(alunoNome, Hash.gerarHash(sal, alunoSenha), cpf,
-					sobrenome, notaCorte, dataNasc, genero, sal));
-		} catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return aluno;
 	}
 
 	public Aluno atualizarAluno(Aluno aluno) {
 
-		Aluno alunoAtualizado = new Aluno();
-
 		AtualizarAlunoCasoDeUso atualizarAlunoCasoDeUso = new AtualizarAlunoCasoDeUso(alunoDAO);
 
-		alunoAtualizado = atualizarAlunoCasoDeUso.atualizarAluno(aluno);
+		return atualizarAlunoCasoDeUso.atualizarAluno(aluno);
 
-		return alunoAtualizado;
 	}
 
-//	public Aluno deletarAluno(Aluno aluno) {
-//
-//		Aluno alunoDeletado = new Aluno();
-//
-//		DeletarAlunoCasoDeUso deletarAlunoCasoDeUso = new DeletarAlunoCasoDeUso(alunoDAO);
-//
-//		alunoDeletado = deletarAlunoCasoDeUso.deletarAluno(aluno);
-//
-//		return alunoDeletado;
-//	}
+	public Aluno deletarAluno(Aluno aluno) {
 
-	public Avaliacao inserirAvalicao1(Aluno aluno, Curso curso) {
+		DeletarUsuarioCasoDeUso deletarUsuarioCasoDeUso = new DeletarUsuarioCasoDeUso(usuarioDAO);
+
+		return (Aluno) deletarUsuarioCasoDeUso.deletarUsuario(aluno);
+
+	}
+
+	public Area inserirArea() {
+
+		System.out.println("Nome da area: ");
+		String nomeArea = leitor.next();
+
+		InserirAreaCasoDeUso inserirAreaCasoDeUso = new InserirAreaCasoDeUso(areaDAO);
+
+		return inserirAreaCasoDeUso.inserirArea(new Area(nomeArea));
+
+	}
+
+	public Area atualizarArea(Area area) {
+		AtualizarAreaCasoDeUso atualizarAreaCasoDeUso = new AtualizarAreaCasoDeUso(areaDAO);
+
+		return atualizarAreaCasoDeUso.atualizarArea(area);
+
+	}
+
+	public Area deletarArea(Area area) {
+
+		DeletarAreaCasoDeUso deletarAreaCasoDeUso = new DeletarAreaCasoDeUso(areaDAO);
+
+		return deletarAreaCasoDeUso.deletarArea(area);
+
+	}
+
+	public Curso inserirCurso(Area area, Instituicao instituicao) {
+
+		System.out.println("Nome do curso: ");
+		String nomeCurso = leitor.next();
+
+		System.out.println("Descricao do curso: ");
+		String descurso = leitor.next();
+
+		System.out.println("Duracao em horas: ");
+		int duracao = leitor.nextInt();
+
+		System.out.println("Preco: ");
+		double preco = leitor.nextDouble();
+
+		System.out.println("Nota de corte: ");
+		double nota = leitor.nextDouble();
+
+		System.out.println("Link: ");
+		String link = leitor.next();
+
+		System.out.println(
+				"Metodo de ingresso enem, transferencia, vestibular, bolsa de estudos, segunda graduacao, financiamento, historico escolar: ");
+		String entrada = leitor.next();
+		TipoIngresso tipoIngresso = TipoIngresso.valueOf(entrada.toUpperCase());
+
+		System.out.println("Modalidade EAD, presencial, semi_presencial, AO_VIVO: ");
+		String modalidade = leitor.next();
+		TipoModalidade tipoModal = TipoModalidade.valueOf(modalidade.toUpperCase());
+
+		System.out.println("Turno matutino, vespertino, noturno, integral: ");
+		String turnoCurso = leitor.next();
+		TipoTurno tipoTurno = TipoTurno.valueOf(turnoCurso.toUpperCase());
+
+		InserirCursoCasoDeUso inserirCursoCasoDeUso = new InserirCursoCasoDeUso(cursoDAO);
+
+		return inserirCursoCasoDeUso.inserirCurso(new Curso(nomeCurso, descurso, duracao, preco, link, nota,
+				tipoIngresso, tipoModal, tipoTurno, area, instituicao));
+
+	}
+
+	public List<Curso> recuperarCurso() {
+
+		RecuperarPorCursoCasoDeUso recuperarPorCursoCasoDeUso = new RecuperarPorCursoCasoDeUso();
+
+		return recuperarPorCursoCasoDeUso.recuperarCurso();
+
+	}
+
+	public Curso atualizarCurso(Curso curso) {
+
+		AtualizarCursoCasoDeUso atualizarCursoCasoDeUso = new AtualizarCursoCasoDeUso(cursoDAO);
+
+		return atualizarCursoCasoDeUso.atualizarCurso(curso);
+
+	}
+
+	public Curso deletarCurso(Curso curso) {
+
+		DeletarCursoCasoDeUso deletarCursoCasoDeUso = new DeletarCursoCasoDeUso(cursoDAO);
+
+		return deletarCursoCasoDeUso.deletarCurso(curso);
+
+	}
+
+	public Avaliacao inserirAvalicao(Aluno aluno, Curso curso) {
 
 		int notaAvaliacao = 5;
 		String comentario = "Adorei testar esse curso muito bom";
 
-		Avaliacao avaliacao = new Avaliacao();
-
 		InserirAvaliacaoCasoDeUso inserirAvaliacaoCasoDeUso = new InserirAvaliacaoCasoDeUso(avaliacaoDAO);
 
-		inserirAvaliacaoCasoDeUso.inserirAvaliacao(new Avaliacao(notaAvaliacao, comentario, aluno, curso));
+		return inserirAvaliacaoCasoDeUso.inserirAvaliacao(new Avaliacao(notaAvaliacao, comentario, aluno, curso));
 
-		return avaliacao;
-	}
-
-	public Avaliacao inserirAvaliacao2(Aluno aluno, Curso curso) {
-
-		int notaAvaliacao = 4;
-		String comentario = "Amei esse curso";
-
-		Avaliacao avaliacao = new Avaliacao();
-
-		InserirAvaliacaoCasoDeUso inserirAvaliacaoCasoDeUso = new InserirAvaliacaoCasoDeUso(avaliacaoDAO);
-
-		avaliacao = inserirAvaliacaoCasoDeUso.inserirAvaliacao(new Avaliacao(notaAvaliacao, comentario, aluno, curso));
-
-		return avaliacao;
 	}
 
 	public Avaliacao atualizarAvaliacao(Avaliacao avaliacao) {
 
-		Avaliacao avaliacaoAtualizado = new Avaliacao();
-
 		AtualizarAvaliacaoCasoDeUso atualizarAvaliacaoCasoDeUso = new AtualizarAvaliacaoCasoDeUso(avaliacaoDAO);
 
-		avaliacaoAtualizado = atualizarAvaliacaoCasoDeUso.atualizarAvaliacao(avaliacao);
+		return atualizarAvaliacaoCasoDeUso.atualizarAvaliacao(avaliacao);
 
-		return avaliacaoAtualizado;
 	}
 
 	public Avaliacao deletarAvaliacao(Avaliacao avaliacao) {
 
-		Avaliacao avaliacaoDeletado = new Avaliacao();
-
 		DeletarAvaliacaoCasoDeUso deletarAvaliacaoCasoDeUso = new DeletarAvaliacaoCasoDeUso(avaliacaoDAO);
 
-		avaliacaoDeletado = deletarAvaliacaoCasoDeUso.deletarAvaliacao(avaliacao);
+		return deletarAvaliacaoCasoDeUso.deletarAvaliacao(avaliacao);
 
-		return avaliacaoDeletado;
 	}
 
 }

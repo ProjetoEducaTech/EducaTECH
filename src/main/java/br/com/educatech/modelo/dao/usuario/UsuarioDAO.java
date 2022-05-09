@@ -10,7 +10,7 @@ public interface UsuarioDAO {
 
 	void atualizarUsuario(Usuario usuario);
 
-	void deletarUsuario(Usuario usuario);
+	Usuario deletarUsuario(Usuario usuario);
 
 	Usuario loginUsuario(String email, String senha);
 

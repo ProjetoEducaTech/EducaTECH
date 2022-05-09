@@ -15,9 +15,13 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 
 import br.com.educatech.modelo.entidade.aluno.Aluno;
+import br.com.educatech.modelo.entidade.aluno.Aluno_;
 import br.com.educatech.modelo.entidade.area.Area;
+import br.com.educatech.modelo.entidade.area.Area_;
 import br.com.educatech.modelo.entidade.curso.Curso;
+import br.com.educatech.modelo.entidade.curso.Curso_;
 import br.com.educatech.modelo.entidade.instituicao.Instituicao;
+import br.com.educatech.modelo.entidade.instituicao.Instituicao_;
 import br.com.educatech.modelo.enumeraco.modalidade.TipoModalidade;
 import br.com.educatech.modelo.enumeraco.turno.TipoTurno;
 import br.com.educatech.modelo.factory.conexao.ConexaoFactory;
@@ -141,7 +145,7 @@ public class CursoDAOImpl implements CursoDAO {
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 
 			criteria.select(raizCurso);
-			criteria.orderBy(construtor.asc(raizCurso.get("nome")));
+			criteria.orderBy(construtor.asc(raizCurso.get(Curso_.NOME)));
 
 			curso = sessao.createQuery(criteria).getResultList();
 
@@ -180,12 +184,12 @@ public class CursoDAOImpl implements CursoDAO {
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 
-			Join<Curso, Instituicao> juncaoInstituicao = raizCurso.join("instituicao");
+			Join<Curso, Instituicao> juncaoInstituicao = raizCurso.join(Curso_.INSTITUICAO);
 
 			ParameterExpression<Long> idinst = construtor.parameter(Long.class);
-			criteria.where(construtor.equal(juncaoInstituicao.get("id"), idinst));
+			criteria.where(construtor.equal(juncaoInstituicao.get(Instituicao_.ID), idinst));
 
-			criteria.orderBy(construtor.asc(raizCurso.get("nome")));
+			criteria.orderBy(construtor.asc(raizCurso.get(Curso_.NOME)));
 
 			consultaCurso = sessao.createQuery(criteria).setParameter(idinst, instituicao.getId()).getResultList();
 
@@ -224,12 +228,12 @@ public class CursoDAOImpl implements CursoDAO {
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 
-			Join<Curso, Area> juncaoArea = raizCurso.join("area");
+			Join<Curso, Area> juncaoArea = raizCurso.join(Curso_.AREA);
 
 			ParameterExpression<Long> idArea = construtor.parameter(Long.class);
-			criteria.where(construtor.equal(juncaoArea.get("id"), idArea));
+			criteria.where(construtor.equal(juncaoArea.get(Area_.ID), idArea));
 
-			criteria.orderBy(construtor.asc(raizCurso.get("nome")));
+			criteria.orderBy(construtor.asc(raizCurso.get(Curso_.NOME)));
 
 			consultaArea = sessao.createQuery(criteria).setParameter(idArea, area.getId()).getResultList();
 
@@ -268,9 +272,10 @@ public class CursoDAOImpl implements CursoDAO {
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 
-			criteria.where(construtor.lessThanOrEqualTo(raizCurso.<Double>get("notaCorte"), aluno.getNota()));
+			criteria.where(construtor.lessThanOrEqualTo(raizCurso.<Double>get(Curso_.NOTA_CORTE), aluno.getNota()));
 
-			criteria.orderBy(construtor.desc(raizCurso.get("notaCorte")), construtor.asc(raizCurso.get("nome")));
+			criteria.orderBy(construtor.desc(raizCurso.get(Curso_.NOTA_CORTE)),
+					construtor.asc(raizCurso.get(Curso_.NOME)));
 
 			consultaNota = sessao.createQuery(criteria).getResultList();
 
@@ -309,12 +314,12 @@ public class CursoDAOImpl implements CursoDAO {
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizFavorito = criteria.from(Curso.class);
 
-			Join<Curso, Aluno> juncaoAluno = raizFavorito.join("alunos");
+			Join<Curso, Aluno> juncaoAluno = raizFavorito.join(Curso_.ALUNOS);
 
 			ParameterExpression<Long> idAluno = construtor.parameter(Long.class);
-			criteria.where(construtor.equal(juncaoAluno.get("id"), idAluno));
+			criteria.where(construtor.equal(juncaoAluno.get(Aluno_.ID), idAluno));
 
-			criteria.orderBy(construtor.asc(raizFavorito.get("nome")));
+			criteria.orderBy(construtor.asc(raizFavorito.get(Curso_.NOME)));
 
 			favoritos = sessao.createQuery(criteria).setParameter(idAluno, aluno.getId()).getResultList();
 
@@ -353,9 +358,9 @@ public class CursoDAOImpl implements CursoDAO {
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 
-			criteria.where(construtor.between(raizCurso.<Double>get("preco"), 50.0, custo));
+			criteria.where(construtor.between(raizCurso.<Double>get(Curso_.PRECO), 50.0, custo));
 
-			criteria.orderBy(construtor.desc(raizCurso.get("preco")), construtor.asc(raizCurso.get("nome")));
+			criteria.orderBy(construtor.desc(raizCurso.get(Curso_.PRECO)), construtor.asc(raizCurso.get(Curso_.NOME)));
 
 			cursos = sessao.createQuery(criteria).getResultList();
 
@@ -394,9 +399,9 @@ public class CursoDAOImpl implements CursoDAO {
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 
-			criteria.where(construtor.equal(raizCurso.get("tipoModalidade"), tipoModalidade));
+			criteria.where(construtor.equal(raizCurso.get(Curso_.TIPO_MODALIDADE), tipoModalidade));
 
-			criteria.orderBy(construtor.asc(raizCurso.get("nome")));
+			criteria.orderBy(construtor.asc(raizCurso.get(Curso_.NOME)));
 
 			consultaModalidadeCurso = sessao.createQuery(criteria).getResultList();
 
@@ -435,9 +440,9 @@ public class CursoDAOImpl implements CursoDAO {
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 
-			criteria.where(construtor.equal(raizCurso.get("tipoTurno"), tipoTurno));
+			criteria.where(construtor.equal(raizCurso.get(Curso_.TIPO_TURNO), tipoTurno));
 
-			criteria.orderBy(construtor.asc(raizCurso.get("nome")));
+			criteria.orderBy(construtor.asc(raizCurso.get(Curso_.NOME)));
 
 			consultaTurnoCurso = sessao.createQuery(criteria).getResultList();
 
@@ -461,6 +466,48 @@ public class CursoDAOImpl implements CursoDAO {
 		return consultaTurnoCurso;
 	}
 
+	public List<Curso> recuperarPaginaPorAvaliacaoNomePreco(int pageNumber, int pageSize) {
+
+		Session sessao = null;
+		List<Curso> currentPage = new ArrayList<>();
+
+		try {
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Long> queryContador = construtor.createQuery(Long.class);
+
+			queryContador.select(construtor.count(queryContador.from(Curso.class)));
+			Long count = sessao.createQuery(queryContador).getSingleResult();
+
+			CriteriaQuery<Curso> criteriaQuery = construtor.createQuery(Curso.class);
+			Root<Curso> raizCurso = criteriaQuery.from(Curso.class);
+			CriteriaQuery<Curso> select = criteriaQuery.select(raizCurso);
+
+			criteriaQuery.orderBy(construtor.desc(raizCurso.get(Curso_.AVALIACAO)),
+					construtor.asc(raizCurso.get(Curso_.NOME)), construtor.asc(raizCurso.get(Curso_.PRECO)));
+			TypedQuery<Curso> typedQuery = sessao.createQuery(select);
+			currentPage.addAll(typedQuery.getResultList());
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+		return currentPage;
+	}
+
 	public List<Curso> recuperarPorFiltroCurso(Optional<Long> idInstituicao, Optional<Long> idArea,
 			Optional<Double> nota, Optional<TipoTurno> tipoTurno, Optional<TipoModalidade> tipoModalidade,
 			Optional<Double> preco) {
@@ -480,39 +527,42 @@ public class CursoDAOImpl implements CursoDAO {
 
 			if (idInstituicao.isPresent() && (idInstituicao.get() > 0)) {
 
-				Join<Curso, Instituicao> juncaoInstituicao = raizCurso.join("instituicao");
+				Join<Curso, Instituicao> juncaoInstituicao = raizCurso.join(Curso_.INSTITUICAO);
 
-				predicates.add(construtor.or(construtor.equal(juncaoInstituicao.get("id"), idInstituicao.get())));
+				predicates.add(
+						construtor.or(construtor.equal(juncaoInstituicao.get(Instituicao_.ID), idInstituicao.get())));
 			}
 
 			if (idArea.isPresent() && (idArea.get() > 0)) {
 
-				Join<Curso, Area> juncaoArea = raizCurso.join("area");
+				Join<Curso, Area> juncaoArea = raizCurso.join(Curso_.AREA);
 
-				predicates.add(construtor.or(construtor.equal(juncaoArea.get("id"), idArea.get())));
+				predicates.add(construtor.or(construtor.equal(juncaoArea.get(Area_.ID), idArea.get())));
 			}
 
 			if (nota.isPresent()) {
-				predicates.add(
-						construtor.or(construtor.lessThanOrEqualTo(raizCurso.<Double>get("notaCorte"), nota.get())));
+				predicates.add(construtor
+						.or(construtor.lessThanOrEqualTo(raizCurso.<Double>get(Curso_.NOTA_CORTE), nota.get())));
 			}
 
 			if (tipoTurno.isPresent()) {
-				predicates.add(construtor.or(construtor.equal(raizCurso.get("tipoTurno"), tipoTurno.get())));
+				predicates.add(construtor.or(construtor.equal(raizCurso.get(Curso_.TIPO_TURNO), tipoTurno.get())));
 			}
 
 			if (tipoModalidade.isPresent()) {
-				predicates.add(construtor.or(construtor.equal(raizCurso.get("tipoModalidade"), tipoModalidade.get())));
+				predicates.add(
+						construtor.or(construtor.equal(raizCurso.get(Curso_.TIPO_MODALIDADE), tipoModalidade.get())));
 			}
 
 			if (preco.isPresent() && (preco.get() != 0)) {
-				predicates.add(construtor.or(construtor.between(raizCurso.<Double>get("preco"), 50.0, preco.get())));
+				predicates
+						.add(construtor.or(construtor.between(raizCurso.<Double>get(Curso_.PRECO), 50.0, preco.get())));
 			}
 
 			criteria.where(construtor.and(predicates.toArray(new Predicate[predicates.size()])));
 
-			criteria.orderBy(construtor.desc(raizCurso.get("notaCorte")), construtor.desc(raizCurso.get("preco")),
-					construtor.asc(raizCurso.get("nome")));
+			criteria.orderBy(construtor.desc(raizCurso.get(Curso_.NOTA_CORTE)),
+					construtor.desc(raizCurso.get(Curso_.PRECO)), construtor.asc(raizCurso.get(Curso_.NOME)));
 
 			consultaFiltroCurso = sessao.createQuery(criteria).getResultList();
 
@@ -534,47 +584,6 @@ public class CursoDAOImpl implements CursoDAO {
 		}
 
 		return consultaFiltroCurso;
-	}
-
-	public List<Curso> paginaPorAvaliacaoNomePreco(int pageNumber, int pageSize) {
-
-		Session sessao = null;
-		List<Curso> currentPage = new ArrayList<>();
-
-		try{
-			sessao = conexao.getConexao().openSession();
-			sessao.beginTransaction();
-
-			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
-
-			CriteriaQuery<Long> queryContador = construtor.createQuery(Long.class);
-
-			queryContador.select(construtor.count(queryContador.from(Curso.class)));
-			Long count = sessao.createQuery(queryContador).getSingleResult();
-
-			CriteriaQuery<Curso> criteriaQuery = construtor.createQuery(Curso.class);
-			Root<Curso> raizCurso = criteriaQuery.from(Curso.class);
-			CriteriaQuery<Curso> select = criteriaQuery.select(raizCurso);
-
-			criteriaQuery.orderBy(construtor.desc(raizCurso.get("avaliacao")), construtor.asc(raizCurso.get("nomeCurso")), construtor.asc(raizCurso.get("preco")));
-			TypedQuery<Curso> typedQuery = sessao.createQuery(select);
-			currentPage.addAll(typedQuery.getResultList());
-			
-		} catch (Exception sqlException) {
-
-			sqlException.printStackTrace();
-
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
-
-		} finally {
-
-			if (sessao != null) {
-				sessao.close();
-			}
-		}
-		return currentPage;
 	}
 
 }

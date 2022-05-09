@@ -24,7 +24,7 @@ import br.com.educatech.modelo.entidade.aluno.Aluno;
 import br.com.educatech.modelo.entidade.area.Area;
 import br.com.educatech.modelo.entidade.avaliacao.Avaliacao;
 import br.com.educatech.modelo.entidade.instituicao.Instituicao;
-import br.com.educatech.modelo.enumeraco.metodoentrada.TipoMetodoEntrada;
+import br.com.educatech.modelo.enumeraco.ingresso.TipoIngresso;
 import br.com.educatech.modelo.enumeraco.modalidade.TipoModalidade;
 import br.com.educatech.modelo.enumeraco.turno.TipoTurno;
 
@@ -60,9 +60,9 @@ public class Curso implements Serializable {
 	@Column(name = "nota_corte_curso", scale = 5, precision = 2, nullable = false)
 	private double notaCorte;
 
-	@Column(name = "tipo_metodo_entrada_curso", nullable = false)
+	@Column(name = "tipo_ingresso_curso", nullable = false)
 	@Enumerated(EnumType.ORDINAL)
-	private TipoMetodoEntrada tipoMetodoEntrada;
+	private TipoIngresso tipoIngresso;
 
 	@Column(name = "tipo_modalidade_curso", nullable = false)
 	@Enumerated(EnumType.ORDINAL)
@@ -73,25 +73,25 @@ public class Curso implements Serializable {
 	private TipoTurno tipoTurno;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fk_area")
+	@JoinColumn(name = "fk_area", nullable = false)
 	private Area area;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fk_instituicao")
+	@JoinColumn(name = "fk_instituicao", nullable = false)
 	private Instituicao instituicao;
 
 	@ManyToMany(mappedBy = "cursosFavorito")
 	private List<Aluno> alunos = new ArrayList<>();
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Avaliacao> avaliacao = new ArrayList<Avaliacao>();
+	private List<Avaliacao> avaliacao = new ArrayList<>();
 
 	public Curso() {
 
 	}
 
 	public Curso(String nome, String descricao, int duracao, double preco, String link, double notaCorte,
-			TipoMetodoEntrada tipoMetodoEntrada, TipoModalidade tipoModalidade, TipoTurno tipoTurno, Area area,
+			TipoIngresso tipoIngresso, TipoModalidade tipoModalidade, TipoTurno tipoTurno, Area area,
 			Instituicao instituicao) {
 		setNome(nome);
 		setDescricao(descricao);
@@ -99,17 +99,30 @@ public class Curso implements Serializable {
 		setPreco(preco);
 		setLink(link);
 		setNotaCorte(notaCorte);
-		setTipoMetodoEntrada(tipoMetodoEntrada);
+		setTipoIngresso(tipoIngresso);
 		setTipoModalidade(tipoModalidade);
 		setTipoTurno(tipoTurno);
 		setArea(area);
 		setInstituicao(instituicao);
 	}
 
-	public Curso(Long id, String descricao, int duracao, double preco, String link, double notaCorte,
-			TipoMetodoEntrada tipoMetodoEntrada, TipoModalidade tipoModalidade, TipoTurno tipoTurno, Area area,
-			Instituicao instituicao) {
+	public Curso(String nome, String descricao, int duracao, double preco, String link, TipoIngresso tipoIngresso,
+			TipoModalidade tipoModalidade, TipoTurno tipoTurno, Area area, Instituicao instituicao) {
+		setNome(nome);
+		setDescricao(descricao);
+		setDuracao(duracao);
+		setPreco(preco);
+		setLink(link);
+		setTipoIngresso(tipoIngresso);
+		setTipoModalidade(tipoModalidade);
+		setTipoTurno(tipoTurno);
+		setArea(area);
+		setInstituicao(instituicao);
+	}
 
+	public Curso(Long id, String nome, String descricao, int duracao, double preco, String link, double notaCorte,
+			TipoIngresso tipoIngreso, TipoModalidade tipoModalidade, TipoTurno tipoTurno, Area area,
+			Instituicao instituicao) {
 		setId(id);
 		setNome(nome);
 		setDescricao(descricao);
@@ -117,11 +130,15 @@ public class Curso implements Serializable {
 		setPreco(preco);
 		setLink(link);
 		setNotaCorte(notaCorte);
-		setTipoMetodoEntrada(tipoMetodoEntrada);
+		setTipoIngresso(tipoIngreso);
 		setTipoModalidade(tipoModalidade);
 		setTipoTurno(tipoTurno);
 		setArea(area);
 		setInstituicao(instituicao);
+	}
+
+	public Curso(Long id) {
+		setId(id);
 	}
 
 	public Long getId() {
@@ -180,12 +197,12 @@ public class Curso implements Serializable {
 		this.notaCorte = notaCorte;
 	}
 
-	public TipoMetodoEntrada getTipoMetodoEntrada() {
-		return tipoMetodoEntrada;
+	public TipoIngresso getTipoIngresso() {
+		return tipoIngresso;
 	}
 
-	public void setTipoMetodoEntrada(TipoMetodoEntrada tipoMetodoEntrada) {
-		this.tipoMetodoEntrada = tipoMetodoEntrada;
+	public void setTipoIngresso(TipoIngresso tipoIngresso) {
+		this.tipoIngresso = tipoIngresso;
 	}
 
 	public TipoModalidade getTipoModalidade() {

@@ -11,7 +11,9 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 
 import br.com.educatech.modelo.entidade.endereco.Endereco;
+import br.com.educatech.modelo.entidade.endereco.Endereco_;
 import br.com.educatech.modelo.entidade.instituicao.Instituicao;
+import br.com.educatech.modelo.entidade.usuario.Usuario_;
 import br.com.educatech.modelo.factory.conexao.ConexaoFactory;
 
 public class EnderecoDAOImpl implements EnderecoDAO {
@@ -117,6 +119,48 @@ public class EnderecoDAOImpl implements EnderecoDAO {
 		return endereco;
 	}
 
+	public Endereco recuperarPorEnderecoInstituicao(Instituicao instituicao) {
+
+		Session sessao = null;
+		Endereco endereco = null;
+
+		try {
+
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Endereco> criteria = construtor.createQuery(Endereco.class);
+			Root<Endereco> raizEndereco = criteria.from(Endereco.class);
+
+			Join<Endereco, Instituicao> juncaoUsuario = raizEndereco.join(Endereco_.INSTITUICAO);
+
+			ParameterExpression<Long> idUsuario = construtor.parameter(Long.class);
+			criteria.where(construtor.equal(juncaoUsuario.get(Usuario_.ID), idUsuario));
+
+			endereco = sessao.createQuery(criteria).setParameter(idUsuario, instituicao.getId()).getSingleResult();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return endereco;
+	}
+
 	public List<Endereco> recuperarEndereco() {
 
 		Session sessao = null;
@@ -156,45 +200,4 @@ public class EnderecoDAOImpl implements EnderecoDAO {
 		return enderecos;
 	}
 
-	public List<Endereco> recuperarPorEnderecoInstituicao(Instituicao instituicao) {
-
-		Session sessao = null;
-		List<Endereco> enderecos = null;
-
-		try {
-
-			sessao = conexao.getConexao().openSession();
-			sessao.beginTransaction();
-
-			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
-
-			CriteriaQuery<Endereco> criteria = construtor.createQuery(Endereco.class);
-			Root<Endereco> raizEndereco = criteria.from(Endereco.class);
-
-			Join<Endereco, Instituicao> juncaoUsuario = raizEndereco.join("instituicao");
-
-			ParameterExpression<Long> idUsuario = construtor.parameter(Long.class);
-			criteria.where(construtor.equal(juncaoUsuario.get("id"), idUsuario));
-
-			enderecos = sessao.createQuery(criteria).setParameter(idUsuario, instituicao.getId()).getResultList();
-
-			sessao.getTransaction().commit();
-
-		} catch (Exception sqlException) {
-
-			sqlException.printStackTrace();
-
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
-
-		} finally {
-
-			if (sessao != null) {
-				sessao.close();
-			}
-		}
-
-		return enderecos;
-	}
 }

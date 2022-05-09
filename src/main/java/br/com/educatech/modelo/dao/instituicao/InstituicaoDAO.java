@@ -12,7 +12,7 @@ public interface InstituicaoDAO {
 
 	void deletarInstituicao(Instituicao instuicao);
 
-	Instituicao loginUsuarioInstituicao(Long id);
+	Instituicao recuperarInstituicaoPorId(Long id);
 
 	List<Instituicao> recuperarInstituicao();
 

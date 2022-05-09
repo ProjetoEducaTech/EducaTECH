@@ -9,6 +9,7 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 
 import br.com.educatech.modelo.entidade.aluno.Aluno;
+import br.com.educatech.modelo.entidade.aluno.Aluno_;
 import br.com.educatech.modelo.entidade.curso.Curso;
 import br.com.educatech.modelo.factory.conexao.ConexaoFactory;
 
@@ -171,7 +172,7 @@ public class AlunoDAOImpl implements AlunoDAO {
 		}
 	}
 
-	public Aluno loginUsuarioAluno(Long id) {
+	public Aluno recuperarAlunoPorId(Long id) {
 
 		Session sessao = null;
 		Aluno loginUsuarioAluno = null;
@@ -186,7 +187,7 @@ public class AlunoDAOImpl implements AlunoDAO {
 			CriteriaQuery<Aluno> criteria = construtor.createQuery(Aluno.class);
 			Root<Aluno> raizAluno = criteria.from(Aluno.class);
 
-			criteria.where(construtor.equal(raizAluno.get("id"), id));
+			criteria.where(construtor.equal(raizAluno.get(Aluno_.ID), id));
 
 			loginUsuarioAluno = sessao.createQuery(criteria).getSingleResult();
 
@@ -227,7 +228,7 @@ public class AlunoDAOImpl implements AlunoDAO {
 
 			criteria.select(raizAluno);
 
-			criteria.orderBy(construtor.asc(raizAluno.get("nome")));
+			criteria.orderBy(construtor.asc(raizAluno.get(Aluno_.NOME)));
 
 			aluno = sessao.createQuery(criteria).getResultList();
 
@@ -251,42 +252,4 @@ public class AlunoDAOImpl implements AlunoDAO {
 		return aluno;
 	}
 
-	public Aluno recuperarAlunoPorID(Aluno aluno) {
-
-		Session sessao = null;
-		Aluno alunos = null;
-
-		try {
-
-			sessao = conexao.getConexao().openSession();
-			sessao.beginTransaction();
-
-			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
-
-			CriteriaQuery<Aluno> criteria = construtor.createQuery(Aluno.class);
-			Root<Aluno> raizAluno = criteria.from(Aluno.class);
-
-			criteria.where(construtor.equal(raizAluno.get("id"), aluno.getId()));
-
-			alunos = sessao.createQuery(criteria).getSingleResult();
-
-			sessao.getTransaction().commit();
-
-		} catch (Exception sqlException) {
-
-			sqlException.printStackTrace();
-
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
-
-		} finally {
-
-			if (sessao != null) {
-				sessao.close();
-			}
-		}
-
-		return alunos;
-	}
 }

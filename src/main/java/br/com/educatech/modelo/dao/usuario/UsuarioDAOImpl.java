@@ -11,7 +11,9 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 
 import br.com.educatech.modelo.entidade.contato.Contato;
+import br.com.educatech.modelo.entidade.contato.Contato_;
 import br.com.educatech.modelo.entidade.usuario.Usuario;
+import br.com.educatech.modelo.entidade.usuario.Usuario_;
 import br.com.educatech.modelo.factory.conexao.ConexaoFactory;
 
 public class UsuarioDAOImpl implements UsuarioDAO {
@@ -81,7 +83,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		}
 	}
 
-	public void deletarUsuario(Usuario usuario) {
+	public Usuario deletarUsuario(Usuario usuario) {
 
 		Session sessao = null;
 
@@ -108,6 +110,8 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				sessao.close();
 			}
 		}
+
+		return usuario;
 	}
 
 	public Usuario loginUsuario(String email, String senha) {
@@ -125,10 +129,10 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			CriteriaQuery<Usuario> criteria = construtor.createQuery(Usuario.class);
 			Root<Usuario> raizUsuario = criteria.from(Usuario.class);
 
-			Join<Usuario, Contato> juncaoContato = raizUsuario.join("contatos");
+			Join<Usuario, Contato> juncaoContato = raizUsuario.join(Usuario_.CONTATO);
 
-			Predicate predicateEmail = construtor.equal(juncaoContato.get("email"), email);
-			Predicate predicateSenha = construtor.equal(raizUsuario.get("senha"), senha);
+			Predicate predicateEmail = construtor.equal(juncaoContato.get(Contato_.EMAIL), email);
+			Predicate predicateSenha = construtor.equal(raizUsuario.get(Usuario_.SENHA), senha);
 			Predicate predicateLogin = construtor.and(predicateEmail, predicateSenha);
 
 			criteria.where(predicateLogin);

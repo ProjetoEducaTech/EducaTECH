@@ -13,7 +13,8 @@ public interface EnderecoDAO {
 
 	Endereco deletarEndereco(Endereco endereco);
 
+	Endereco recuperarPorEnderecoInstituicao(Instituicao instituicao);
+
 	List<Endereco> recuperarEndereco();
 
-	List<Endereco> recuperarPorEnderecoInstituicao(Instituicao instituicao);
 }

@@ -13,7 +13,6 @@ br\com\educatech\modelo\entidade\aluno\Aluno.class
 br\com\educatech\modelo\entidade\aluno\Aluno_.class
 br\com\educatech\modelo\entidade\area\Area.class
 br\com\educatech\modelo\entidade\contato\Contato_.class
-br\com\educatech\modelo\enumeraco\metodoentrada\TipoMetodoEntrada.class
 br\com\educatech\modelo\entidade\area\Area_.class
 br\com\educatech\modelo\enumeraco\modalidade\TipoModalidade.class
 br\com\educatech\modelo\dao\contato\ContatoDAO.class

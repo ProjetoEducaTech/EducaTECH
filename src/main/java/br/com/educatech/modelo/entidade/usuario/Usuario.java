@@ -1,8 +1,6 @@
 package br.com.educatech.modelo.entidade.usuario;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Lob;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import br.com.educatech.modelo.entidade.contato.Contato;
@@ -24,6 +22,9 @@ import br.com.educatech.modelo.entidade.contato.Contato;
 @Table(name = "usuario")
 public class Usuario implements Serializable {
 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -41,10 +42,17 @@ public class Usuario implements Serializable {
 	@Column(name = "sal_usuario", unique = true, nullable = false, updatable = false)
 	private byte[] sal;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Contato> contatos = new ArrayList<>();
+	@OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Contato contato;
 
 	public Usuario() {
+	}
+
+	public Usuario(Long id, String nome, String senha, byte[] sal) {
+		setId(id);
+		setNome(nome);
+		setSenha(senha);
+		setSal(sal);
 	}
 
 	public Usuario(String nome, String senha, byte[] sal) {
@@ -53,11 +61,8 @@ public class Usuario implements Serializable {
 		setSal(sal);
 	}
 
-	public Usuario(Long id, String nome, String senha, byte[] sal) {
+	public Usuario(Long id) {
 		setId(id);
-		setNome(nome);
-		setSenha(senha);
-		setSal(sal);
 	}
 
 	public Long getId() {
@@ -90,6 +95,14 @@ public class Usuario implements Serializable {
 
 	public void setSal(byte[] sal) {
 		this.sal = sal;
+	}
+
+	public Contato getContato() {
+		return contato;
+	}
+
+	public void setContato(Contato contato) {
+		this.contato = contato;
 	}
 
 }

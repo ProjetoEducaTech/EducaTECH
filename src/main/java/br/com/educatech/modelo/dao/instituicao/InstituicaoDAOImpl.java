@@ -9,6 +9,7 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 
 import br.com.educatech.modelo.entidade.instituicao.Instituicao;
+import br.com.educatech.modelo.entidade.instituicao.Instituicao_;
 import br.com.educatech.modelo.factory.conexao.ConexaoFactory;
 
 public class InstituicaoDAOImpl implements InstituicaoDAO {
@@ -111,7 +112,7 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 		}
 	}
 
-	public Instituicao loginUsuarioInstituicao(Long id) {
+	public Instituicao recuperarInstituicaoPorId(Long id) {
 
 		Session sessao = null;
 		Instituicao loginUsuarioAluno = null;
@@ -126,7 +127,7 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 			CriteriaQuery<Instituicao> criteria = construtor.createQuery(Instituicao.class);
 			Root<Instituicao> raizInstuicao = criteria.from(Instituicao.class);
 
-			criteria.where(construtor.equal(raizInstuicao.get("id"), id));
+			criteria.where(construtor.equal(raizInstuicao.get(Instituicao_.ID), id));
 
 			loginUsuarioAluno = sessao.createQuery(criteria).getSingleResult();
 
@@ -164,7 +165,7 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 			CriteriaQuery<Instituicao> criteria = construtor.createQuery(Instituicao.class);
 			Root<Instituicao> raizInstituicao = criteria.from(Instituicao.class);
 
-			criteria.orderBy(construtor.asc(raizInstituicao.get("nome")));
+			criteria.orderBy(construtor.asc(raizInstituicao.get(Instituicao_.NOME)));
 
 			criteria.select(raizInstituicao);
 

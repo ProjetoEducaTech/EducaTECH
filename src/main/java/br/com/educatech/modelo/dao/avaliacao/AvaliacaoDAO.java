@@ -13,9 +13,10 @@ public interface AvaliacaoDAO {
 
 	Avaliacao deletarAvaliacao(Avaliacao avaliacao);
 
-	double mediaAvaliacoesCurso(Curso curso);
+	Avaliacao recuperarAvaliacaoPorId(Avaliacao avaliacao);
 
-	List<Avaliacao> avaliacaoCurso(Curso curso);
-	
-	Avaliacao recuperarAvaliacaoPorID (Avaliacao avaliacao);
+	double recuperarMediaAvaliacaoCurso(Curso curso);
+
+	List<Avaliacao> recuperarAvaliacaoCurso(Curso curso);
+
 }

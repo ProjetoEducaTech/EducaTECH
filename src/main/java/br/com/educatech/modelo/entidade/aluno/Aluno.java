@@ -48,13 +48,17 @@ public class Aluno extends Usuario implements Serializable {
 	private TipoGenero tipoGenero;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "aluno_curso_favorito", joinColumns = @JoinColumn(name = "fk_usuario"), inverseJoinColumns = @JoinColumn(name = "fk_curso"))
+	@JoinTable(name = "aluno_curso_favorito", joinColumns = @JoinColumn(name = "fk_aluno"), inverseJoinColumns = @JoinColumn(name = "fk_curso"))
 	private List<Curso> cursosFavorito = new ArrayList<>();
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Avaliacao> avaliacoes = new ArrayList<>();
 
 	public Aluno() {
+	}
+
+	public Aluno(Long id) {
+		super(id);
 	}
 
 	public Aluno(Long id, String nome, String senha, byte[] sal, String cpf, String sobrenome, double nota,
@@ -69,8 +73,8 @@ public class Aluno extends Usuario implements Serializable {
 		avaliacoes = new ArrayList<>();
 	}
 
-	public Aluno(String nome, String senha, String cpf, String sobrenome, double nota, LocalDate dataNascimento,
-			TipoGenero tipoGenero, Curso curso, byte[] sal) {
+	public Aluno(String nome, String senha, byte[] sal, String cpf, String sobrenome, double nota,
+			LocalDate dataNascimento, TipoGenero tipoGenero, Curso curso) {
 		super(nome, senha, sal);
 		setCpf(cpf);
 		setSobrenome(sobrenome);
@@ -80,15 +84,14 @@ public class Aluno extends Usuario implements Serializable {
 		cursosFavorito = new ArrayList<>();
 	}
 
-	public Aluno(String nome, String senha, String cpf, String sobrenome, double nota, LocalDate dataNascimento,
-			TipoGenero tipoGenero, byte[] sal) {
+	public Aluno(String nome, String senha, byte[] sal, String cpf, String sobrenome, double nota,
+			LocalDate dataNascimento, TipoGenero tipoGenero) {
 		super(nome, senha, sal);
 		setCpf(cpf);
 		setSobrenome(sobrenome);
 		setNota(nota);
 		setDataNascimento(dataNascimento);
 		setTipoGenero(tipoGenero);
-		cursosFavorito = new ArrayList<>();
 	}
 
 	public String getCpf() {

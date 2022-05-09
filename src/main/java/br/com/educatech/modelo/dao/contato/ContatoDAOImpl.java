@@ -11,7 +11,9 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 
 import br.com.educatech.modelo.entidade.contato.Contato;
+import br.com.educatech.modelo.entidade.contato.Contato_;
 import br.com.educatech.modelo.entidade.usuario.Usuario;
+import br.com.educatech.modelo.entidade.usuario.Usuario_;
 import br.com.educatech.modelo.factory.conexao.ConexaoFactory;
 
 public class ContatoDAOImpl implements ContatoDAO {
@@ -130,10 +132,10 @@ public class ContatoDAOImpl implements ContatoDAO {
 			CriteriaQuery<Contato> criteria = construtor.createQuery(Contato.class);
 			Root<Contato> raizContato = criteria.from(Contato.class);
 
-			Join<Contato, Usuario> juncaoUsuario = raizContato.join("usuario");
+			Join<Contato, Usuario> juncaoUsuario = raizContato.join(Contato_.USUARIO);
 
 			ParameterExpression<Long> idUsuario = construtor.parameter(Long.class);
-			criteria.where(construtor.equal(juncaoUsuario.get("id"), idUsuario));
+			criteria.where(construtor.equal(juncaoUsuario.get(Usuario_.ID), idUsuario));
 
 			contato = sessao.createQuery(criteria).setParameter(idUsuario, usuario.getId()).getSingleResult();
 

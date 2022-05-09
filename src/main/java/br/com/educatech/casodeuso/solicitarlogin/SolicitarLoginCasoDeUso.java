@@ -13,7 +13,7 @@ public class SolicitarLoginCasoDeUso {
 
 	public Aluno loginUsuarioAluno(Long id) {
 
-		return alunoDAO.loginUsuarioAluno(id);
+		return alunoDAO.recuperarAlunoPorId(id);
 
 	}
 

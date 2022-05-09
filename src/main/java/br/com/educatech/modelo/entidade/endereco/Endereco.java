@@ -5,8 +5,6 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
@@ -25,9 +23,13 @@ public class Endereco implements Serializable {
 	private static final long serialVersionUID = -7357871736984533474L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_endereco", nullable = false)
 	private Long id;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@MapsId
+	@JoinColumn(name = "id_usuario")
+	private Instituicao instituicao;
 
 	@Column(name = "logradouro_endereco", length = 45, nullable = false)
 	private String logradouro;
@@ -49,11 +51,6 @@ public class Endereco implements Serializable {
 
 	@Column(name = "referencia_endereco", length = 45, nullable = false)
 	private String referencia;
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@MapsId
-	@JoinColumn(name = "fk_instituicao")
-	private Instituicao instituicao;
 
 	public Endereco() {
 	}
@@ -81,6 +78,11 @@ public class Endereco implements Serializable {
 		setEstado(estado);
 		setReferencia(referencia);
 		setInstituicao(instituicao);
+	}
+
+	public Endereco(Long id) {
+		setId(id);
+
 	}
 
 	public Long getId() {

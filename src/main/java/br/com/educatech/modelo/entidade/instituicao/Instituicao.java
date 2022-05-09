@@ -9,9 +9,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import br.com.educatech.modelo.entidade.curso.Curso;
+import br.com.educatech.modelo.entidade.endereco.Endereco;
 import br.com.educatech.modelo.entidade.usuario.Usuario;
 
 @Entity
@@ -32,6 +34,9 @@ public class Instituicao extends Usuario implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "instituicao", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Curso> cursos = new ArrayList<>();
 
+	@OneToOne(mappedBy = "instituicao", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Endereco endereco;
+
 	public Instituicao() {
 	}
 
@@ -42,11 +47,15 @@ public class Instituicao extends Usuario implements Serializable {
 		cursos = new ArrayList<>();
 	}
 
-	public Instituicao(String nome, String senha, String cnpj, String descricao, byte[] sal) {
+	public Instituicao(String nome, String senha, byte[] sal, String cnpj, String descricao) {
 		super(nome, senha, sal);
 		setCnpj(cnpj);
 		setDescricao(descricao);
 		cursos = new ArrayList<>();
+	}
+
+	public Instituicao(Long id) {
+		super(id);
 	}
 
 	public String getCnpj() {

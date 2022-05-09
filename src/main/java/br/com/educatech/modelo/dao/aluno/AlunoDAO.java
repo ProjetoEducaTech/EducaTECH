@@ -17,10 +17,8 @@ public interface AlunoDAO {
 
 	void removerCursoFavorito(Curso curso);
 
-	Aluno loginUsuarioAluno(Long id);
+	Aluno recuperarAlunoPorId(Long id);
 
 	List<Aluno> recuperarAlunos();
-
-	Aluno recuperarAlunoPorID(Aluno aluno);
 
 }

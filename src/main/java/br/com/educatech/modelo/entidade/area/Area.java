@@ -38,6 +38,10 @@ public class Area implements Serializable {
 		setNome(nome);
 	}
 
+	public Area(Long id) {
+		setId(id);
+	}
+
 	public Long getId() {
 		return id;
 	}

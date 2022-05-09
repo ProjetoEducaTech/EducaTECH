@@ -36,11 +36,11 @@ public class Avaliacao implements Serializable {
 	private String comentario;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fk_avaliacao")
+	@JoinColumn(name = "fk_aluno", nullable = false)
 	private Aluno aluno;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fk_curso")
+	@JoinColumn(name = "fk_curso", nullable = false)
 	private Curso curso;
 
 	public Avaliacao() {
@@ -59,6 +59,11 @@ public class Avaliacao implements Serializable {
 		setComentario(comentario);
 		setAluno(aluno);
 		setCurso(curso);
+	}
+
+	public Avaliacao(Long id) {
+		setId(id);
+
 	}
 
 	public Long getId() {

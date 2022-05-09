@@ -150,4 +150,5 @@ public class AreaDAOImpl implements AreaDAO {
 
 		return areas;
 	}
+
 }

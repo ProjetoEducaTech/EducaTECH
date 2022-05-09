@@ -34,9 +34,9 @@ public interface CursoDAO {
 
 	List<Curso> recuperarPorTurnoCurso(TipoTurno tipoTurno);
 
+	List<Curso> recuperarPaginaPorAvaliacaoNomePreco(int pageNumber, int pageSize);
+
 	List<Curso> recuperarPorFiltroCurso(Optional<Long> idInstituicao, Optional<Long> idArea, Optional<Double> nota,
 			Optional<TipoTurno> tipoTurno, Optional<TipoModalidade> tipoModalidade, Optional<Double> preco);
-	
-	List<Curso> paginaPorAvaliacaoNomePreco(int pageNumber, int pageSize);
 
 }
