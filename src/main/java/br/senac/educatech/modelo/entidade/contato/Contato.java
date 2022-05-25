@@ -28,10 +28,10 @@ public class Contato implements Serializable {
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
 
-	@Column(name = "telefone_contato", length = 20, unique = true, nullable = false)
+	@Column(name = "telefone_contato", length = 16, unique = true, nullable = false)
 	private String telefone;
 
-	@Column(name = "celular_contato", length = 20, unique = true, nullable = false)
+	@Column(name = "celular_contato", length = 16, unique = true, nullable = false)
 	private String celular;
 
 	@Column(name = "email_contato", length = 40, unique = true, nullable = false)

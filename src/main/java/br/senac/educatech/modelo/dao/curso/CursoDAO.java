@@ -40,7 +40,7 @@ public interface CursoDAO {
 
 	double recuperarMaiorPrecoCurso();
 
-	List<Curso> recuperarPaginaPorAvaliacaoNomePreco(int pageNumber, int pageSize);
+	List<Curso> recuperarPaginaPorAvaliacaoNomePreco(int numeroDaPagina, int tamanhoDaPagina);
 
 	List<Curso> recuperarCursoPorFiltro(Optional<Long> idInstituicao, Optional<Long> idArea, Optional<Double> nota,
 			Optional<Turno> turno, Optional<Modalidade> modalidade, Optional<Double> preco,

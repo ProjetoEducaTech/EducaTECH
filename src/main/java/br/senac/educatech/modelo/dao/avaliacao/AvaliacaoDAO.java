@@ -19,6 +19,6 @@ public interface AvaliacaoDAO {
 
 	List<Avaliacao> recuperarAvaliacoesPeloCurso(Curso curso);
 	
-	List<Avaliacao> recuperarPaginaPelaNotaComentarioNome(int pageNumber, int pageSize);
+	List<Avaliacao> recuperarPaginaPelaNotaComentarioNome(int numeroDaPagina, int tamanhoDaPagina);
 
 }

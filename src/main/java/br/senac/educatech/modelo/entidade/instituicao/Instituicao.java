@@ -23,7 +23,7 @@ public class Instituicao extends Usuario implements Serializable {
 
 	private static final long serialVersionUID = -7130420479638977031L;
 
-	@Column(name = "cnpj_instituicao", length = 45, unique = true, nullable = false)
+	@Column(name = "cnpj_instituicao", length = 18, unique = true, nullable = false)
 	private String cnpj;
 
 	@Column(name = "descricao_instituicao", length = 45, nullable = false)
