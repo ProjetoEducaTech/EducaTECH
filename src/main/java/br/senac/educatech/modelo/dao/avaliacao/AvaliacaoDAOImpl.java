@@ -242,10 +242,10 @@ public class AvaliacaoDAOImpl implements AvaliacaoDAO {
 		return avaliacoes;
 	}
 
-	public List<Avaliacao> recuperarPaginaPelaNotaComentarioNome(int pageNumber, int pageSize) {
+	public List<Avaliacao> recuperarPaginaPelaNotaComentarioNome(int numeroDaPagina, int tamanhoDaPagina) {
 
 		Session sessao = null;
-		List<Avaliacao> currentPage = new ArrayList<>();
+		List<Avaliacao> paginaAtual = new ArrayList<>();
 
 		try {
 			sessao = conexao.getConexao().openSession();
@@ -256,7 +256,7 @@ public class AvaliacaoDAOImpl implements AvaliacaoDAO {
 			CriteriaQuery<Long> queryContador = construtor.createQuery(Long.class);
 
 			queryContador.select(construtor.count(queryContador.from(Avaliacao.class)));
-			Long count = sessao.createQuery(queryContador).getSingleResult();
+			Long contar = sessao.createQuery(queryContador).getSingleResult();
 
 			CriteriaQuery<Avaliacao> criteriaQuery = construtor.createQuery(Avaliacao.class);
 			Root<Avaliacao> raizAvaliacao = criteriaQuery.from(Avaliacao.class);
@@ -270,7 +270,7 @@ public class AvaliacaoDAOImpl implements AvaliacaoDAO {
 					construtor.desc(raizAvaliacao.get(Avaliacao_.COMENTARIO)),
 					construtor.desc(raizAvaliacao.get(Aluno_.NOME)));
 			TypedQuery<Avaliacao> typedQuery = sessao.createQuery(select);
-			currentPage.addAll(typedQuery.getResultList());
+			paginaAtual.addAll(typedQuery.getResultList());
 
 		} catch (Exception sqlException) {
 
@@ -286,7 +286,7 @@ public class AvaliacaoDAOImpl implements AvaliacaoDAO {
 				sessao.close();
 			}
 		}
-		return currentPage;
+		return paginaAtual;
 	}
 
 }

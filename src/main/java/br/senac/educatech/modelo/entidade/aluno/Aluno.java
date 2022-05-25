@@ -30,7 +30,7 @@ public class Aluno extends Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1008488261752669129L;
 
-	@Column(name = "cpf_aluno", length = 20, unique = true, nullable = false)
+	@Column(name = "cpf_aluno", length = 14, unique = true, nullable = false)
 	private String cpf;
 
 	@Column(name = "sobrenome_aluno", length = 20, nullable = false)

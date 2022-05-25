@@ -580,10 +580,10 @@ public class CursoDAOImpl implements CursoDAO {
 		return maiorPreco;
 	}
 
-	public List<Curso> recuperarPaginaPorAvaliacaoNomePreco(int pageNumber, int pageSize) {
+	public List<Curso> recuperarPaginaPorAvaliacaoNomePreco(int numeroDaPagina, int tamanhoDaPagina) {
 
 		Session sessao = null;
-		List<Curso> currentPage = new ArrayList<>();
+		List<Curso> paginaAtual = new ArrayList<>();
 
 		try {
 			sessao = conexao.getConexao().openSession();
@@ -594,7 +594,7 @@ public class CursoDAOImpl implements CursoDAO {
 			CriteriaQuery<Long> queryContador = construtor.createQuery(Long.class);
 
 			queryContador.select(construtor.count(queryContador.from(Curso.class)));
-			Long count = sessao.createQuery(queryContador).getSingleResult();
+			Long contar = sessao.createQuery(queryContador).getSingleResult();
 
 			CriteriaQuery<Curso> criteriaQuery = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteriaQuery.from(Curso.class);
@@ -603,7 +603,7 @@ public class CursoDAOImpl implements CursoDAO {
 			criteriaQuery.orderBy(construtor.desc(raizCurso.get(Curso_.AVALIACOES)),
 					construtor.asc(raizCurso.get(Curso_.NOME)), construtor.asc(raizCurso.get(Curso_.PRECO)));
 			TypedQuery<Curso> typedQuery = sessao.createQuery(select);
-			currentPage.addAll(typedQuery.getResultList());
+			paginaAtual.addAll(typedQuery.getResultList());
 
 		} catch (Exception sqlException) {
 
@@ -619,7 +619,7 @@ public class CursoDAOImpl implements CursoDAO {
 				sessao.close();
 			}
 		}
-		return currentPage;
+		return paginaAtual;
 	}
 
 	public List<Curso> recuperarCursoPorFiltro(Optional<Long> idInstituicao, Optional<Long> idArea,
