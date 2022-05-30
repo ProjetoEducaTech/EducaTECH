@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import br.senac.educatech.modelo.entidade.area.Area;
 import br.senac.educatech.modelo.entidade.curso.Curso;
 import br.senac.educatech.modelo.entidade.endereco.Endereco;
 import br.senac.educatech.modelo.entidade.foto.Foto;
@@ -34,6 +35,9 @@ public class Instituicao extends Usuario implements Serializable {
 
 	@OneToOne(mappedBy = "instituicao", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Endereco endereco;
+	
+	@OneToOne(mappedBy = "instituicao", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Area area;
 
 	public Instituicao() {}
 
