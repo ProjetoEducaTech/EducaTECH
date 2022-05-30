@@ -25,17 +25,17 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		conexao = new ConexaoFactory();
 	}
 
-	public Usuario inserirUsuario(Usuario usuario) {
+	public Long inserirUsuario(Usuario usuario) {
 
 		Session sessao = null;
-		Usuario novoUsuario = null;
+		Long idUsuario = null;
 
 		try {
 
 			sessao = conexao.getConexao().openSession();
 			sessao.beginTransaction();
 
-			novoUsuario = (Usuario) sessao.save(usuario);
+			idUsuario = (Long) sessao.save(usuario);
 
 			sessao.getTransaction().commit();
 
@@ -54,7 +54,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			}
 		}
 		
-		return novoUsuario;
+		return idUsuario;
 	}
 
 	public void atualizarUsuario(Usuario usuario) {

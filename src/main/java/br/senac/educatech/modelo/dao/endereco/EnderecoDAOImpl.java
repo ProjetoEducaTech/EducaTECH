@@ -26,17 +26,17 @@ public class EnderecoDAOImpl implements EnderecoDAO {
 
 	}
 
-	public Endereco inserirEndereco(Endereco endereco) {
+	public Long inserirEndereco(Endereco endereco) {
 
 		Session sessao = null;
-		Endereco novoEndereco = null;
+		Long idEndereco = null;
 
 		try {
 
 			sessao = conexao.getConexao().openSession();
 			sessao.beginTransaction();
 
-			novoEndereco = (Endereco) sessao.save(endereco);
+			idEndereco = (Long) sessao.save(endereco);
 
 			sessao.getTransaction().commit();
 
@@ -55,7 +55,7 @@ public class EnderecoDAOImpl implements EnderecoDAO {
 			}
 		}
 
-		return novoEndereco;
+		return idEndereco;
 	}
 
 	public void atualizarEndereco(Endereco endereco) {

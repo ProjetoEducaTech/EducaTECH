@@ -21,17 +21,17 @@ public class FotoDAOImpl implements FotoDAO {
 		conexao = new ConexaoFactory();
 	}
 	
-	public Foto inserirFoto(Foto foto) {
+	public Long inserirFoto(Foto foto) {
 
 		Session sessao = null;
-		Foto novaFoto =  null;
+		Long idFoto =  null;
 
 		try {
 
 			sessao = conexao.getConexao().openSession();
 			sessao.beginTransaction();
 
-			novaFoto = (Foto) sessao.save(foto);
+			idFoto = (Long) sessao.save(foto);
 
 			sessao.getTransaction().commit();
 
@@ -50,7 +50,7 @@ public class FotoDAOImpl implements FotoDAO {
 			}
 		}
 
-		return novaFoto;
+		return idFoto;
 	}
 
 	public void atualizarFoto(Foto foto) {

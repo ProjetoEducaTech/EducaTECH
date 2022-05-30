@@ -12,7 +12,7 @@ import br.senac.educatech.modelo.enumeracao.turno.Turno;
 
 public interface CursoDAO {
 
-	Curso inserirCurso(Curso curso);
+	Long inserirCurso(Curso curso);
 
 	void atualizarCurso(Curso curso);
 

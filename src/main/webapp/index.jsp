@@ -1,69 +1,72 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<html>
+<html lang="pt-br">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>EducaTECH | Página Inicial</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
-		integrity="sha512-NmLkDIU1C/C88wi324HBc+S2kLhi08PN5GDeUVVVC/BVt/9Izdsc9SVeVfA1UZbY3sHUlDSyRXhCzHfr6hmPPw=="
-		crossorigin="anonymous" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-		integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
-		crossorigin="anonymous" referrerpolicy="no-referrer" />
-	<link rel="icon" href="assets/img/logo.png" sizes="32x32" />
-	<style><%@include file="/assets/css/estilo.css"%></style>
-    <script><%@include file="/assets/js/mascaras.js"%></script>
-</head>
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=ESerl7938NuUsZS3e2cYi_cB25S6iH38zzx21pSbemuafp7CUXvyAeDWZB2p48qrZdj4h8-dbsENbUoWY2gdCYsCV-f_V6kDGjSATKpYEs-JtesRILk1pNRbwM8J95eJrICnTGmqc_GvAk5--THZmMfGikbA8eEIPvGqMgskrGoZlSTOLhZtusX8QhkLJDSAb3QRmPXVrJYdbRyK7JPEdo2N8Hfwz9bUoD4b5_QqMmFNRoIJSCqOxzjdCZ0NEpT6RPVx49eLLmC8Hl64GO-xNR3xYTByNl6EplufkMnSYi-dWzZloNmQkgFYMnVLVe2GyR3n4DBOks85ga7oln7Y4pb4JtHtVtUPFL2Shouk9EE" charset="UTF-8"></script></head>
+
 <body>
 	<header>
-		<div class="menu-bg">
-			<div class="menu">
-				<div class="menu-logo">
-					<a href="index.html"><img src="img/logo.png" alt="logo"></a>
-				</div> <!-- menu_logo -->
-				<nav class="nav">
-					<ul class="nav-list">
-						<li><a href="#somos" class="nav-link">Sobre o EducaTECH</a></li>
-					</ul> <!-- nav_list -->
-				</nav> <!-- nav -->
-			</div> <!-- menu -->
-		</div> <!-- menu- bg -->
-		<h1 class="intro">Preencha os campos para filtrar os cursos</h1>
+	
+		 <form class="form-culsulta-inicial" action="/cunsulta-incial" method="post">
+
+		<h1 class="intro">Selecione as suas preferências para encontrar o curso perfeito!</h1>
+
 		<div class="container-field">
 			<select class="optn" name="modalidade">
 				<option selected disabled value="">Modalidade</option>
-			</select> <!-- optn -->
+				  <option selected value="0">EAD</option>
+				    <option selected value="1">Presencial</option>
+				      <option selected value="2">Semi Presencial</option>
+				        <option selected value="3">AO Vivo</option>
+			</select> 
 			<select class="optn" name="turno">
-				<!--select de instituições-->>
+				
 				<option selected disabled value="">Turno</option>
-			</select> <!-- optn -->
+				  <option selected value="0">Matutino</option>
+				    <option selected value="1">Vespertino</option>
+				      <option selected value="2">Noturno</option>
+				        <option selected value="3">Integral</option>
+				         <option selected value="4">Livre</option>
+			</select> 
+			
 			<select class="optn" name="area">
 				<option selected disabled value="">Área</option>
-			</select> <!-- optn -->
+			</select> 
 			<select class="optn" name="preco">
 				<option selected disabled value="">Preço</option>
-			</select> <!-- optn -->
-			<label for="nota">
-				<input class="optn" type="number" name="nota" placeholder="Nota">
-			</label> <!-- optn -->
+			</select> 
 			<input class="btn-buscar" type="submit" value="Buscar">
-		</div> <!-- container-field -->
+		</div> 
+		</form>
+
+		<div>Cursos de graduação mais bem avaliados
+		<div>
+			<table id="tabela-curso">
+				<thead>
+					<tr>
+						<th>Nome</th>
+						<th>Duracao</th>
+						<th>Turno</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach var="curso" items="${cursosAvaliados}">
+						<tr>
+							<td><c:out value="${curso.nome}" /></td>					
+							<td><c:out value="${curso.duracao}" /></td>
+							<td><c:out value="${curso.Turno}" /></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</div>
+		</div>
+
 	</header>
-	<div class="wave-shape">
-		<svg id="curve" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1416.99 174.01">
-			<path class="cls-1" d="M0,280.8S283.66,59,608.94,163.56s437.93,150.57,808,10.34V309.54H0V280.8Z"
-				transform="translate(0-135.53)" />
-		</svg>
-	</div>
-	<footer class="footer">
-		<p class="logo">EducaTECH</p>
-		<div class="social-media">
-			<a href="#"><i class="fab fa-github"></i></a>
-			<a href="#"><i class="fab fa-linkedin"></i></a>
-			<a href="#"><i class="fab fa-instagram"></i></a>
-		</div> <!-- social-media -->
-		<p class="footer-copyright">@2022, Todos os direitos reservados.</p>
-	</footer> <!-- footer -->
 </body>
+
 </html>

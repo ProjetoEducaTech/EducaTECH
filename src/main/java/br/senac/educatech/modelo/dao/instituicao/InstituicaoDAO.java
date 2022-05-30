@@ -7,7 +7,7 @@ import br.senac.educatech.modelo.entidade.usuario.Usuario;
 
 public interface InstituicaoDAO {
 
-	Instituicao inserirInstituicao(Instituicao instuicao);
+	Long inserirInstituicao(Instituicao instuicao);
 
 	void atualizarInstituicao(Instituicao instuicao);
 

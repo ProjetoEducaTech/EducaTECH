@@ -7,7 +7,7 @@ import br.senac.educatech.modelo.entidade.usuario.Usuario;
 
 public interface ContatoDAO {
 
-	Contato inserirContato(Contato contato);
+	Long inserirContato(Contato contato);
 
 	void atualizarContato(Contato contato);
 

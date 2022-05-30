@@ -22,17 +22,17 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 		conexao = new ConexaoFactory();
 	}
 
-	public Instituicao inserirInstituicao(Instituicao instituicao) {
+	public Long inserirInstituicao(Instituicao instituicao) {
 
 		Session sessao = null;
-		Instituicao novaInstituicao = null;
+		Long idInstituicao = null;
 
 		try {
 
 			sessao = conexao.getConexao().openSession();
 			sessao.beginTransaction();
 
-			novaInstituicao = (Instituicao) sessao.save(instituicao);
+			idInstituicao = (Long) sessao.save(instituicao);
 
 			sessao.getTransaction().commit();
 
@@ -51,7 +51,7 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 			}
 		}
 
-		return novaInstituicao;
+		return idInstituicao;
 	}
 
 	public void atualizarInstituicao(Instituicao instituicao) {

@@ -6,7 +6,7 @@ import br.senac.educatech.modelo.entidade.area.Area;
 
 public interface AreaDAO {
 
-	Area inserirArea(Area area);
+	Long inserirArea(Area area);
 
 	void atualizarArea(Area area);
 

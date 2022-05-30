@@ -23,17 +23,17 @@ public class AlunoDAOImpl implements AlunoDAO {
 
 	}
 
-	public Aluno inserirAluno(Aluno aluno) {
+	public Long inserirAluno(Aluno aluno) {
 
 		Session sessao = null;
-		Aluno novoAluno = null;
+		Long idAluno = null;
 
 		try {
 
 			sessao = conexao.getConexao().openSession();
 			sessao.beginTransaction();
 
-			novoAluno = (Aluno) sessao.save(aluno);
+			idAluno = (Long) sessao.save(aluno);
 
 			sessao.getTransaction().commit();
 
@@ -52,7 +52,7 @@ public class AlunoDAOImpl implements AlunoDAO {
 			}
 		}
 
-		return novoAluno;
+		return idAluno;
 	}
 
 	public void atualizarAluno(Aluno aluno) {

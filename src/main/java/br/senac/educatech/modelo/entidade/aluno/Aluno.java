@@ -39,16 +39,13 @@ public class Aluno extends Usuario implements Serializable {
 	@Column(name = "data_nascimento_aluno", nullable = false)
 	private LocalDate dataNascimento;
 
-	@Column(name = "nota_aluno", scale = 5, precision = 2, nullable = false)
-	private double nota;
-	
 	@Column(name = "biografia_aluno", length = 45, nullable = false)
 	private String biografia;
 
 	@Column(name = "genero_aluno", nullable = false)
 	@Enumerated(EnumType.ORDINAL)
 	private Genero Genero;
-	
+
 	@Column(name = "pronome_aluno", nullable = false)
 	@Enumerated(EnumType.ORDINAL)
 	private Pronome pronome;
@@ -60,17 +57,18 @@ public class Aluno extends Usuario implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Avaliacao> avaliacoes = new ArrayList<>();
 
-	public Aluno() {}
+	public Aluno() {
+	}
 
 	public Aluno(Long id) {
 		super(id);
 	}
 
-	public Aluno(String nome, String senha, byte[] sal, String cpf, String sobrenome, double nota, String biografia, LocalDate dataNascimento, Genero Genero, Pronome pronomes, Foto foto) {
+	public Aluno(String nome, String senha, byte[] sal, String cpf, String sobrenome, String biografia,
+			LocalDate dataNascimento, Genero Genero, Pronome pronomes, Foto foto) {
 		super(nome, senha, sal, foto);
 		setCpf(cpf);
 		setSobrenome(sobrenome);
-		setNota(nota);
 		setBiografia(biografia);
 		setDataNascimento(dataNascimento);
 		setGenero(Genero);
@@ -94,20 +92,12 @@ public class Aluno extends Usuario implements Serializable {
 		this.sobrenome = sobrenome;
 	}
 
-	public double getNota() {
-		return nota;
-	}
-
 	public String getBiografia() {
 		return biografia;
 	}
 
 	public void setBiografia(String biografia) {
 		this.biografia = biografia;
-	}
-
-	public void setNota(double nota) {
-		this.nota = nota;
 	}
 
 	public LocalDate getDataNascimento() {
@@ -158,7 +148,7 @@ public class Aluno extends Usuario implements Serializable {
 	public void removerAvaliacao(Avaliacao avaliacao) {
 		avaliacoes.remove(avaliacao);
 	}
-	
+
 	public boolean equals(Object obj) {
 
 		if (this == obj)
@@ -174,8 +164,8 @@ public class Aluno extends Usuario implements Serializable {
 
 		return this.getId().equals(aluno.getId()) && this.getNome().equals(aluno.getNome())
 				&& this.getSenha().equals(aluno.getSenha()) && this.getCpf().equals(aluno.getCpf())
-				&& this.getSobrenome().equals(aluno.getSobrenome()) && this.getNota() == aluno.getNota()
-				&& this.getGenero().equals(aluno.getGenero())&& this.getDataNascimento().equals(aluno.getDataNascimento())
+				&& this.getSobrenome().equals(aluno.getSobrenome()) && this.getGenero().equals(aluno.getGenero())
+				&& this.getDataNascimento().equals(aluno.getDataNascimento())
 				&& this.getBiografia().equals(aluno.getBiografia()) && this.getPronome().equals(aluno.getPronome());
 	}
 }

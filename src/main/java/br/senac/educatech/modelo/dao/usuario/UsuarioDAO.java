@@ -6,7 +6,7 @@ import br.senac.educatech.modelo.entidade.usuario.Usuario;
 
 public interface UsuarioDAO {
 
-	Usuario inserirUsuario(Usuario usuario);
+	Long inserirUsuario(Usuario usuario);
 
 	void atualizarUsuario(Usuario usuario);
 

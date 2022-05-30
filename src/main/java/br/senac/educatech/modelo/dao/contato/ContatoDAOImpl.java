@@ -24,17 +24,17 @@ public class ContatoDAOImpl implements ContatoDAO {
 		conexao = new ConexaoFactory();
 	}
 
-	public Contato inserirContato(Contato contato) {
+	public Long inserirContato(Contato contato) {
 
 		Session sessao = null;
-		Contato novoContato = null;
+		Long idContato = null;
 
 		try {
 
 			sessao = conexao.getConexao().openSession();
 			sessao.beginTransaction();
 
-			novoContato = (Contato) sessao.save(contato);
+			idContato = (Long) sessao.save(contato);
 
 			sessao.getTransaction().commit();
 
@@ -53,7 +53,7 @@ public class ContatoDAOImpl implements ContatoDAO {
 			}
 		}
 
-		return novoContato;
+		return idContato;
 	}
 
 	public void atualizarContato(Contato contato) {

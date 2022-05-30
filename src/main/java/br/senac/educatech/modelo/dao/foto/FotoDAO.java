@@ -6,7 +6,7 @@ import br.senac.educatech.modelo.entidade.foto.Foto;
 
 public interface FotoDAO {
 
-	Foto inserirFoto(Foto foto);
+	Long inserirFoto(Foto foto);
 	
 	void atualizarFoto(Foto foto);
 	
