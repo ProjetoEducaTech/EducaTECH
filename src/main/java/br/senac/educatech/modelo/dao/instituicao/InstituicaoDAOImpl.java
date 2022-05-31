@@ -10,7 +10,6 @@ import org.hibernate.Session;
 
 import br.senac.educatech.modelo.entidade.instituicao.Instituicao;
 import br.senac.educatech.modelo.entidade.instituicao.Instituicao_;
-import br.senac.educatech.modelo.entidade.usuario.Usuario;
 import br.senac.educatech.modelo.factory.conexao.ConexaoFactory;
 
 public class InstituicaoDAOImpl implements InstituicaoDAO {
@@ -112,10 +111,10 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 		}
 	}
 
-	public Instituicao recuperarInstituicaoPeloId(Usuario usuario) {
+	public Instituicao recuperarInstituicaoPeloId(Instituicao instituicao) {
 
 		Session sessao = null;
-		Instituicao instituicoesRecuperadasPeloId = null;
+		Instituicao instituicaoRecuperada = null;
 
 		try {
 
@@ -127,9 +126,9 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 			CriteriaQuery<Instituicao> criteria = construtor.createQuery(Instituicao.class);
 			Root<Instituicao> raizInstuicao = criteria.from(Instituicao.class);
 
-			criteria.where(construtor.equal(raizInstuicao.get(Instituicao_.ID), usuario.getId()));
+			criteria.where(construtor.equal(raizInstuicao.get(Instituicao_.ID), instituicao.getId()));
 
-			instituicoesRecuperadasPeloId = sessao.createQuery(criteria).getSingleResult();
+			instituicaoRecuperada = sessao.createQuery(criteria).getSingleResult();
 
 			sessao.getTransaction().commit();
 		} catch (Exception sqlException) {
@@ -147,7 +146,7 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 			}
 		}
 
-		return instituicoesRecuperadasPeloId;
+		return instituicaoRecuperada;
 	}
 
 	public List<Instituicao> recuperarInstituicoes() {

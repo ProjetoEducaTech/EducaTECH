@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -47,6 +48,8 @@ import br.senac.educatech.modelo.enumeracao.genero.Genero;
 import br.senac.educatech.modelo.enumeracao.modalidade.Modalidade;
 import br.senac.educatech.modelo.enumeracao.pronome.Pronome;
 import br.senac.educatech.modelo.enumeracao.turno.Turno;
+import br.senac.educatech.modelo.excecao.SenhaInvalidaException;
+import br.senac.educatech.modelo.excecao.UsuarioInvalidoException;
 import br.senac.educatech.util.hash.Hash;
 
 @WebServlet("/")
@@ -231,6 +234,10 @@ public class Servlet extends HttpServlet {
 				break;
 
 			case "/login":
+				mostrarFormularioLogin(request, response);
+				break;
+
+			case "/efetuar-login":
 				loginUsuario(request, response);
 				break;
 
@@ -266,7 +273,7 @@ public class Servlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-aluno.jsp");
-		
+
 		dispatcher.forward(request, response);
 	}
 
@@ -292,13 +299,13 @@ public class Servlet extends HttpServlet {
 		String email = request.getParameter("email");
 		String sobrenome = request.getParameter("sobrenome");
 		LocalDate dataNascimento = LocalDate.parse(request.getParameter("data-nascimento"));
-		//double nota = Double.parseDouble(request.getParameter("nota"));
+		// double nota = Double.parseDouble(request.getParameter("nota"));
 		String biografia = request.getParameter("biografia");
 		Genero genero = Genero.values()[Integer.parseInt(request.getParameter("genero"))];
 		Pronome pronome = Pronome.values()[Integer.parseInt(request.getParameter("pronome"))];
 		byte[] sal = Hash.gerarSal();
 
-		Aluno aluno = new Aluno(nome, Hash.gerarHash(sal, senha), sal, cpf, sobrenome,  biografia, dataNascimento,
+		Aluno aluno = new Aluno(nome, Hash.gerarHash(sal, senha), sal, cpf, sobrenome, biografia, dataNascimento,
 				genero, pronome, null);
 
 		Contato contato = new Contato(telefone, celular, email, aluno);
@@ -365,7 +372,7 @@ public class Servlet extends HttpServlet {
 			throws SQLException, ServletException, IOException {
 
 		String nome = request.getParameter("nome");
-		areaDAO.inserirArea(new Area(nome));
+		// areaDAO.inserirArea(new Area(nome));
 		// redirect or response
 	}
 
@@ -373,7 +380,7 @@ public class Servlet extends HttpServlet {
 			throws SQLException, ServletException, IOException {
 		long id = Long.parseLong("id");
 		String nome = request.getParameter("nome");
-		areaDAO.atualizarArea(new Area(id, nome));
+		// areaDAO.atualizarArea(new Area(id, nome));
 
 	}
 
@@ -634,13 +641,13 @@ public class Servlet extends HttpServlet {
 		String senha = request.getParameter("senha");
 		String cnpj = request.getParameter("cnpj");
 		String descricao = request.getParameter("descricao");
-		
+
 		byte[] sal = Hash.gerarSal();
 
 		Instituicao instituicao = new Instituicao(nome, Hash.gerarHash(sal, senha), sal, cnpj, descricao, null);
 
 		instituicaoDAO.inserirInstituicao(instituicao);
-		
+
 		String logradouro = request.getParameter("logradouro");
 		String bairro = request.getParameter("bairro");
 		int numero = Integer.parseInt(request.getParameter("numero"));
@@ -649,23 +656,24 @@ public class Servlet extends HttpServlet {
 		String estado = request.getParameter("estado");
 		String referencia = request.getParameter("referencia");
 		String complemento = request.getParameter("complemento");
-		
-		Endereco endereco = new Endereco(logradouro, bairro, numero, cep, cidade, estado, referencia, complemento, instituicao);
-		
+
+		Endereco endereco = new Endereco(logradouro, bairro, numero, cep, cidade, estado, referencia, complemento,
+				instituicao);
+
 		enderecoDAO.inserirEndereco(endereco);
-		
+
 		String telefone = request.getParameter("telefone");
 		String celular = request.getParameter("celular");
 		String email = request.getParameter("email");
-		
+
 		Contato contato = new Contato(telefone, celular, email, instituicao);
-		
+
 		contatoDAO.inserirContato(contato);
-		
+
 		byte[] conteudoFoto = FileUtils.readFileToByteArray(new File(request.getParameter("logo-instituicao")));
 		String extensaoFoto = FilenameUtils.getExtension(request.getParameter("logo-instituicao"));
 		Foto foto = new Foto(conteudoFoto, extensaoFoto, instituicao);
-		
+
 		fotoDAO.inserirFoto(foto);
 
 		instituicao.setFoto(foto);
@@ -698,48 +706,45 @@ public class Servlet extends HttpServlet {
 		// redirect or response
 	}
 
+	private void mostrarFormularioLogin(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+		dispatcher.forward(request, response);
+
+	}
+
 	private void loginUsuario(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, ServletException, IOException {
 
 		String email = request.getParameter("email");
 		String senha = request.getParameter("senha");
+		HttpSession sessao = null;
 
 		try {
 
 			Usuario usuario = null;
 
-			// Usuario usuario = usuarioDAO.recuperarUsuarioId(new Contato());
+			usuario = usuarioDAO.recuperarUsuarioPorEmail(new Contato(email));
 
 			if (usuario == null) {
-				// throw new UsuarioInvalidoException("O email informado não existe!");
+				throw new UsuarioInvalidoException("O email informado não existe!");
 			}
-			// Aluno aluno = alunoDAO.recuperarAlunoPeloId(usuario);
-			Aluno aluno = null;
-			Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(usuario);
 
-			if (aluno != null) {
-				boolean equals = usuario.equals(Hash.gerarHash(aluno.getSal(), senha) == (aluno.getSenha()));
+			boolean equals = usuario.equals(Hash.gerarHash(usuario.getSal(), senha) == (usuario.getSenha()));
 
-				if (equals == true) {
-					// conexao(aluno);
-				} else {
-					// throw new SenhaInvalidaException("A senha informada está incorreta!");
-
-				}
-			} else if (instituicao != null) {
-				boolean equals = usuario.equals(Hash.gerarHash(instituicao.getSal(), senha) == instituicao.getSenha());
-
-				if (equals == true) {
-					// conexao(instituicao);
-				} else {
-					// throw new SenhaInvalidaException("A senha informada está incorreta!");
-
-				}
+			if (equals == true) {
+				sessao = request.getSession();
+				sessao.setAttribute("usuario", usuario);
+			}else {
+				throw new SenhaInvalidaException("A senha informada está incorreta!");
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+		dispatcher.forward(request, response);
 
 	}
 

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -236,5 +237,47 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		}
 
 		return usuario;
+	}
+	
+	public Usuario recuperarUsuarioPorEmail(Contato contato) {
+
+		Session sessao = null;
+		Usuario usuarioRecuperado = null;
+
+		try {
+
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Usuario> criteria = construtor.createQuery(Usuario.class);
+			Root<Usuario> raizUsuario = criteria.from(Usuario.class);
+
+			Join<Usuario, Contato> juncaoContato = raizUsuario.join(Usuario_.CONTATO);
+
+			ParameterExpression<String> email = construtor.parameter(String.class);
+			criteria.where(construtor.equal(juncaoContato.get(Contato_.EMAIL), email));
+
+			usuarioRecuperado  = sessao.createQuery(criteria).setParameter(email, contato.getEmail()).getSingleResult();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return usuarioRecuperado ;
 	}
 }
