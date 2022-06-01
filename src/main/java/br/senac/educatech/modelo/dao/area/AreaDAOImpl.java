@@ -4,12 +4,15 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 
 import br.senac.educatech.modelo.entidade.area.Area;
 import br.senac.educatech.modelo.entidade.area.Area_;
+import br.senac.educatech.modelo.entidade.instituicao.Instituicao;
 import br.senac.educatech.modelo.factory.conexao.ConexaoFactory;
 
 public class AreaDAOImpl implements AreaDAO {
@@ -186,4 +189,48 @@ public class AreaDAOImpl implements AreaDAO {
 
 		return areaRecuperada;
 	}
-}
+	
+	public List<Area> recuperarAreasPelaInstituicao(Instituicao instituicao){
+		
+		Session sessao = null;
+		List<Area> consultaArea = null;
+
+		try {
+
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Area> criteria = construtor.createQuery(Area.class);
+			Root<Area> raizArea = criteria.from(Area.class);
+
+			Join<Area, Instituicao> juncaoInstituicao = raizArea.join(Area_.INSTITUICAO);
+
+			ParameterExpression<Long> idinst = construtor.parameter(Long.class);
+			criteria.where(construtor.equal(juncaoInstituicao.get(Instituicao_.ID), idinst));
+
+			criteria.orderBy(construtor.asc(raizArea.get(Area_.NOME)));
+
+			consultaArea = sessao.createQuery(criteria).setParameter(idinst, instituicao.getId()).getResultList();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return consultaArea;
+		}
+	}
