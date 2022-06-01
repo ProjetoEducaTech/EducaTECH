@@ -3,6 +3,7 @@ package br.senac.educatech.modelo.dao.area;
 import java.util.List;
 
 import br.senac.educatech.modelo.entidade.area.Area;
+import br.senac.educatech.modelo.entidade.instituicao.Instituicao;
 
 public interface AreaDAO {
 
@@ -15,4 +16,6 @@ public interface AreaDAO {
 	List<Area> recuperarAreas();
 	
 	Area recuperarAreaPeloId(Area area);
+	
+	List<Area> recuperarAreasPelaInstituicao(Instituicao instituicao);
 }
