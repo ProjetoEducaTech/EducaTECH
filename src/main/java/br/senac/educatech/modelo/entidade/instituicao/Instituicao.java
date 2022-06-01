@@ -35,11 +35,12 @@ public class Instituicao extends Usuario implements Serializable {
 
 	@OneToOne(mappedBy = "instituicao", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Endereco endereco;
-	
+
 	@OneToOne(mappedBy = "instituicao", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Area area;
 
-	public Instituicao() {}
+	public Instituicao() {
+	}
 
 	public Instituicao(Long id, String nome, String senha, byte[] sal, String cnpj, String descricao, Foto foto) {
 		super(id, nome, senha, sal, foto);

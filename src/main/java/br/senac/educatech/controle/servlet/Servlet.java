@@ -355,7 +355,7 @@ public class Servlet extends HttpServlet {
 
 	private void mostrarFormularioArea(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-area.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -371,9 +371,31 @@ public class Servlet extends HttpServlet {
 	private void inserirArea(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, ServletException, IOException {
 
-		String nome = request.getParameter("nome");
-		// areaDAO.inserirArea(new Area(nome));
-		// redirect or response
+		if (request.getSession(false) == null) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+			dispatcher.forward(request, response);
+
+		} else {
+
+			if (request.getSession(false).getAttribute("usuario") instanceof Instituicao) {
+
+				String nome = request.getParameter("nome");
+
+				Instituicao instituicao = (Instituicao) request.getAttribute("usuario");
+
+				Area area = new Area(nome, instituicao);
+
+				areaDAO.inserirArea(area);
+
+			} else {
+				RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+				dispatcher.forward(request, response);
+			}
+
+			RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-curso.jsp");
+			dispatcher.forward(request, response);
+		}
+
 	}
 
 	private void atualizarArea(HttpServletRequest request, HttpServletResponse response)
@@ -492,7 +514,13 @@ public class Servlet extends HttpServlet {
 
 	private void mostrarFormularioCurso(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("");
+
+		if (request.getSession(false).getAttribute("usuario") instanceof Instituicao) {
+			Instituicao instituicao = (Instituicao) request.getAttribute("usuario");
+			
+		}
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-curso.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -714,34 +742,15 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void loginUsuario(HttpServletRequest request, HttpServletResponse response)
-			throws SQLException, ServletException, IOException {
+			throws SQLException, ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
 
 		String email = request.getParameter("email");
 		String senha = request.getParameter("senha");
-		HttpSession sessao = null;
 
-		try {
+		Usuario usuario = usuarioDAO.recuperarUsuarioPorEmail(new Contato(email));
 
-			Usuario usuario = null;
-
-			usuario = usuarioDAO.recuperarUsuarioPorEmail(new Contato(email));
-
-			if (usuario == null) {
-				throw new UsuarioInvalidoException("O email informado não existe!");
-			}
-
-			boolean equals = usuario.equals(Hash.gerarHash(usuario.getSal(), senha) == (usuario.getSenha()));
-
-			if (equals == true) {
-				sessao = request.getSession();
-				sessao.setAttribute("usuario", usuario);
-			}else {
-				throw new SenhaInvalidaException("A senha informada está incorreta!");
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		if (usuario.getSenha().equals(Hash.gerarHash(usuario.getSal(), senha)))
+			request.getSession().setAttribute("usuario", usuario);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 		dispatcher.forward(request, response);
