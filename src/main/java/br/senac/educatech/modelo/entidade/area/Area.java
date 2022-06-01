@@ -4,10 +4,15 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import br.senac.educatech.modelo.entidade.instituicao.Instituicao;
 
 @Entity
 @Table(name = "area")
@@ -22,16 +27,23 @@ public class Area implements Serializable {
 
 	@Column(name = "nome_area", length = 45, nullable = false)
 	private String nome;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_usuario")
+	private Instituicao instituicao;
 
-	public Area() {}
-
-	public Area(String nome) {
-		setNome(nome);
+	public Area() {
 	}
 
-	public Area(Long id, String nome) {
+	public Area(String nome, Instituicao instituicao) {
+		setNome(nome);
+		setInstituicao(instituicao);
+	}
+
+	public Area(Long id, String nome, Instituicao instituicao) {
 		setId(id);
 		setNome(nome);
+		setInstituicao(instituicao);
 	}
 
 	public Area(Long id) {
@@ -54,6 +66,14 @@ public class Area implements Serializable {
 		this.nome = nome;
 	}
 	
+	public Instituicao getInstituicao() {
+		return instituicao;
+	}
+
+	public void setInstituicao(Instituicao instituicao) {
+		this.instituicao = instituicao;
+	}
+	
 	public boolean equals(Object obj) {
 
 		if (this == obj)
@@ -67,6 +87,7 @@ public class Area implements Serializable {
 
 		Area area = (Area) obj;
 
-		return this.getId().equals(area.getId()) && this.getNome().equals(area.getNome());
+		return this.getId().equals(area.getId()) && this.getNome().equals(area.getNome())
+				&& this.getInstituicao().equals(area.getInstituicao());
 	}
 }

@@ -6,7 +6,7 @@ import br.senac.educatech.modelo.entidade.aluno.Aluno;
 
 public interface AlunoDAO {
 
-	Aluno inserirAluno(Aluno aluno);
+	Long inserirAluno(Aluno aluno);
 
 	void atualizarAluno(Aluno aluno);
 

@@ -57,6 +57,10 @@ public class Contato implements Serializable {
 	public Contato(Long id) {
 		setId(id);
 	}
+	
+	public Contato(String email) {
+		setEmail(email);
+	}
 
 	public Long getId() {
 		return id;

@@ -28,17 +28,17 @@ public class AvaliacaoDAOImpl implements AvaliacaoDAO {
 		conexao = new ConexaoFactory();
 	}
 
-	public Avaliacao inserirAvaliacao(Avaliacao avaliacao) {
+	public Long inserirAvaliacao(Avaliacao avaliacao) {
 
 		Session sessao = null;
-		Avaliacao novaAvaliacao = null;
+		Long idAvaliacao = null;
 
 		try {
 
 			sessao = conexao.getConexao().openSession();
 			sessao.beginTransaction();
 
-			novaAvaliacao = (Avaliacao) sessao.save(avaliacao);
+			idAvaliacao = (Long) sessao.save(avaliacao);
 
 			sessao.getTransaction().commit();
 
@@ -57,7 +57,7 @@ public class AvaliacaoDAOImpl implements AvaliacaoDAO {
 			}
 		}
 
-		return novaAvaliacao;
+		return idAvaliacao;
 	}
 
 	public void atualizarAvaliacao(Avaliacao avaliacao) {

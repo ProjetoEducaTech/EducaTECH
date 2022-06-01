@@ -7,7 +7,7 @@ import br.senac.educatech.modelo.entidade.curso.Curso;
 
 public interface AvaliacaoDAO {
 
-	Avaliacao inserirAvaliacao(Avaliacao avaliacao);
+	Long inserirAvaliacao(Avaliacao avaliacao);
 
 	void atualizarAvaliacao(Avaliacao avaliacao);
 

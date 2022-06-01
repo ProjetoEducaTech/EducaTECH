@@ -66,6 +66,10 @@ public class Usuario implements Serializable {
 	public Usuario(Long id) {
 		setId(id);
 	}
+	
+	public Usuario(String senha) {
+		setSenha(senha);
+	}
 
 	public Long getId() {
 		return id;

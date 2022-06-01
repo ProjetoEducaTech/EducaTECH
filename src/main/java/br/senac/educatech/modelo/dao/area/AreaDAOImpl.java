@@ -20,17 +20,17 @@ public class AreaDAOImpl implements AreaDAO {
 		conexao = new ConexaoFactory();
 	}
 
-	public Area inserirArea(Area area) {
+	public Long inserirArea(Area area) {
 
 		Session sessao = null;
-		Area novaArea = null;
+		Long idArea = null;
 
 		try {
 
 			sessao = conexao.getConexao().openSession();
 			sessao.beginTransaction();
 
-			novaArea = (Area) sessao.save(area);
+			idArea = (Long) sessao.save(area);
 
 			sessao.getTransaction().commit();
 
@@ -49,7 +49,7 @@ public class AreaDAOImpl implements AreaDAO {
 			}
 		}
 
-		return novaArea;
+		return idArea;
 	}
 
 	public void atualizarArea(Area area) {

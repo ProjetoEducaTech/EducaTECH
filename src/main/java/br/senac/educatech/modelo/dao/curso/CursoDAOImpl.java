@@ -36,17 +36,17 @@ public class CursoDAOImpl implements CursoDAO {
 
 	}
 
-	public Curso inserirCurso(Curso curso) {
+	public Long inserirCurso(Curso curso) {
 
 		Session sessao = null;
-		Curso novoCurso = null;
+		Long idCurso = null;
 
 		try {
 
 			sessao = conexao.getConexao().openSession();
 			sessao.beginTransaction();
 
-			novoCurso = (Curso) sessao.save(curso);
+			idCurso = (Long) sessao.save(curso);
 
 			sessao.getTransaction().commit();
 
@@ -65,7 +65,7 @@ public class CursoDAOImpl implements CursoDAO {
 			}
 		}
 
-		return novoCurso;
+		return idCurso;
 	}
 
 	public void atualizarCurso(Curso curso) {
@@ -308,10 +308,10 @@ public class CursoDAOImpl implements CursoDAO {
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 
-			criteria.where(construtor.lessThanOrEqualTo(raizCurso.<Double>get(Curso_.NOTA_CORTE), aluno.getNota()));
+			//criteria.where(construtor.lessThanOrEqualTo(raizCurso.<Double>get(Curso_.NOTA_CORTE), aluno.getNota()));
 
-			criteria.orderBy(construtor.desc(raizCurso.get(Curso_.NOTA_CORTE)),
-					construtor.asc(raizCurso.get(Curso_.NOME)));
+		//	criteria.orderBy(construtor.desc(raizCurso.get(Curso_.NOTA_CORTE)),
+		//			construtor.asc(raizCurso.get(Curso_.NOME)));
 
 			consultaNota = sessao.createQuery(criteria).getResultList();
 

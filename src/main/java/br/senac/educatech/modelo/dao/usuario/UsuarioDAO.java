@@ -2,11 +2,12 @@ package br.senac.educatech.modelo.dao.usuario;
 
 import java.util.List;
 
+import br.senac.educatech.modelo.entidade.contato.Contato;
 import br.senac.educatech.modelo.entidade.usuario.Usuario;
 
 public interface UsuarioDAO {
 
-	Usuario inserirUsuario(Usuario usuario);
+	Long inserirUsuario(Usuario usuario);
 
 	void atualizarUsuario(Usuario usuario);
 
@@ -17,4 +18,6 @@ public interface UsuarioDAO {
 	Usuario recuperarUsuarioPeloId(Usuario usuario);
 
 	List<Usuario> recuperarUsuarios();
+	
+	Usuario recuperarUsuarioPorEmail(Contato contato);
 }

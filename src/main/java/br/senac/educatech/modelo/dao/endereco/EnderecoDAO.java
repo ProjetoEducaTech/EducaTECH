@@ -7,7 +7,7 @@ import br.senac.educatech.modelo.entidade.instituicao.Instituicao;
 
 public interface EnderecoDAO {
 
-	Endereco inserirEndereco(Endereco endereco);
+	Long inserirEndereco(Endereco endereco);
 
 	void atualizarEndereco(Endereco endereco);
 

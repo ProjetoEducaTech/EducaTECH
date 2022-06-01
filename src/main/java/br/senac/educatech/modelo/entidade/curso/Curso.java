@@ -77,7 +77,7 @@ public class Curso implements Serializable {
 	@JoinColumn(name = "id_instituicao", nullable = false)
 	private Instituicao instituicao;
 
-	@ManyToMany(mappedBy = "cursosFavorito")
+	@ManyToMany(mappedBy = "cursosFavoritos")
 	private List<Aluno> alunos;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
