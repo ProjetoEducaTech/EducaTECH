@@ -6,6 +6,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -517,11 +519,17 @@ public class Servlet extends HttpServlet {
 
 		if (request.getSession(false).getAttribute("usuario") instanceof Instituicao) {
 			Instituicao instituicao = (Instituicao) request.getAttribute("usuario");
-			
+			List<Area> areas = areaDAO.recuperarAreasPelaInstituicao(instituicao);
+
+			request.setAttribute("areas", areas);
+
+			RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-curso.jsp");
+			dispatcher.forward(request, response);
+		} else {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+			dispatcher.forward(request, response);
 		}
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-curso.jsp");
-		dispatcher.forward(request, response);
 	}
 
 	private void preencherFormularioCurso(HttpServletRequest request, HttpServletResponse response)
