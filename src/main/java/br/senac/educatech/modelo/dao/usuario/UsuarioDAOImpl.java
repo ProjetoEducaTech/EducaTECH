@@ -257,9 +257,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			Join<Usuario, Contato> juncaoContato = raizUsuario.join(Usuario_.CONTATO);
 
 			ParameterExpression<String> email = construtor.parameter(String.class);
-			criteria.where(construtor.equal(juncaoContato.get(Contato_.EMAIL), email));
+			criteria.multiselect(raizUsuario.get(Usuario_.ID),raizUsuario.get(Usuario_.NOME),juncaoContato.get(Contato_.EMAIL)).where(construtor.equal(juncaoContato.get(Contato_.EMAIL), email));
 
-			usuarioRecuperado  = sessao.createQuery(criteria).setParameter(email, contato.getEmail()).getSingleResult();
+			usuarioRecuperado = sessao.createQuery(criteria).setParameter(email, contato.getEmail()).getSingleResult();
 
 			sessao.getTransaction().commit();
 
