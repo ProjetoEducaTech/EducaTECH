@@ -101,13 +101,12 @@ public class Curso implements Serializable {
 		avaliacoes = new ArrayList<Avaliacao>();
 	}
 
-	public Curso(String nome, String descricao, double duracao, double preco, String link, Ingresso tipoIngresso, Modalidade tipoModalidade, Turno tipoTurno, Area area, Instituicao instituicao) {
+	public Curso(String nome, String descricao, double duracao, double preco, String link, Modalidade tipoModalidade, Turno tipoTurno, Area area, Instituicao instituicao) {
 		setNome(nome);
 		setDescricao(descricao);
 		setDuracao(duracao);
 		setPreco(preco);
 		setLink(link);
-		setIngresso(tipoIngresso);
 		setModalidade(tipoModalidade);
 		setTurno(tipoTurno);
 		setArea(area);

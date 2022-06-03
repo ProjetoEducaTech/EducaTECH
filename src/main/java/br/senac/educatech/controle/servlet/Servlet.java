@@ -532,14 +532,27 @@ public class Servlet extends HttpServlet {
 		int duracao = Integer.parseInt(request.getParameter("duracao"));
 		double preco = Double.parseDouble(request.getParameter("preco"));
 		String link = request.getParameter("link");
-		double notaCorte = Double.parseDouble(request.getParameter("notaCorte"));
+		//double notaCorte = Double.parseDouble(request.getParameter("notaCorte"));
 		Modalidade modalidade = Modalidade.values()[Integer.parseInt(request.getParameter("modalidade"))];
 		Turno turno = Turno.values()[Integer.parseInt(request.getParameter("turno"))];
 		long idArea = Long.parseLong(request.getParameter("area"));
 		long idInstituicao = Long.parseLong(request.getParameter("idInstituicao"));
-		 //cursoDAO.inserirCurso(new Curso(nome, descricao, duracao, preco, link, notaCorte,
+		//cursoDAO.inserirCurso(new Curso(nome, descricao, duracao, preco, link, notaCorte,
 		// modalidade, turno, new Area(idArea), new Instituicao(idInstituicao)));
 		// redirect or response
+		
+		Instituicao instituicao = (Instituicao) sessao.getAttribute("usuario");
+		Area area = areaDAO.recuperarAreaPeloId(new Area(idArea));
+		
+		Curso curso = new Curso(nome, descricao, duracao, preco, link, modalidade,
+				turno, area, instituicao);
+
+		cursoDAO.inserirCurso(curso);
+
+		cursoDAO.atualizarCurso(curso);		
+
+	RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-curso.jsp");
+	dispatcher.forward(request, response);
 	}
 
 	private void atualizarCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)

@@ -13,6 +13,7 @@ import org.hibernate.Session;
 import br.senac.educatech.modelo.entidade.area.Area;
 import br.senac.educatech.modelo.entidade.area.Area_;
 import br.senac.educatech.modelo.entidade.instituicao.Instituicao;
+import br.senac.educatech.modelo.entidade.instituicao.Instituicao_;
 import br.senac.educatech.modelo.factory.conexao.ConexaoFactory;
 
 public class AreaDAOImpl implements AreaDAO {
@@ -151,6 +152,7 @@ public class AreaDAOImpl implements AreaDAO {
 
 		return areas;
 	}
+
 	public Area recuperarAreaPeloId(Area area) {
 
 		Session sessao = null;
@@ -189,9 +191,9 @@ public class AreaDAOImpl implements AreaDAO {
 
 		return areaRecuperada;
 	}
-	
-	public List<Area> recuperarAreasPelaInstituicao(Instituicao instituicao){
-		
+
+	public List<Area> recuperarAreasPelaInstituicao(Instituicao instituicao) {
+
 		Session sessao = null;
 		List<Area> consultaArea = null;
 
@@ -232,5 +234,5 @@ public class AreaDAOImpl implements AreaDAO {
 		}
 
 		return consultaArea;
-		}
 	}
+}
