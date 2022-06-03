@@ -88,8 +88,8 @@ public class Servlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		String action = request.getServletPath();
-		System.out.println(action);
-
+		HttpSession sessao = request.getSession();
+	
 		try {
 
 			switch (action) {
@@ -122,7 +122,7 @@ public class Servlet extends HttpServlet {
 				break;
 
 			case "/inserir-area":
-				inserirArea(request, response);
+				inserirArea(request, response, sessao);
 				break;
 
 			case "/atualizar-area":
@@ -368,33 +368,18 @@ public class Servlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 
-	private void inserirArea(HttpServletRequest request, HttpServletResponse response)
+	private void inserirArea(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
-		if (request.getSession(false) == null) {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
-			dispatcher.forward(request, response);
-
-		} else {
-
-			if (request.getSession(false).getAttribute("usuario") instanceof Instituicao) {
 
 				String nome = request.getParameter("nome");
-
-				Instituicao instituicao = (Instituicao) request.getAttribute("usuario");
-
+				Instituicao instituicao = (Instituicao) sessao.getAttribute("usuario");
 				Area area = new Area(nome, instituicao);
-
 				areaDAO.inserirArea(area);
 
-			} else {
-				RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
-				dispatcher.forward(request, response);
-			}
 
 			RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-curso.jsp");
 			dispatcher.forward(request, response);
-		}
 
 	}
 
