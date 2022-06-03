@@ -40,6 +40,7 @@ import br.senac.educatech.modelo.entidade.aluno.Aluno;
 import br.senac.educatech.modelo.entidade.area.Area;
 import br.senac.educatech.modelo.entidade.avaliacao.Avaliacao;
 import br.senac.educatech.modelo.entidade.contato.Contato;
+import br.senac.educatech.modelo.entidade.curso.Curso;
 import br.senac.educatech.modelo.entidade.endereco.Endereco;
 import br.senac.educatech.modelo.entidade.foto.Foto;
 import br.senac.educatech.modelo.entidade.instituicao.Instituicao;
@@ -94,31 +95,31 @@ public class Servlet extends HttpServlet {
 
 			switch (action) {
 			case "/novo-aluno":
-				mostrarFormularioNovoAluno(request, response);
+				mostrarFormularioNovoAluno(request, response, sessao);
 				break;
 
 			case "/editar-aluno":
-				preencherFormularioAluno(request, response);
+				preencherFormularioAluno(request, response, sessao);
 				break;
 
 			case "/inserir-aluno":
-				inserirAluno(request, response);
+				inserirAluno(request, response, sessao);
 				break;
 
 			case "/atualizar-aluno":
-				atualizarAluno(request, response);
+				atualizarAluno(request, response, sessao);
 				break;
 
 			case "/deletar-aluno":
-				deletarAluno(request, response);
+				deletarAluno(request, response, sessao);
 				break;
 
 			case "/nova-area":
-				mostrarFormularioArea(request, response);
+				mostrarFormularioArea(request, response, sessao);
 				break;
 
 			case "/editar-area":
-				preencherFormularioArea(request, response);
+				preencherFormularioArea(request, response, sessao);
 				break;
 
 			case "/inserir-area":
@@ -126,135 +127,135 @@ public class Servlet extends HttpServlet {
 				break;
 
 			case "/atualizar-area":
-				atualizarArea(request, response);
+				atualizarArea(request, response, sessao);
 				break;
 
 			case "/deletar-area":
-				deletarArea(request, response);
+				deletarArea(request, response, sessao);
 				break;
 
 			case "/nova-avaliacao":
-				mostrarFormularioAvaliacao(request, response);
+				mostrarFormularioAvaliacao(request, response, sessao);
 				break;
 
 			case "/editar-avaliacao":
-				preencherFormularioAvaliacao(request, response);
+				preencherFormularioAvaliacao(request, response, sessao);
 				break;
 
 			case "/inserir-avaliacao":
-				inserirAvaliacao(request, response);
+				inserirAvaliacao(request, response, sessao);
 				break;
 
 			case "/atualizar-avaliacao":
-				atualizarAvaliacao(request, response);
+				atualizarAvaliacao(request, response, sessao);
 				break;
 
 			case "/deletar-avaliacao":
-				deletarAvaliacao(request, response);
+				deletarAvaliacao(request, response, sessao);
 				break;
 
 			case "/novo-contato":
-				mostrarFormularioNovoContato(request, response);
+				mostrarFormularioNovoContato(request, response, sessao);
 				break;
 
 			case "/editar-contato":
-				preencherFormularioContato(request, response);
+				preencherFormularioContato(request, response, sessao);
 				break;
 
 			case "/inserir-contato":
-				inserirContato(request, response);
+				inserirContato(request, response, sessao);
 				break;
 
 			case "/atualizar-contato":
-				atualizarContato(request, response);
+				atualizarContato(request, response, sessao);
 				break;
 
 			case "/deletar-contato":
-				deletarContato(request, response);
+				deletarContato(request, response, sessao);
 				break;
 
 			case "/novo-curso":
-				mostrarFormularioCurso(request, response);
+				mostrarFormularioCurso(request, response, sessao);
 				break;
 
 			case "/editar-curso":
-				preencherFormularioCurso(request, response);
+				preencherFormularioCurso(request, response, sessao);
 				break;
 
 			case "/inserir-curso":
-				inserirCurso(request, response);
+				inserirCurso(request, response, sessao);
 				break;
 
 			case "/atualizar-curso":
-				atualizarCurso(request, response);
+				atualizarCurso(request, response, sessao);
 				break;
 
 			case "/deletar-curso":
-				deletarCurso(request, response);
+				deletarCurso(request, response, sessao);
 				break;
 
 			case "/novo-endereco":
-				mostrarFormularioEndereco(request, response);
+				mostrarFormularioEndereco(request, response, sessao);
 				break;
 
 			case "/editar-endereco":
-				preencherFormularioEndereco(request, response);
+				preencherFormularioEndereco(request, response, sessao);
 				break;
 
 			case "/inserir-endereco":
-				inserirEndereco(request, response);
+				inserirEndereco(request, response, sessao);
 				break;
 
 			case "/atualizar-endereco":
-				atualizarEndereco(request, response);
+				atualizarEndereco(request, response, sessao);
 				break;
 
 			case "/deletar-endereco":
-				deletarEndereco(request, response);
+				deletarEndereco(request, response, sessao);
 				break;
 
 			case "/nova-instituicao":
-				mostrarFormularioNovaInstituicao(request, response);
+				mostrarFormularioNovaInstituicao(request, response, sessao);
 				break;
 
 			case "/editar-instituicao":
-				preencherFormularioInstituicao(request, response);
+				preencherFormularioInstituicao(request, response, sessao);
 				break;
 
 			case "/inserir-instituicao":
-				inserirInstituicao(request, response);
+				inserirInstituicao(request, response, sessao);
 				break;
 
 			case "/atualizar-instituicao":
-				atualizarInstituicao(request, response);
+				atualizarInstituicao(request, response, sessao);
 				break;
 
 			case "/deletar-instituicao":
-				deletarInstituicao(request, response);
+				deletarInstituicao(request, response, sessao);
 				break;
 
 			case "/login":
-				mostrarFormularioLogin(request, response);
+				mostrarFormularioLogin(request, response, sessao);
 				break;
 
 			case "/efetuar-login":
-				loginUsuario(request, response);
+				loginUsuario(request, response, sessao);
 				break;
 
 			case "/inserir-usuario":
-				inseririUsuario(request, response);
+				inseririUsuario(request, response, sessao);
 				break;
 
 			case "/atualizar-usuario":
-				atualizarUsuario(request, response);
+				atualizarUsuario(request, response, sessao);
 				break;
 
 			case "/deletar-usuario":
-				deletarUsuario(request, response);
+				deletarUsuario(request, response, sessao);
 				break;
 
 			default:
-				padrao(request, response);
+				padrao(request, response, sessao);
 				break;
 			}
 
@@ -264,12 +265,12 @@ public class Servlet extends HttpServlet {
 		}
 	}
 
-	private void padrao(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void padrao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao) throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 		dispatcher.forward(request, response);
 	}
 
-	private void mostrarFormularioNovoAluno(HttpServletRequest request, HttpServletResponse response)
+	private void mostrarFormularioNovoAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-aluno.jsp");
@@ -277,7 +278,7 @@ public class Servlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 
-	private void preencherFormularioAluno(HttpServletRequest request, HttpServletResponse response)
+	private void preencherFormularioAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
@@ -288,7 +289,7 @@ public class Servlet extends HttpServlet {
 
 	}
 
-	private void inserirAluno(HttpServletRequest request, HttpServletResponse response)
+	private void inserirAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
 
 		String nome = request.getParameter("nome");
@@ -326,7 +327,7 @@ public class Servlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 
-	private void atualizarAluno(HttpServletRequest request, HttpServletResponse response)
+	private void atualizarAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
 		long id = Long.parseLong(request.getParameter("id"));
 		String nome = request.getParameter("nome");
@@ -343,7 +344,7 @@ public class Servlet extends HttpServlet {
 		// redirect or reponse
 	}
 
-	private void deletarAluno(HttpServletRequest request, HttpServletResponse response)
+	private void deletarAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
@@ -353,13 +354,13 @@ public class Servlet extends HttpServlet {
 		// redirect or response
 	}
 
-	private void mostrarFormularioArea(HttpServletRequest request, HttpServletResponse response)
+	private void mostrarFormularioArea(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-area.jsp");
 		dispatcher.forward(request, response);
 	}
 
-	private void preencherFormularioArea(HttpServletRequest request, HttpServletResponse response)
+	private void preencherFormularioArea(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 		long id = Long.parseLong(request.getParameter("id"));
 		Area area = areaDAO.recuperarAreaPeloId(new Area(id));
@@ -383,7 +384,7 @@ public class Servlet extends HttpServlet {
 
 	}
 
-	private void atualizarArea(HttpServletRequest request, HttpServletResponse response)
+	private void atualizarArea(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 		long id = Long.parseLong("id");
 		String nome = request.getParameter("nome");
@@ -391,7 +392,7 @@ public class Servlet extends HttpServlet {
 
 	}
 
-	private void deletarArea(HttpServletRequest request, HttpServletResponse response)
+	private void deletarArea(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 		long id = Long.parseLong("id");
 		// deletarCursos
@@ -400,14 +401,14 @@ public class Servlet extends HttpServlet {
 		// redirect or response
 	}
 
-	private void mostrarFormularioAvaliacao(HttpServletRequest request, HttpServletResponse response)
+	private void mostrarFormularioAvaliacao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("");
 		dispatcher.forward(request, response);
 	}
 
-	private void preencherFormularioAvaliacao(HttpServletRequest request, HttpServletResponse response)
+	private void preencherFormularioAvaliacao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 		long id = Long.parseLong(request.getParameter("id"));
 		Avaliacao avaliacao = avaliacaoDAO.recuperarAvaliacaoPeloId(new Avaliacao(id));
@@ -416,7 +417,7 @@ public class Servlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 
-	private void inserirAvaliacao(HttpServletRequest request, HttpServletResponse response)
+	private void inserirAvaliacao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 		int nota = Integer.parseInt(request.getParameter("nota"));
 		String comentario = request.getParameter("comentario");
@@ -427,7 +428,7 @@ public class Servlet extends HttpServlet {
 		// redirect or response
 	}
 
-	private void atualizarAvaliacao(HttpServletRequest request, HttpServletResponse response)
+	private void atualizarAvaliacao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 		long id = Long.parseLong(request.getParameter("id"));
 		int nota = Integer.parseInt(request.getParameter("nota"));
@@ -439,7 +440,7 @@ public class Servlet extends HttpServlet {
 		// redirect or response
 	}
 
-	private void deletarAvaliacao(HttpServletRequest request, HttpServletResponse response)
+	private void deletarAvaliacao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
@@ -448,14 +449,14 @@ public class Servlet extends HttpServlet {
 		// redirect or response
 	}
 
-	private void mostrarFormularioNovoContato(HttpServletRequest request, HttpServletResponse response)
+	private void mostrarFormularioNovoContato(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("");
 		dispatcher.forward(request, response);
 	}
 
-	private void preencherFormularioContato(HttpServletRequest request, HttpServletResponse response)
+	private void preencherFormularioContato(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
@@ -465,7 +466,7 @@ public class Servlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 
-	private void inserirContato(HttpServletRequest request, HttpServletResponse response)
+	private void inserirContato(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
 		String telefone = request.getParameter("telefone");
@@ -475,7 +476,7 @@ public class Servlet extends HttpServlet {
 		// redirect or response
 	}
 
-	private void atualizarContato(HttpServletRequest request, HttpServletResponse response)
+	private void atualizarContato(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
@@ -488,7 +489,7 @@ public class Servlet extends HttpServlet {
 
 	}
 
-	private void deletarContato(HttpServletRequest request, HttpServletResponse response)
+	private void deletarContato(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
@@ -497,19 +498,24 @@ public class Servlet extends HttpServlet {
 		// redirect or dispatch
 	}
 
-	private void mostrarFormularioCurso(HttpServletRequest request, HttpServletResponse response)
+	private void mostrarFormularioCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
 
-		if (request.getSession(false).getAttribute("usuario") instanceof Instituicao) {
-			Instituicao instituicao = (Instituicao) request.getAttribute("usuario");
-			
+		if (sessao.getAttribute("usuario") instanceof Instituicao) {
+			Instituicao instituicao = (Instituicao) sessao.getAttribute("usuario");
+			areaDAO.recuperarAreasPelaInstituicao(instituicao);
+			request.setAttribute("areas", instituicao);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-curso.jsp");
+			dispatcher.forward(request, response);
+		} else {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+			dispatcher.forward(request, response);
 		}
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-curso.jsp");
-		dispatcher.forward(request, response);
+		
 	}
 
-	private void preencherFormularioCurso(HttpServletRequest request, HttpServletResponse response)
+	private void preencherFormularioCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 		long id = Long.parseLong(request.getParameter("id"));
 		// Curso curso = cursoDAO.recuperarCursoPorId(new Curso(id));
@@ -518,26 +524,25 @@ public class Servlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 
-	private void inserirCurso(HttpServletRequest request, HttpServletResponse response)
+	private void inserirCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
-		String nome = request.getParameter("nome");
-		String desc = request.getParameter("desc");
+		String nome = request.getParameter("curso");
+		String descricao = request.getParameter("descricao");
 		int duracao = Integer.parseInt(request.getParameter("duracao"));
 		double preco = Double.parseDouble(request.getParameter("preco"));
 		String link = request.getParameter("link");
 		double notaCorte = Double.parseDouble(request.getParameter("notaCorte"));
 		Modalidade modalidade = Modalidade.values()[Integer.parseInt(request.getParameter("modalidade"))];
 		Turno turno = Turno.values()[Integer.parseInt(request.getParameter("turno"))];
-		long idArea = Long.parseLong(request.getParameter("idArea"));
+		long idArea = Long.parseLong(request.getParameter("area"));
 		long idInstituicao = Long.parseLong(request.getParameter("idInstituicao"));
-		// cursoDAO.inserirCurso(new Curso(nome, desc, duracao, preco, link, notaCorte,
-		// TipoMetodoEntrada.VESTIBULAR,
+		 //cursoDAO.inserirCurso(new Curso(nome, descricao, duracao, preco, link, notaCorte,
 		// modalidade, turno, new Area(idArea), new Instituicao(idInstituicao)));
 		// redirect or response
 	}
 
-	private void atualizarCurso(HttpServletRequest request, HttpServletResponse response)
+	private void atualizarCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
@@ -557,7 +562,7 @@ public class Servlet extends HttpServlet {
 		// redirect or response
 	}
 
-	private void deletarCurso(HttpServletRequest request, HttpServletResponse response)
+	private void deletarCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 		long id = Long.parseLong(request.getParameter("id"));
 		// desfavoritar curso
@@ -567,14 +572,14 @@ public class Servlet extends HttpServlet {
 
 	}
 
-	private void mostrarFormularioEndereco(HttpServletRequest request, HttpServletResponse response)
+	private void mostrarFormularioEndereco(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("");
 		dispatcher.forward(request, response);
 	}
 
-	private void preencherFormularioEndereco(HttpServletRequest request, HttpServletResponse response)
+	private void preencherFormularioEndereco(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
@@ -585,7 +590,7 @@ public class Servlet extends HttpServlet {
 
 	}
 
-	private void inserirEndereco(HttpServletRequest request, HttpServletResponse response)
+	private void inserirEndereco(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
 		String logradouro = request.getParameter("logradouro");
@@ -604,7 +609,7 @@ public class Servlet extends HttpServlet {
 
 	}
 
-	private void atualizarEndereco(HttpServletRequest request, HttpServletResponse response)
+	private void atualizarEndereco(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
 		String logradouro = request.getParameter("logradouro");
@@ -622,7 +627,7 @@ public class Servlet extends HttpServlet {
 
 	}
 
-	private void deletarEndereco(HttpServletRequest request, HttpServletResponse response)
+	private void deletarEndereco(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
@@ -631,14 +636,14 @@ public class Servlet extends HttpServlet {
 		// redirect or response
 	}
 
-	private void mostrarFormularioNovaInstituicao(HttpServletRequest request, HttpServletResponse response)
+	private void mostrarFormularioNovaInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-instituicao.jsp");
 		dispatcher.forward(request, response);
 	}
 
-	private void preencherFormularioInstituicao(HttpServletRequest request, HttpServletResponse response)
+	private void preencherFormularioInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 		long id = Long.parseLong(request.getParameter("id"));
 		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(id));
@@ -647,7 +652,7 @@ public class Servlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 
-	private void inserirInstituicao(HttpServletRequest request, HttpServletResponse response)
+	private void inserirInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
 
 		String nome = request.getParameter("nome");
@@ -697,7 +702,7 @@ public class Servlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 
-	private void atualizarInstituicao(HttpServletRequest request, HttpServletResponse response)
+	private void atualizarInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
 		long id = Long.parseLong(request.getParameter("id"));
 		String nome = request.getParameter("nome");
@@ -710,7 +715,7 @@ public class Servlet extends HttpServlet {
 		// redirect or response
 	}
 
-	private void deletarInstituicao(HttpServletRequest request, HttpServletResponse response)
+	private void deletarInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 		long id = Long.parseLong(request.getParameter("id"));
 		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(id));
@@ -719,14 +724,14 @@ public class Servlet extends HttpServlet {
 		// redirect or response
 	}
 
-	private void mostrarFormularioLogin(HttpServletRequest request, HttpServletResponse response)
+	private void mostrarFormularioLogin(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
 		dispatcher.forward(request, response);
 
 	}
 
-	private void loginUsuario(HttpServletRequest request, HttpServletResponse response)
+	private void loginUsuario(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
 
 		String email = request.getParameter("email");
@@ -742,7 +747,7 @@ public class Servlet extends HttpServlet {
 
 	}
 
-	private void inseririUsuario(HttpServletRequest request, HttpServletResponse response)
+	private void inseririUsuario(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, IOException, ServletException, InvalidKeySpecException, NoSuchAlgorithmException {
 		String nome = request.getParameter("nome");
 		String senha = request.getParameter("senha");
@@ -752,7 +757,7 @@ public class Servlet extends HttpServlet {
 		// redirect or response
 	}
 
-	private void atualizarUsuario(HttpServletRequest request, HttpServletResponse response)
+	private void atualizarUsuario(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, IOException, ServletException, InvalidKeySpecException, NoSuchAlgorithmException {
 		Long id = Long.parseLong(request.getParameter("id"));
 		String nome = request.getParameter("nome");
@@ -763,7 +768,7 @@ public class Servlet extends HttpServlet {
 
 	}
 
-	private void deletarUsuario(HttpServletRequest request, HttpServletResponse response) {
+	private void deletarUsuario(HttpServletRequest request, HttpServletResponse response, HttpSession sessao) {
 		Long id = Long.parseLong(request.getParameter("id"));
 		Usuario usuario = usuarioDAO.recuperarUsuarioPeloId(new Usuario(id));
 		// nao sei pq tem esse metodo
