@@ -13,6 +13,7 @@ import org.hibernate.Session;
 import br.senac.educatech.modelo.entidade.area.Area;
 import br.senac.educatech.modelo.entidade.area.Area_;
 import br.senac.educatech.modelo.entidade.instituicao.Instituicao;
+import br.senac.educatech.modelo.entidade.instituicao.Instituicao_;
 import br.senac.educatech.modelo.factory.conexao.ConexaoFactory;
 
 public class AreaDAOImpl implements AreaDAO {

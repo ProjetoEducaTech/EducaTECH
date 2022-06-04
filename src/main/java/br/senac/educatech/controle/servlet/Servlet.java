@@ -6,6 +6,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -49,8 +51,6 @@ import br.senac.educatech.modelo.enumeracao.genero.Genero;
 import br.senac.educatech.modelo.enumeracao.modalidade.Modalidade;
 import br.senac.educatech.modelo.enumeracao.pronome.Pronome;
 import br.senac.educatech.modelo.enumeracao.turno.Turno;
-import br.senac.educatech.modelo.excecao.SenhaInvalidaException;
-import br.senac.educatech.modelo.excecao.UsuarioInvalidoException;
 import br.senac.educatech.util.hash.Hash;
 
 @WebServlet("/")
@@ -90,7 +90,7 @@ public class Servlet extends HttpServlet {
 
 		String action = request.getServletPath();
 		HttpSession sessao = request.getSession();
-	
+
 		try {
 
 			switch (action) {
@@ -253,8 +253,16 @@ public class Servlet extends HttpServlet {
 			case "/deletar-usuario":
 				deletarUsuario(request, response, sessao);
 				break;
+
+			case "/consulta-principal":
+				mostrarFormularioConsultaCurso(request, response, sessao);
+				break;
 				
-			case "/consultar-cursos":
+			case "/consultar-curso":
+				consultarCurso(request, response, sessao);
+				break;
+
+			case "/meus-cursos":
 				cursosInstituicao(request, response, sessao);
 				break;
 
@@ -271,13 +279,14 @@ public class Servlet extends HttpServlet {
 
 	
 
-	private void padrao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao) throws ServletException, IOException {
+	private void padrao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
+			throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 		dispatcher.forward(request, response);
 	}
 
-	private void mostrarFormularioNovoAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws ServletException, IOException {
+	private void mostrarFormularioNovoAluno(HttpServletRequest request, HttpServletResponse response,
+			HttpSession sessao) throws ServletException, IOException {
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-aluno.jsp");
 
@@ -378,15 +387,17 @@ public class Servlet extends HttpServlet {
 	private void inserirArea(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
+		String nome = request.getParameter("nome");
+		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
+		Area area = new Area(nome, instituicao);
+		areaDAO.inserirArea(area);
 
-				String nome = request.getParameter("nome");
-				Instituicao instituicao = (Instituicao) sessao.getAttribute("usuario");
-				Area area = new Area(nome, instituicao);
-				areaDAO.inserirArea(area);
+		List<Area> areas = areaDAO.recuperarAreasPelaInstituicao(instituicao);
 
-
-			RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-curso.jsp");
-			dispatcher.forward(request, response);
+		request.setAttribute("areas", areas);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-curso.jsp");
+		dispatcher.forward(request, response);
 
 	}
 
@@ -407,15 +418,15 @@ public class Servlet extends HttpServlet {
 		// redirect or response
 	}
 
-	private void mostrarFormularioAvaliacao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws ServletException, IOException {
+	private void mostrarFormularioAvaliacao(HttpServletRequest request, HttpServletResponse response,
+			HttpSession sessao) throws ServletException, IOException {
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("");
 		dispatcher.forward(request, response);
 	}
 
-	private void preencherFormularioAvaliacao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
+	private void preencherFormularioAvaliacao(HttpServletRequest request, HttpServletResponse response,
+			HttpSession sessao) throws SQLException, ServletException, IOException {
 		long id = Long.parseLong(request.getParameter("id"));
 		Avaliacao avaliacao = avaliacaoDAO.recuperarAvaliacaoPeloId(new Avaliacao(id));
 		request.setAttribute("avaliacao", avaliacao);
@@ -455,15 +466,15 @@ public class Servlet extends HttpServlet {
 		// redirect or response
 	}
 
-	private void mostrarFormularioNovoContato(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws ServletException, IOException {
+	private void mostrarFormularioNovoContato(HttpServletRequest request, HttpServletResponse response,
+			HttpSession sessao) throws ServletException, IOException {
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("");
 		dispatcher.forward(request, response);
 	}
 
-	private void preencherFormularioContato(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
+	private void preencherFormularioContato(HttpServletRequest request, HttpServletResponse response,
+			HttpSession sessao) throws SQLException, ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
 		Contato contato = contatoDAO.recuperarContatoPeloId(new Contato(id));
@@ -507,18 +518,13 @@ public class Servlet extends HttpServlet {
 	private void mostrarFormularioCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
 
-		if (sessao.getAttribute("usuario") instanceof Instituicao) {
-			Instituicao instituicao = (Instituicao) sessao.getAttribute("usuario");
-			areaDAO.recuperarAreasPelaInstituicao(instituicao);
-			request.setAttribute("areas", instituicao);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-curso.jsp");
-			dispatcher.forward(request, response);
-		} else {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
-			dispatcher.forward(request, response);
-		}
+		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
+		List<Area> areas = areaDAO.recuperarAreasPelaInstituicao(instituicao);
+		request.setAttribute("areas", areas);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-curso.jsp");
+		dispatcher.forward(request, response);
 
-		
 	}
 
 	private void preencherFormularioCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
@@ -535,21 +541,21 @@ public class Servlet extends HttpServlet {
 
 		String nome = request.getParameter("curso");
 		String descricao = request.getParameter("descricao");
-		int duracao = Integer.parseInt(request.getParameter("duracao"));
+		double duracao = Double.parseDouble(request.getParameter("duracao"));
 		double preco = Double.parseDouble(request.getParameter("preco"));
 		String link = request.getParameter("link");
-		double notaCorte = Double.parseDouble(request.getParameter("notaCorte"));
+		// double notaCorte = Double.parseDouble(request.getParameter("notaCorte"));
 		Modalidade modalidade = Modalidade.values()[Integer.parseInt(request.getParameter("modalidade"))];
 		Turno turno = Turno.values()[Integer.parseInt(request.getParameter("turno"))];
 		long idArea = Long.parseLong(request.getParameter("area"));
-		
-		Instituicao instituicao = (Instituicao) sessao.getAttribute("usuario");
-		
-		 cursoDAO.inserirCurso(new Curso(nome, descricao, duracao, preco, link, notaCorte,
-		 modalidade, turno, new Area(idArea), instituicao));
-		 
-		 cursosInstituicao(request, response, sessao);
-		
+
+		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+
+		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
+
+		cursoDAO.inserirCurso(
+				new Curso(nome, descricao, duracao, preco, link, modalidade, turno, new Area(idArea), instituicao));
+
 	}
 
 	private void atualizarCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
@@ -581,19 +587,59 @@ public class Servlet extends HttpServlet {
 		// redirect or response
 
 	}
+
+	private void mostrarFormularioConsultaCurso(HttpServletRequest request, HttpServletResponse response,
+			HttpSession sessao) throws ServletException, IOException {
+
+		double precoMinimo = cursoDAO.recuperaMenorPrecoCurso();
+		double precoMaximo = cursoDAO.recuperarMaiorPrecoCurso();
+		
+		List<Area> areas = areaDAO.recuperarAreas();
+		List<Instituicao> instituicoes = instituicaoDAO.recuperarInstituicoes();
+		List<Curso> cursos = null;
+
+		request.setAttribute("precoMinimo", precoMinimo);
+		request.setAttribute("precoMaximo", precoMaximo);
+		request.setAttribute("areas", areas);
+		request.setAttribute("instituicoes", instituicoes);
+		request.setAttribute("cursos", cursos);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("consultar-curso.jsp");
+		dispatcher.forward(request, response);
+
+	}
 	
-	private void cursosInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao) throws ServletException, IOException {
+	private void consultarCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
+			throws ServletException, IOException {
 		
-		Instituicao instituicao = (Instituicao) sessao.getAttribute("usuario");
+		Optional<Modalidade> modalidade = Optional.of(Modalidade.values()[Integer.parseInt(request.getParameter("modalidade"))]);
+		Optional<Double> notaCorte = Optional.of(Double.parseDouble(request.getParameter("notaCorte")));
+		Optional<Turno> turno = Optional.of(Turno.values()[Integer.parseInt(request.getParameter("turno"))]);
+		Optional<Double> duracao = Optional.of(Double.parseDouble(request.getParameter("duracao")));
+		Optional<Long> area = Optional.of(Long.parseLong(request.getParameter("area")));
+		Optional<Long> instituicao = Optional.of(Long.parseLong(request.getParameter("idInstituicao")));
+		Optional<Double> preco = Optional.of(Double.parseDouble(request.getParameter("preco")));
+		List<Curso> cursos = cursoDAO.recuperarCursoPorFiltro(instituicao, area, notaCorte, turno, modalidade, preco, duracao);
 		
-		cursoDAO.recuperarCursosPelaInstituicao(instituicao);
+		request.setAttribute("cursos", cursos);
 		
-		request.setAttribute("cursos", instituicao);
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("meus-cursos.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("consultar-curso.jsp");
 		dispatcher.forward(request, response);
 		
-		
+	}
+
+	private void cursosInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
+			throws ServletException, IOException {
+
+		Instituicao instituicao = (Instituicao) sessao.getAttribute("usuario");
+
+		cursoDAO.recuperarCursosPelaInstituicao(instituicao);
+
+		request.setAttribute("cursos", instituicao);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("meus-cursos.jsp");
+		dispatcher.forward(request, response);
+
 	}
 
 	private void mostrarFormularioEndereco(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
@@ -603,8 +649,8 @@ public class Servlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 
-	private void preencherFormularioEndereco(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
+	private void preencherFormularioEndereco(HttpServletRequest request, HttpServletResponse response,
+			HttpSession sessao) throws SQLException, ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
 		// Endereco endereco = enderecoDAO.recuperarEnderecoPorId(new Endereco(id));
@@ -660,15 +706,15 @@ public class Servlet extends HttpServlet {
 		// redirect or response
 	}
 
-	private void mostrarFormularioNovaInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws ServletException, IOException {
+	private void mostrarFormularioNovaInstituicao(HttpServletRequest request, HttpServletResponse response,
+			HttpSession sessao) throws ServletException, IOException {
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-instituicao.jsp");
 		dispatcher.forward(request, response);
 	}
 
-	private void preencherFormularioInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
+	private void preencherFormularioInstituicao(HttpServletRequest request, HttpServletResponse response,
+			HttpSession sessao) throws SQLException, ServletException, IOException {
 		long id = Long.parseLong(request.getParameter("id"));
 		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(id));
 		request.setAttribute("instituicao", instituicao);
@@ -799,7 +845,5 @@ public class Servlet extends HttpServlet {
 		usuarioDAO.deletarUsuario(usuario);
 
 	}
-	
-	
 
 }
