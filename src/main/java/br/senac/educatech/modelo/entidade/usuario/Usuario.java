@@ -62,6 +62,13 @@ public class Usuario implements Serializable {
 		setSal(sal);
 		setFoto(foto);
 	}
+	
+	public Usuario(Long id, String nome, String senha, byte[] sal) {
+		setId(id);
+		setNome(nome);
+		setSenha(senha);
+		setSal(sal);
+	}
 
 	public Usuario(Long id) {
 		setId(id);

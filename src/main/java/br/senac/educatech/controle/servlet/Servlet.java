@@ -253,6 +253,10 @@ public class Servlet extends HttpServlet {
 			case "/deletar-usuario":
 				deletarUsuario(request, response, sessao);
 				break;
+				
+			case "/consultar-cursos":
+				cursosInstituicao(request, response, sessao);
+				break;
 
 			default:
 				padrao(request, response, sessao);
@@ -264,6 +268,8 @@ public class Servlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+
+	
 
 	private void padrao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao) throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
@@ -536,10 +542,14 @@ public class Servlet extends HttpServlet {
 		Modalidade modalidade = Modalidade.values()[Integer.parseInt(request.getParameter("modalidade"))];
 		Turno turno = Turno.values()[Integer.parseInt(request.getParameter("turno"))];
 		long idArea = Long.parseLong(request.getParameter("area"));
-		long idInstituicao = Long.parseLong(request.getParameter("idInstituicao"));
-		 //cursoDAO.inserirCurso(new Curso(nome, descricao, duracao, preco, link, notaCorte,
-		// modalidade, turno, new Area(idArea), new Instituicao(idInstituicao)));
-		// redirect or response
+		
+		Instituicao instituicao = (Instituicao) sessao.getAttribute("usuario");
+		
+		 cursoDAO.inserirCurso(new Curso(nome, descricao, duracao, preco, link, notaCorte,
+		 modalidade, turno, new Area(idArea), instituicao));
+		 
+		 cursosInstituicao(request, response, sessao);
+		
 	}
 
 	private void atualizarCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
@@ -570,6 +580,20 @@ public class Servlet extends HttpServlet {
 		// cursoDAO.deletarCurso(curso);
 		// redirect or response
 
+	}
+	
+	private void cursosInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao) throws ServletException, IOException {
+		
+		Instituicao instituicao = (Instituicao) sessao.getAttribute("usuario");
+		
+		cursoDAO.recuperarCursosPelaInstituicao(instituicao);
+		
+		request.setAttribute("cursos", instituicao);
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("meus-cursos.jsp");
+		dispatcher.forward(request, response);
+		
+		
 	}
 
 	private void mostrarFormularioEndereco(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
@@ -775,5 +799,7 @@ public class Servlet extends HttpServlet {
 		usuarioDAO.deletarUsuario(usuario);
 
 	}
+	
+	
 
 }

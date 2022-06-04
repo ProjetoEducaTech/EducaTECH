@@ -54,7 +54,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				sessao.close();
 			}
 		}
-		
+
 		return idUsuario;
 	}
 
@@ -116,7 +116,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		}
 	}
 
-	public Usuario loginUsuario(String email, String senha) {//refatorar mediante novo login
+	public Usuario loginUsuario(String email, String senha) {// refatorar mediante novo login
 
 		Session sessao = null;
 		Usuario loginUsuario = null;
@@ -199,7 +199,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 		return usuariosRecuperadas;
 	}
-	
+
 	public List<Usuario> recuperarUsuarios() {
 
 		Session sessao = null;
@@ -238,7 +238,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 		return usuario;
 	}
-	
+
 	public Usuario recuperarUsuarioPorEmail(Contato contato) {
 
 		Session sessao = null;
@@ -257,7 +257,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			Join<Usuario, Contato> juncaoContato = raizUsuario.join(Usuario_.CONTATO);
 
 			ParameterExpression<String> email = construtor.parameter(String.class);
-			criteria.multiselect(raizUsuario.get(Usuario_.ID),raizUsuario.get(Usuario_.NOME),juncaoContato.get(Contato_.EMAIL)).where(construtor.equal(juncaoContato.get(Contato_.EMAIL), email));
+			criteria.multiselect(raizUsuario.get(Usuario_.ID), raizUsuario.get(Usuario_.NOME),
+					raizUsuario.get(Usuario_.SENHA), raizUsuario.get(Usuario_.SAL))
+					.where(construtor.equal(juncaoContato.get(Contato_.EMAIL), email));
 
 			usuarioRecuperado = sessao.createQuery(criteria).setParameter(email, contato.getEmail()).getSingleResult();
 
@@ -278,6 +280,6 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			}
 		}
 
-		return usuarioRecuperado ;
+		return usuarioRecuperado;
 	}
 }
