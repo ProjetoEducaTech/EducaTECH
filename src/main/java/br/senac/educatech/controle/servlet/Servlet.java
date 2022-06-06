@@ -579,6 +579,16 @@ public class Servlet extends HttpServlet {
 		// modalidade, turno, new Area(idArea), new Instituicao(idInstituicao)));
 		// redirect or response
 	}
+	
+	private void mostrarPaginaCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao) throws ServletException, IOException {
+		
+		long idCurso = Long.parseLong(request.getParameter("id"));
+		Curso curso = cursoDAO.recuperarCursoPeloId(new Curso(idCurso));
+		request.setAttribute("curso", curso);
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-curso.jsp");
+		dispatcher.forward(request, response);
+	}
 
 	private void deletarCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
@@ -632,23 +642,6 @@ public class Servlet extends HttpServlet {
 
 	}
 
-	private void mostrarPaginaCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws ServletException, IOException {
-
-		// Long id = Long.parseLong(request.getParameter("id"));
-
-		Curso curso = cursoDAO.recuperarCursoPeloId(new Curso(1L));
-		
-		request.setAttribute("curso", curso);
-		
-//		List<Avaliacao> avaliacoes = avaliacaoDAO.recuperarAvaliacoesPeloCurso(curso);
-//
-//		request.setAttribute("avaliacoes", avaliacoes);
-
-		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-curso.jsp");
-		dispatcher.forward(request, response);
-
-	}
 
 	private void cursosInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
