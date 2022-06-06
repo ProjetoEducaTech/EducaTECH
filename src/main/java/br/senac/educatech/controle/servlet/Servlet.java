@@ -298,10 +298,10 @@ public class Servlet extends HttpServlet {
 	private void preencherFormularioAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
-		long id = Long.parseLong(request.getParameter("id"));
-		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(id));
+		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
 		request.setAttribute("aluno", aluno);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("editar-perfil-aluno.jsp");
 		dispatcher.forward(request, response);
 
 	}
@@ -346,19 +346,37 @@ public class Servlet extends HttpServlet {
 
 	private void atualizarAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
-		long id = Long.parseLong(request.getParameter("id"));
 		String nome = request.getParameter("nome");
 		String senha = request.getParameter("senha");
 		String cpf = request.getParameter("cpf");
 		String sobrenome = request.getParameter("sobrenome");
-		LocalDate dataNasc = LocalDate.parse(request.getParameter("nascimento"));
+		LocalDate dataNascimento = LocalDate.parse(request.getParameter("nascimento"));
 		double nota = Double.parseDouble(request.getParameter("notaCorte"));
 		Genero genero = Genero.values()[Integer.parseInt(request.getParameter("genero"))];
 		byte[] sal = Hash.gerarSal();
-		// alunoDAO.atualizarAluno(
-		// new Aluno(id, nome, Hash.gerarHash(sal, senha), sal, cpf, sobrenome, nota,
-		// dataNasc, genero));
-		// redirect or reponse
+		String biografia = request.getParameter("biografia");
+		Pronome pronome = Pronome.values()[Integer.parseInt(request.getParameter("pronome"))];
+
+		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+
+		Aluno aluno = new Aluno(usuario.getId(), nome, Hash.gerarHash(sal, senha), sal, cpf, sobrenome, biografia,
+				dataNascimento, genero, pronome, null);
+
+		alunoDAO.atualizarAluno(aluno);
+
+		byte[] conteudoFoto = FileUtils.readFileToByteArray(new File(request.getParameter("foto-perfil")));
+		String extensaoFoto = FilenameUtils.getExtension(request.getParameter("foto-perfil"));
+		Foto foto = new Foto(conteudoFoto, extensaoFoto, aluno);
+
+		aluno.setFoto(foto);
+
+		fotoDAO.atualizarFoto(foto);
+
+		alunoDAO.atualizarAluno(aluno);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+		dispatcher.forward(request, response);
+
 	}
 
 	private void deletarAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
@@ -438,12 +456,14 @@ public class Servlet extends HttpServlet {
 
 	private void inserirAvaliacao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
+		
 		int nota = Integer.parseInt(request.getParameter("nota"));
 		String comentario = request.getParameter("comentario");
-		long idAluno = Long.parseLong(request.getParameter("idAluno"));
+		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
 		long idCurso = Long.parseLong(request.getParameter("idCurso"));
-		// avaliacaoDAO.inserirAvaliacao(new Avaliacao(nota, comentario, new
-		// Aluno(idAluno), new Curso(idCurso)));
+		LocalDate dataComentario = LocalDate.now();
+		avaliacaoDAO.inserirAvaliacao(new Avaliacao(nota, comentario, aluno, new Curso(idCurso), dataComentario));
 		// redirect or response
 	}
 
@@ -582,8 +602,8 @@ public class Servlet extends HttpServlet {
 	
 	private void mostrarPaginaCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao) throws ServletException, IOException {
 		
-		long idCurso = Long.parseLong(request.getParameter("id"));
-		Curso curso = cursoDAO.recuperarCursoPeloId(new Curso(idCurso));
+		
+		Curso curso = cursoDAO.recuperarCursoPeloId(new Curso(1L));
 		request.setAttribute("curso", curso);
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-curso.jsp");
