@@ -257,13 +257,17 @@ public class Servlet extends HttpServlet {
 			case "/consulta-principal":
 				mostrarFormularioConsultaCurso(request, response, sessao);
 				break;
-				
+
 			case "/consultar-curso":
 				consultarCurso(request, response, sessao);
 				break;
 
 			case "/meus-cursos":
 				cursosInstituicao(request, response, sessao);
+				break;
+
+			case "/pagina-curso":
+				mostrarPaginaCurso(request, response, sessao);
 				break;
 
 			default:
@@ -276,8 +280,6 @@ public class Servlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
-	
 
 	private void padrao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
@@ -593,7 +595,7 @@ public class Servlet extends HttpServlet {
 
 		double precoMinimo = cursoDAO.recuperaMenorPrecoCurso();
 		double precoMaximo = cursoDAO.recuperarMaiorPrecoCurso();
-		
+
 		List<Area> areas = areaDAO.recuperarAreas();
 		List<Instituicao> instituicoes = instituicaoDAO.recuperarInstituicoes();
 		List<Curso> cursos = null;
@@ -608,24 +610,44 @@ public class Servlet extends HttpServlet {
 		dispatcher.forward(request, response);
 
 	}
-	
+
 	private void consultarCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
-		
-		Optional<Modalidade> modalidade = Optional.of(Modalidade.values()[Integer.parseInt(request.getParameter("modalidade"))]);
+
+		Optional<Modalidade> modalidade = Optional
+				.of(Modalidade.values()[Integer.parseInt(request.getParameter("modalidade"))]);
 		Optional<Double> notaCorte = Optional.of(Double.parseDouble(request.getParameter("notaCorte")));
 		Optional<Turno> turno = Optional.of(Turno.values()[Integer.parseInt(request.getParameter("turno"))]);
 		Optional<Double> duracao = Optional.of(Double.parseDouble(request.getParameter("duracao")));
 		Optional<Long> area = Optional.of(Long.parseLong(request.getParameter("area")));
 		Optional<Long> instituicao = Optional.of(Long.parseLong(request.getParameter("idInstituicao")));
 		Optional<Double> preco = Optional.of(Double.parseDouble(request.getParameter("preco")));
-		List<Curso> cursos = cursoDAO.recuperarCursoPorFiltro(instituicao, area, notaCorte, turno, modalidade, preco, duracao);
-		
+		List<Curso> cursos = cursoDAO.recuperarCursoPorFiltro(instituicao, area, notaCorte, turno, modalidade, preco,
+				duracao);
+
 		request.setAttribute("cursos", cursos);
-		
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher("consultar-curso.jsp");
 		dispatcher.forward(request, response);
+
+	}
+
+	private void mostrarPaginaCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
+			throws ServletException, IOException {
+
+		// Long id = Long.parseLong(request.getParameter("id"));
+
+		Curso curso = cursoDAO.recuperarCursoPeloId(new Curso(1L));
 		
+		request.setAttribute("curso", curso);
+		
+//		List<Avaliacao> avaliacoes = avaliacaoDAO.recuperarAvaliacoesPeloCurso(curso);
+//
+//		request.setAttribute("avaliacoes", avaliacoes);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-curso.jsp");
+		dispatcher.forward(request, response);
+
 	}
 
 	private void cursosInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
