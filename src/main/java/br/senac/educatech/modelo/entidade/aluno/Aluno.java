@@ -75,6 +75,18 @@ public class Aluno extends Usuario implements Serializable {
 		setPronome(pronomes);
 		cursosFavoritos = new ArrayList<Curso>();
 	}
+	
+	public Aluno(Long id, String nome, String senha, byte[] sal, String cpf, String sobrenome, String biografia,
+			LocalDate dataNascimento, Genero Genero, Pronome pronomes, Foto foto) {
+		super(id, nome, senha, sal, foto);
+		setCpf(cpf);
+		setSobrenome(sobrenome);
+		setBiografia(biografia);
+		setDataNascimento(dataNascimento);
+		setGenero(Genero);
+		setPronome(pronomes);
+		cursosFavoritos = new ArrayList<Curso>();
+	}
 
 	public String getCpf() {
 		return cpf;
