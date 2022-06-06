@@ -24,7 +24,6 @@ import br.senac.educatech.modelo.entidade.aluno.Aluno;
 import br.senac.educatech.modelo.entidade.area.Area;
 import br.senac.educatech.modelo.entidade.avaliacao.Avaliacao;
 import br.senac.educatech.modelo.entidade.instituicao.Instituicao;
-import br.senac.educatech.modelo.enumeracao.ingresso.Ingresso;
 import br.senac.educatech.modelo.enumeracao.modalidade.Modalidade;
 import br.senac.educatech.modelo.enumeracao.turno.Turno;
 
@@ -57,10 +56,6 @@ public class Curso implements Serializable {
 	@Column(name = "nota_corte_curso", scale = 5, precision = 2, nullable = false)
 	private double notaCorte;
 
-	@Column(name = "ingresso_curso", nullable = false)
-	@Enumerated(EnumType.ORDINAL)
-	private Ingresso ingresso;
-
 	@Column(name = "modalidade_curso", nullable = false)
 	@Enumerated(EnumType.ORDINAL)
 	private Modalidade modalidade;
@@ -83,16 +78,18 @@ public class Curso implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Avaliacao> avaliacoes;
 
-	public Curso() {}
+	public Curso() {
+	}
 
-	public Curso(String nome, String descricao, double duracao, double preco, String link, double notaCorte, Ingresso ingresso, Modalidade modalidade, Turno turno, Area area, Instituicao instituicao) {
+	public Curso(String nome, String descricao, double duracao, double preco, String link, double notaCorte,
+			Modalidade modalidade, Turno turno, Area area, Instituicao instituicao) {
 		setNome(nome);
 		setDescricao(descricao);
 		setDuracao(duracao);
 		setPreco(preco);
 		setLink(link);
 		setNotaCorte(notaCorte);
-		setIngresso(ingresso);
+
 		setModalidade(modalidade);
 		setTurno(turno);
 		setArea(area);
@@ -101,13 +98,14 @@ public class Curso implements Serializable {
 		avaliacoes = new ArrayList<Avaliacao>();
 	}
 
-	public Curso(String nome, String descricao, double duracao, double preco, String link, Ingresso tipoIngresso, Modalidade tipoModalidade, Turno tipoTurno, Area area, Instituicao instituicao) {
+	public Curso(String nome, String descricao, double duracao, double preco, String link, Modalidade tipoModalidade,
+			Turno tipoTurno, Area area, Instituicao instituicao) {
 		setNome(nome);
 		setDescricao(descricao);
 		setDuracao(duracao);
 		setPreco(preco);
 		setLink(link);
-		setIngresso(tipoIngresso);
+
 		setModalidade(tipoModalidade);
 		setTurno(tipoTurno);
 		setArea(area);
@@ -116,7 +114,8 @@ public class Curso implements Serializable {
 		avaliacoes = new ArrayList<Avaliacao>();
 	}
 
-	public Curso(Long id, String nome, String descricao, double duracao, double preco, String link, double notaCorte, Ingresso tipoIngreso, Modalidade tipoModalidade, Turno tipoTurno, Area area, Instituicao instituicao) {
+	public Curso(Long id, String nome, String descricao, double duracao, double preco, String link, double notaCorte,
+			Modalidade tipoModalidade, Turno tipoTurno, Area area, Instituicao instituicao) {
 		setId(id);
 		setNome(nome);
 		setDescricao(descricao);
@@ -124,7 +123,7 @@ public class Curso implements Serializable {
 		setPreco(preco);
 		setLink(link);
 		setNotaCorte(notaCorte);
-		setIngresso(tipoIngreso);
+
 		setModalidade(tipoModalidade);
 		setTurno(tipoTurno);
 		setArea(area);
@@ -193,14 +192,6 @@ public class Curso implements Serializable {
 		this.notaCorte = notaCorte;
 	}
 
-	public Ingresso getIngresso() {
-		return ingresso;
-	}
-
-	public void setIngresso(Ingresso ingresso) {
-		this.ingresso = ingresso;
-	}
-
 	public Modalidade getModalidade() {
 		return modalidade;
 	}
@@ -240,7 +231,7 @@ public class Curso implements Serializable {
 	public void adicionarAvaliacao(Avaliacao avaliacao) {
 		avaliacoes.add(avaliacao);
 	}
-	
+
 	public void removerAvaliacao(Avaliacao avaliacao) {
 		avaliacoes.remove(avaliacao);
 	}
@@ -252,7 +243,7 @@ public class Curso implements Serializable {
 	public void adicionarAluno(Aluno aluno) {
 		alunos.add(aluno);
 	}
-	
+
 	public void removerAluno(Aluno aluno) {
 		alunos.remove(aluno);
 	}
@@ -272,9 +263,9 @@ public class Curso implements Serializable {
 
 		return this.getId().equals(curso.getId()) && this.getNome().equals(curso.getNome())
 				&& this.getArea().equals(curso.getArea()) && this.getDescricao().equals(curso.getDescricao())
-				&& this.getDuracao() == curso.getDuracao() && this.getIngresso().equals(curso.getIngresso())
-				&& this.getPreco() == curso.getPreco() && this.getNotaCorte() == curso.getNotaCorte()
-				&& this.getlink().equals(curso.getlink()) && this.getModalidade().equals(curso.getModalidade())
-				&& this.getTurno().equals(curso.getTurno()) && this.getInstituicao().equals(curso.getInstituicao());
+				&& this.getDuracao() == curso.getDuracao() && this.getPreco() == curso.getPreco()
+				&& this.getNotaCorte() == curso.getNotaCorte() && this.getlink().equals(curso.getlink())
+				&& this.getModalidade().equals(curso.getModalidade()) && this.getTurno().equals(curso.getTurno())
+				&& this.getInstituicao().equals(curso.getInstituicao());
 	}
 }

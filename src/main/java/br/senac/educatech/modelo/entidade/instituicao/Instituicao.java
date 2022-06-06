@@ -8,6 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -36,8 +37,8 @@ public class Instituicao extends Usuario implements Serializable {
 	@OneToOne(mappedBy = "instituicao", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Endereco endereco;
 
-	@OneToOne(mappedBy = "instituicao", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Area area;
+	@OneToMany(mappedBy = "instituicao", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Area> areas;
 
 	public Instituicao() {
 	}

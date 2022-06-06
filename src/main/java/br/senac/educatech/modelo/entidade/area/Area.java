@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.senac.educatech.modelo.entidade.instituicao.Instituicao;
@@ -28,7 +28,7 @@ public class Area implements Serializable {
 	@Column(name = "nome_area", length = 45, nullable = false)
 	private String nome;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_usuario")
 	private Instituicao instituicao;
 
