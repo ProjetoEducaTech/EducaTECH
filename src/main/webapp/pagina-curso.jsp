@@ -18,17 +18,32 @@
 
         <p><c:out value='${curso.descricao}'/></p>
 
-        <h2>É estudante do curso? Que tal deixar uma avaliação para outros alunos?</h2>
-        <textarea></textarea>
-        <button>Submeter avaliação</button>
-
+	<div>
+		<h2>É estudante do curso? Que tal deixar uma avaliação para outros alunos?</h2>
+		<div>
+		
+		<form action="inserir-avaliacao" method="post">	
+       	 	<label>Comentario<em>*</em></label>
+        	<input type="text" name="comentario">
+       		<label>Nota<em>*</em></label>
+      		<input type="text" name="nota">
+      		
+      		<div>
+        		<button type="submit">Submeter avaliação</button>
+        	</div>
+        </form>
+        </div>
+	</div>
+	
+	<div>
         <h2>Avaliações</h2>
-        
+        <div>
         	<c:forEach var="avaliacao" items="${curso.avaliacoes}">
         		<p><c:out value='${avaliacao.nota}'/></p>
         		<p><c:out value='${avaliacao.comentario}'/></p>
-        		<p><c:out value='${avaliacao.data}'/></p>
-        		<p><c:out value='${avaliacao.aluno}'/></p>
+        		
         	</c:forEach>
+        </div>	
+    </div>
     </body>
 </html>
