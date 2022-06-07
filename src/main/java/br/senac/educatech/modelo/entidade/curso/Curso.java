@@ -134,6 +134,8 @@ public class Curso implements Serializable {
 
 	public Curso(Long id) {
 		setId(id);
+		alunos = new ArrayList<Aluno>();
+		avaliacoes = new ArrayList<Avaliacao>();
 	}
 
 	public Long getId() {
