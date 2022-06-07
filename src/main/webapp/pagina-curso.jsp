@@ -22,11 +22,12 @@
 		<h2>É estudante do curso? Que tal deixar uma avaliação para outros alunos?</h2>
 		<div>
 		
+		
 		<form action="inserir-avaliacao" method="post">	
        	 	<label>Comentario<em>*</em></label>
-        	<input type="text" name="comentario">
+        	<input type="text" name="comentario" id="comentario">
        		<label>Nota<em>*</em></label>
-      		<input type="text" name="nota">
+      		<input type="text" name="nota" id="nota">
       		
       		<div>
         		<button type="submit">Submeter avaliação</button>
@@ -41,7 +42,29 @@
         	<c:forEach var="avaliacao" items="${curso.avaliacoes}">
         		<p><c:out value='${avaliacao.nota}'/></p>
         		<p><c:out value='${avaliacao.comentario}'/></p>
+        		<p></p>
+        	
+      		<form  action="atualizar-avaliacao" method="post">
         		
+        		<label>Comentario anterior:<c:out value='${avaliacao.nota}'/></label>
+        		<input type="text" name="comentario" id="comentario">
+        		<label>Nota: <c:out value='${avaliacao.comentario}'/></label>
+      			<input type="text" name="nota" id="nota">
+      			
+      		<div>
+        		<button type="submit">atualizar avaliação</button>
+        	</div>
+
+      		</form>
+      		
+      		<form  action="deletar-avaliacao" method="post">
+      		<div>
+        		<button type="submit">deletar avaliação</button>
+        	</div>
+      		</form>
+        	
+        	
+        	
         	</c:forEach>
         </div>	
     </div>

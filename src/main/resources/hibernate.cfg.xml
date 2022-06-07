@@ -9,7 +9,7 @@
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">root</property>
         <property name="show_sql">true</property>
-        <property name="hibernate.current_session_context_class">managed</property>
+        <property name="hibernate.current_session_context_class">thread</property>
         <mapping class="br.senac.educatech.modelo.entidade.aluno.Aluno" />
         <mapping class="br.senac.educatech.modelo.entidade.area.Area" />
         <mapping class="br.senac.educatech.modelo.entidade.avaliacao.Avaliacao" />

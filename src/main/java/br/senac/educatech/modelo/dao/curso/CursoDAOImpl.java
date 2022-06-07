@@ -8,6 +8,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -129,7 +130,7 @@ public class CursoDAOImpl implements CursoDAO {
 	public Curso recuperarCursoPeloId(Curso curso) {
 
 		Session sessao = null;
-		Curso cursosRecuperadas = null;
+		Curso cursosRecuperados = null;
 
 		try {
 
@@ -143,7 +144,7 @@ public class CursoDAOImpl implements CursoDAO {
 
 			criteria.where(construtor.equal(raizCurso.get(Curso_.ID), curso.getId()));
 
-			cursosRecuperadas = sessao.createQuery(criteria).getSingleResult();
+			cursosRecuperados = sessao.createQuery(criteria).getSingleResult();
 
 			sessao.getTransaction().commit();
 
@@ -162,8 +163,50 @@ public class CursoDAOImpl implements CursoDAO {
 			}
 		}
 
-		return cursosRecuperadas;
+		return cursosRecuperados;
 	}
+	
+	public Curso recuperarCursoComAvaliacoesPeloId(Curso curso) {
+		
+		Session sessao = null;
+		Curso cursosRecuperados = null;
+
+		try {
+
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
+			Root<Curso> raizCurso = criteria.from(Curso.class);
+			raizCurso.fetch(Curso_.AVALIACOES, JoinType.LEFT);
+
+			criteria.where(construtor.equal(raizCurso.get(Curso_.ID), curso.getId()));
+
+			cursosRecuperados = sessao.createQuery(criteria).getSingleResult();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return cursosRecuperados;
+	}
+		
+	
 
 	public List<Curso> recuperarCursos() {
 

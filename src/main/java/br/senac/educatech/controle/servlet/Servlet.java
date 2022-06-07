@@ -461,29 +461,37 @@ public class Servlet extends HttpServlet {
 		String comentario = request.getParameter("comentario");
 		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
-		long idCurso = Long.parseLong(request.getParameter("idCurso"));
+		//long idCurso = Long.parseLong(request.getParameter("id"));
+		//Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(2L));
+		Curso curso = cursoDAO.recuperarCursoPeloId(new Curso(1L));
 		LocalDate dataComentario = LocalDate.now();
-		avaliacaoDAO.inserirAvaliacao(new Avaliacao(nota, comentario, aluno, new Curso(idCurso), dataComentario));
+		Avaliacao avaliacao = new Avaliacao(nota, comentario, aluno, curso, dataComentario);
+		avaliacaoDAO.inserirAvaliacao(avaliacao);
+		curso.adicionarAvaliacao(avaliacao);
+		aluno.adicionarAvaliacao(avaliacao);
+		alunoDAO.atualizarAluno(aluno);
+		cursoDAO.atualizarCurso(curso);
 		// redirect or response
 	}
 
 	private void atualizarAvaliacao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
-		long id = Long.parseLong(request.getParameter("id"));
+		//long id = Long.parseLong(request.getParameter("id"));
 		int nota = Integer.parseInt(request.getParameter("nota"));
 		String comentario = request.getParameter("comentario");
-		long idAluno = Long.parseLong(request.getParameter("idAluno"));
-		long idCurso = Long.parseLong(request.getParameter("idCurso"));
-		// avaliacaoDAO.atualizarAvaliacao(new Avaliacao(id, nota, comentario, new
-		// Aluno(idAluno), new Curso(idCurso)));
+		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
+		Curso curso = cursoDAO.recuperarCursoPeloId(new Curso(1L));
+		LocalDate dataComentario = LocalDate.now();
+		avaliacaoDAO.atualizarAvaliacao(new Avaliacao(1L, nota, comentario, aluno, curso, dataComentario));
 		// redirect or response
 	}
 
 	private void deletarAvaliacao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
-		long id = Long.parseLong(request.getParameter("id"));
-		Avaliacao avaliacao = avaliacaoDAO.recuperarAvaliacaoPeloId(new Avaliacao(id));
+		//long id = Long.parseLong(request.getParameter("id"));
+		Avaliacao avaliacao = avaliacaoDAO.recuperarAvaliacaoPeloId(new Avaliacao(1L));
 		avaliacaoDAO.deletarAvaliacao(avaliacao);
 		// redirect or response
 	}
@@ -603,8 +611,12 @@ public class Servlet extends HttpServlet {
 	private void mostrarPaginaCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao) throws ServletException, IOException {
 		
 		
-		Curso curso = cursoDAO.recuperarCursoPeloId(new Curso(1L));
+		Curso curso = cursoDAO.recuperarCursoComAvaliacoesPeloId(new Curso(1L));
 		request.setAttribute("curso", curso);
+		
+		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
+		request.setAttribute("aluno", aluno);
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-curso.jsp");
 		dispatcher.forward(request, response);

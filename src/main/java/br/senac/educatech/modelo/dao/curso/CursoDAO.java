@@ -19,6 +19,8 @@ public interface CursoDAO {
 	void deletarCurso(Curso curso);
 
 	Curso recuperarCursoPeloId(Curso curso);
+	
+	Curso recuperarCursoComAvaliacoesPeloId(Curso curso);
 
 	List<Curso> recuperarCursos();
 
