@@ -357,12 +357,20 @@ public class Servlet extends HttpServlet {
 		String biografia = request.getParameter("biografia");
 		Pronome pronome = Pronome.values()[Integer.parseInt(request.getParameter("pronome"))];
 
+		String telefone = request.getParameter("telefone");
+		String celular = request.getParameter("celular");
+		String email = request.getParameter("email");
+		
 		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
 
 		Aluno aluno = new Aluno(usuario.getId(), nome, Hash.gerarHash(sal, senha), sal, cpf, sobrenome, biografia,
 				dataNascimento, genero, pronome, null);
 
+		Contato contato = new Contato(telefone, celular, email, aluno);
+		
 		alunoDAO.atualizarAluno(aluno);
+		
+		contatoDAO.atualizarContato(contato);
 
 		byte[] conteudoFoto = FileUtils.readFileToByteArray(new File(request.getParameter("foto-perfil")));
 		String extensaoFoto = FilenameUtils.getExtension(request.getParameter("foto-perfil"));
@@ -762,10 +770,10 @@ public class Servlet extends HttpServlet {
 
 	private void preencherFormularioInstituicao(HttpServletRequest request, HttpServletResponse response,
 			HttpSession sessao) throws SQLException, ServletException, IOException {
-		long id = Long.parseLong(request.getParameter("id"));
-		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(id));
+		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
 		request.setAttribute("instituicao", instituicao);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("editar-perfil-aluno.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -821,15 +829,53 @@ public class Servlet extends HttpServlet {
 
 	private void atualizarInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
-		long id = Long.parseLong(request.getParameter("id"));
 		String nome = request.getParameter("nome");
 		String senha = request.getParameter("senha");
 		String cnpj = request.getParameter("cnpj");
 		String desc = request.getParameter("desc");
 		byte[] sal = Hash.gerarSal();
-		// instituicaoDAO.atualizarInstituicao(new Instituicao(id, nome,
-		// Hash.gerarHash(sal, senha), sal, cnpj, desc));
-		// redirect or response
+		
+		String telefone = request.getParameter("telefone");
+		String celular = request.getParameter("celular");
+		String email = request.getParameter("email");
+		
+		String logradouro = request.getParameter("logradouro");
+		String bairro = request.getParameter("bairro");
+		int numero = Integer.parseInt(request.getParameter("numero"));
+		String cep = request.getParameter("cep");
+		String cidade = request.getParameter("cidade");
+		String estado = request.getParameter("estado");
+		String referencia = request.getParameter("referencia");
+		String complemento = request.getParameter("complemento");
+		
+		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+
+		Instituicao instituicao = new Instituicao(usuario.getId(), nome, Hash.gerarHash(sal, senha), sal, cnpj, desc, null);
+
+		Contato contato = new Contato(telefone, celular, email, instituicao);
+		
+		Endereco endereco = new Endereco(logradouro, bairro, numero, cep, cidade, estado, referencia, complemento,
+				instituicao);
+		
+		instituicaoDAO.atualizarInstituicao(instituicao);
+
+		byte[] conteudoFoto = FileUtils.readFileToByteArray(new File(request.getParameter("foto-perfil")));
+		String extensaoFoto = FilenameUtils.getExtension(request.getParameter("foto-perfil"));
+		Foto foto = new Foto(conteudoFoto, extensaoFoto, instituicao);
+
+		instituicao.setFoto(foto);
+
+		contatoDAO.atualizarContato(contato);
+		
+		enderecoDAO.atualizarEndereco(endereco);
+		
+		fotoDAO.atualizarFoto(foto);
+
+		instituicaoDAO.atualizarInstituicao(instituicao);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+		dispatcher.forward(request, response);
+		
 	}
 
 	private void deletarInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
