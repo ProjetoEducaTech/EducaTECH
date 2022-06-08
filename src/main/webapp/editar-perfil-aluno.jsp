@@ -1,4 +1,4 @@
-%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html lang="pt-br">
 
@@ -19,7 +19,7 @@
 
 <body>
 
-	<form class="form-editar-perfil" action="atualizar-aluno" method="post">
+	<form class="form-editar-perfil" action="/editar-aluno" method="post">
 
   <div>
     <h1>Minha Conta</h1>
@@ -30,7 +30,7 @@
     </div>
    
     <div>
-        <label>Gênero<em>*</em></label>
+        <label>GÃªnero<em>*</em></label>
         <select name="genero" id="genero">
           <option value="0">Masculino</option>
           <option value="1">Feminino</option>
@@ -69,7 +69,7 @@
   <div>
     <input class="button-cancel" type="button" value="Cancelar">
 
-    <input class="button-save" type="submit" value="Salvar alteraçoes">
+    <input class="button-save" type="submit" value="Salvar alteraÃ§oes">
   </div>
 	</form>
 
