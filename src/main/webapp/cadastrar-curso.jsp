@@ -50,7 +50,6 @@
 					
 						<c:forEach var="area" items="${areas}">
 							<option value="<c:out value="${area.id}"/>"><c:out value="${area.nome}"/></option>
-			
 						</c:forEach>
 					
 				</select>
