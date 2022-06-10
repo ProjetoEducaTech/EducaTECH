@@ -19,6 +19,8 @@ import br.senac.educatech.modelo.entidade.aluno.Aluno;
 import br.senac.educatech.modelo.entidade.aluno.Aluno_;
 import br.senac.educatech.modelo.entidade.area.Area;
 import br.senac.educatech.modelo.entidade.area.Area_;
+import br.senac.educatech.modelo.entidade.avaliacao.Avaliacao;
+import br.senac.educatech.modelo.entidade.avaliacao.Avaliacao_;
 import br.senac.educatech.modelo.entidade.curso.Curso;
 import br.senac.educatech.modelo.entidade.curso.Curso_;
 import br.senac.educatech.modelo.entidade.instituicao.Instituicao;
@@ -165,9 +167,9 @@ public class CursoDAOImpl implements CursoDAO {
 
 		return cursosRecuperados;
 	}
-	
+
 	public Curso recuperarCursoComAvaliacoesPeloId(Curso curso) {
-		
+
 		Session sessao = null;
 		Curso cursosRecuperados = null;
 
@@ -205,8 +207,6 @@ public class CursoDAOImpl implements CursoDAO {
 
 		return cursosRecuperados;
 	}
-		
-	
 
 	public List<Curso> recuperarCursos() {
 
@@ -351,10 +351,11 @@ public class CursoDAOImpl implements CursoDAO {
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 
-			//criteria.where(construtor.lessThanOrEqualTo(raizCurso.<Double>get(Curso_.NOTA_CORTE), aluno.getNota()));
+			// criteria.where(construtor.lessThanOrEqualTo(raizCurso.<Double>get(Curso_.NOTA_CORTE),
+			// aluno.getNota()));
 
-		//	criteria.orderBy(construtor.desc(raizCurso.get(Curso_.NOTA_CORTE)),
-		//			construtor.asc(raizCurso.get(Curso_.NOME)));
+			// criteria.orderBy(construtor.desc(raizCurso.get(Curso_.NOTA_CORTE)),
+			// construtor.asc(raizCurso.get(Curso_.NOME)));
 
 			consultaNota = sessao.createQuery(criteria).getResultList();
 
@@ -803,6 +804,45 @@ public class CursoDAOImpl implements CursoDAO {
 		}
 
 		return consultaFiltroInicial;
+	}
+
+	public List<Curso> recuperarCincoCursosAvaliados() {
+
+		Session sessao = null;
+		List<Curso> cursosRecuperados = null;
+
+		try {
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
+			Root<Curso> raizCurso = criteria.from(Curso.class);
+			Join<Curso, Avaliacao> joinAvaliacao = raizCurso.join(Curso_.AVALIACOES);
+
+			criteria.orderBy(construtor.desc(joinAvaliacao.get(Avaliacao_.NOTA)));
+
+			cursosRecuperados = sessao.createQuery(criteria.distinct(true)).setMaxResults(5).getResultList();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return cursosRecuperados;
 	}
 
 }
