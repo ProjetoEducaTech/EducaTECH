@@ -258,6 +258,10 @@ public class Servlet extends HttpServlet {
 				mostrarFormularioConsultaCurso(request, response, sessao);
 				break;
 
+			case "/consulta-inicial":
+				consultaIncialCursos(request, response, sessao);
+				break;
+
 			case "/consultar-curso":
 				consultarCurso(request, response, sessao);
 				break;
@@ -268,6 +272,10 @@ public class Servlet extends HttpServlet {
 
 			case "/pagina-curso":
 				mostrarPaginaCurso(request, response, sessao);
+				break;
+
+			case "index":
+				index(request, response, sessao);
 				break;
 
 			default:
@@ -281,9 +289,27 @@ public class Servlet extends HttpServlet {
 		}
 	}
 
+	private void index(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
+			throws ServletException, IOException {
+
+		List<Area> areas = areaDAO.recuperarAreas();
+		request.setAttribute("areas", areas);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-inicial.jsp");
+		dispatcher.forward(request, response);
+
+	}
+
 	private void padrao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+
+		List<Area> areas = areaDAO.recuperarAreas();
+		request.setAttribute("areas", areas);
+
+		// List<Curso> cursosAvaliados = cursoDAO.recuperarCincoCursosAvaliados();
+		// request.setAttribute("cursosAvaliados", cursosAvaliados);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-inicial.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -456,13 +482,13 @@ public class Servlet extends HttpServlet {
 
 	private void inserirAvaliacao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
-		
+
 		int nota = Integer.parseInt(request.getParameter("nota"));
 		String comentario = request.getParameter("comentario");
 		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
-		//long idCurso = Long.parseLong(request.getParameter("id"));
-		//Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(2L));
+		// long idCurso = Long.parseLong(request.getParameter("id"));
+		// Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(2L));
 		Curso curso = cursoDAO.recuperarCursoPeloId(new Curso(1L));
 		LocalDate dataComentario = LocalDate.now();
 		Avaliacao avaliacao = new Avaliacao(nota, comentario, aluno, curso, dataComentario);
@@ -471,12 +497,14 @@ public class Servlet extends HttpServlet {
 		aluno.adicionarAvaliacao(avaliacao);
 		alunoDAO.atualizarAluno(aluno);
 		cursoDAO.atualizarCurso(curso);
-		// redirect or response
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-curso.jsp");
+		dispatcher.forward(request, response);
 	}
 
 	private void atualizarAvaliacao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
-		//long id = Long.parseLong(request.getParameter("id"));
+		// long id = Long.parseLong(request.getParameter("id"));
 		int nota = Integer.parseInt(request.getParameter("nota"));
 		String comentario = request.getParameter("comentario");
 		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
@@ -484,16 +512,18 @@ public class Servlet extends HttpServlet {
 		Curso curso = cursoDAO.recuperarCursoPeloId(new Curso(1L));
 		LocalDate dataComentario = LocalDate.now();
 		avaliacaoDAO.atualizarAvaliacao(new Avaliacao(1L, nota, comentario, aluno, curso, dataComentario));
-		// redirect or response
+		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-curso.jsp");
+		dispatcher.forward(request, response);
 	}
 
 	private void deletarAvaliacao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
-		//long id = Long.parseLong(request.getParameter("id"));
+		// long id = Long.parseLong(request.getParameter("id"));
 		Avaliacao avaliacao = avaliacaoDAO.recuperarAvaliacaoPeloId(new Avaliacao(1L));
 		avaliacaoDAO.deletarAvaliacao(avaliacao);
-		// redirect or response
+		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-curso.jsp");
+		dispatcher.forward(request, response);
 	}
 
 	private void mostrarFormularioNovoContato(HttpServletRequest request, HttpServletResponse response,
@@ -586,6 +616,8 @@ public class Servlet extends HttpServlet {
 		cursoDAO.inserirCurso(
 				new Curso(nome, descricao, duracao, preco, link, modalidade, turno, new Area(idArea), instituicao));
 
+		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-curso.jsp");
+		dispatcher.forward(request, response);
 	}
 
 	private void atualizarCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
@@ -607,17 +639,18 @@ public class Servlet extends HttpServlet {
 		// modalidade, turno, new Area(idArea), new Instituicao(idInstituicao)));
 		// redirect or response
 	}
-	
-	private void mostrarPaginaCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao) throws ServletException, IOException {
-		
-		
+
+	private void mostrarPaginaCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
+			throws ServletException, IOException {
+
+		// Long id = Long.parseLong(request.getParameter("id"));
 		Curso curso = cursoDAO.recuperarCursoComAvaliacoesPeloId(new Curso(1L));
 		request.setAttribute("curso", curso);
-		
+
 		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
 		request.setAttribute("aluno", aluno);
-		
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-curso.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -662,18 +695,58 @@ public class Servlet extends HttpServlet {
 		Optional<Turno> turno = Optional.of(Turno.values()[Integer.parseInt(request.getParameter("turno"))]);
 		Optional<Double> duracao = Optional.of(Double.parseDouble(request.getParameter("duracao")));
 		Optional<Long> area = Optional.of(Long.parseLong(request.getParameter("area")));
-		Optional<Long> instituicao = Optional.of(Long.parseLong(request.getParameter("idInstituicao")));
+		Optional<Long> instituicao = Optional.of(Long.parseLong(request.getParameter("instituicao")));
 		Optional<Double> preco = Optional.of(Double.parseDouble(request.getParameter("preco")));
+
 		List<Curso> cursos = cursoDAO.recuperarCursoPorFiltro(instituicao, area, notaCorte, turno, modalidade, preco,
 				duracao);
-
 		request.setAttribute("cursos", cursos);
+
+		double precoMinimo = cursoDAO.recuperaMenorPrecoCurso();
+		request.setAttribute("precoMinimo", precoMinimo);
+
+		double precoMaximo = cursoDAO.recuperarMaiorPrecoCurso();
+		request.setAttribute("precoMaximo", precoMaximo);
+
+		List<Instituicao> instituicoes = instituicaoDAO.recuperarInstituicoes();
+		request.setAttribute("instituicoes", instituicoes);
+
+		List<Area> areas = areaDAO.recuperarAreas();
+		request.setAttribute("areas", areas);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("consultar-curso.jsp");
 		dispatcher.forward(request, response);
 
 	}
 
+	private void consultaIncialCursos(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
+			throws ServletException, IOException {
+
+		Optional<Modalidade> modalidade = Optional
+				.of(Modalidade.values()[Integer.parseInt(request.getParameter("modalidade"))]);
+		Optional<Double> notaDeCorte = Optional.of(Double.parseDouble(request.getParameter("notaCorte")));
+		Optional<Turno> turno = Optional.of(Turno.values()[Integer.parseInt(request.getParameter("turno"))]);
+		Optional<Long> idArea = Optional.of(Long.parseLong(request.getParameter("area")));
+
+		List<Curso> cursos = cursoDAO.recuperarCursosPorFiltroInicial(modalidade, notaDeCorte, turno, idArea);
+		request.setAttribute("cursos", cursos);
+
+		double precoMinimo = cursoDAO.recuperaMenorPrecoCurso();
+		request.setAttribute("precoMinimo", precoMinimo);
+
+		double precoMaximo = cursoDAO.recuperarMaiorPrecoCurso();
+		request.setAttribute("precoMaximo", precoMaximo);
+
+		List<Instituicao> instituicoes = instituicaoDAO.recuperarInstituicoes();
+		request.setAttribute("instituicoes", instituicoes);
+
+		List<Area> areas = areaDAO.recuperarAreas();
+		request.setAttribute("areas", areas);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("consultar-curso.jsp");
+		dispatcher.forward(request, response);
+
+	}
 
 	private void cursosInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
@@ -859,7 +932,13 @@ public class Servlet extends HttpServlet {
 		if (usuario.getSenha().equals(Hash.gerarHash(usuario.getSal(), senha)))
 			request.getSession().setAttribute("usuario", usuario);
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+		// List<Curso> cursosAvaliados = cursoDAO.recuperarCincoCursosAvaliados();
+		// request.setAttribute("cursosAvaliados", cursosAvaliados);
+
+		List<Area> areas = areaDAO.recuperarAreas();
+		request.setAttribute("areas", areas);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-inicial.jsp");
 		dispatcher.forward(request, response);
 
 	}
