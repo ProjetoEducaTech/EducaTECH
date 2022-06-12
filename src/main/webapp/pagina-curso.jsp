@@ -68,5 +68,13 @@
         	</c:forEach>
         </div>	
     </div>
+    
+     <div class="content-card">
+			<form action="favoritar-curso" method="post">
+				<input type="hidden" name="id" value='${curso.id}'/>
+				<button>Favoritar Curso</button>
+			</form>
+	</div>
+	
     </body>
 </html>
