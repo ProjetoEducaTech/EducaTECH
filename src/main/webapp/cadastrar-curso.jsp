@@ -11,73 +11,80 @@
 </head>
 
 <body>
-
+	
+		<div class="aba">
+			<c:if test="${curso == null}">
 	<form action="inserir-curso" method="post">
-		<h1>Cadastrar Curso</h1>
-		<fieldset>
-			<div>
-				<label for="nome">Nome do curso<em>*</em></label>
-				 <input type="text" id="nome" placeholder="Digite o nome do curso" name="curso">
-			</div>
-		</fieldset>
-		<fieldset>
-			<div>
-				<label>Modalidade<em>*</em></label> <select name="modalidade">
-					<option value="0">EAD</option>
-					<option value="1">Presencial</option>
-					<option value="2">Semi-Presencial</option>
-					<option value="3">Ao Vivo</option>									
-				</select>
-			</div>
-			<div>
-				<label>Turno<em>*</em></label> <select name="turno">
-					<option value="0">Matutino</option>
-					<option value="1">Vespertino</option>
-					<option value="2">Noturno</option>
-					<option value="3">Integral</option>
-					<option value="4">Livre</option>									
-				</select>
-			</div>
-		</fieldset>
-		<fieldset>
-			<div>
-				<label>Duração do Curso<em>*</em></label>
-				<input type="text" name="duracao">
- 			</div>
-			<div>
-				<label>Área<em>*</em></label>
-				 <select name="area">
-					
-						<c:forEach var="area" items="${areas}">
-							<option value="<c:out value="${area.id}"/>"><c:out value="${area.nome}"/></option>
-						</c:forEach>
-					
-				</select>
-			</div>
-			<div>
-				<label for="nome">Preço do curso<em>*</em></label> <input
-					type="text" id="preco" placeholder="Digite o preço" name="preco">
-			</div>
-		</fieldset>
-		<fieldset>
-			<div>
-				<label for="link"><strong>Link</strong></label>
-				<textarea rows="1" name="link"></textarea>
-			</div>
-		</fieldset>
-		<fieldset>
-			<div>
-				<label for="descricao"><strong>Descrição</strong></label>
-				<textarea rows="5" id="descricao" name="descricao"></textarea>
-			</div>
-		</fieldset>
+	<h1>Cadastrar Curso</h1>
+</c:if>
+<c:if test="${curso != null}">
+	<form action="atualizar-curso" method="post">
+	<input type="hidden" name = "id" value="${curso.id}"/>
+	<h1>Atualizar curso</h1>
+</c:if>
+			<label for="nome">Nome do curso<em>*</em></label> <input type="text"
+				id="nome" value="<c:out value='${curso.nome}' />" placeholder="Digite o nome do curso" name="curso">
 
+			<label>Modalidade<em>*</em></label> <select name="modalidade">
+				<option value="<c:out value='${curso.modalidade}' />"><c:out value='${curso.modalidade}' /></option>
+				<option value="0">EAD</option>
+				<option value="1">Presencial</option>
+				<option value="2">Semi-Presencial</option>
+				<option value="3">Ao Vivo</option>
+
+			</select> <label>Turno<em>*</em></label> <select name="turno">
+				<option value="<c:out value='${curso.turno}' />"><c:out value='${curso.turno}' /></option>
+				<option value="0">Matutino</option>
+				<option value="1">Vespertino</option>
+				<option value="2">Noturno</option>
+				<option value="3">Integral</option>
+				<option value="4">Livre</option>
+
+			</select> <label>Duração do Curso<em>*</em></label> <input type="text" value="<c:out value='${curso.duracao}' />"name="duracao">
+				 <label>Área<em>*</em></label> <select	name="area">
+
+				<c:forEach var="area" items="${areas}">
+					<option value="<c:out value="${area.id}"/>"><c:out
+							value="${area.nome}" /></option>
+				</c:forEach>
+
+			</select> <label for="nome">Preço do curso<em>*</em></label> <input
+				type="text" id="preco" value="<c:out value='${curso.preco}' />" placeholder="Digite o preço" name="preco">
+		</div>
+
+		<div class="aba">
+			<label for="link">Link do Site Oficial do Curso</label>
+			<textarea rows="1" name="link" value="<c:out value='${curso.link}' />"></textarea>
+
+			<label for="descricao"><strong>Descrição</strong></label>
+			<textarea rows="5" value="<c:out value='${curso.descricao}' />" id="descricao" name="descricao"></textarea>
+		</div>
+<c:if test="${curso == null}">
 		<fieldset>
 			<div class="botao">
 			<button type="submit">Cadastrar Curso</button>
 			</div>
 		</fieldset>
+		</c:if>
+		
+		<c:if test="${curso != null}">
+		<fieldset>
+			<div class="botao">
+			<button type="submit">Atualizar Curso</button>
+			</div>
+		</fieldset>
+		</c:if>
+		
 	</form>
+	
+	<c:if test="${curso != null}">
+		<form  action="deletar-curso" method="post">
+		<input type="hidden" name = "id" value="${curso.id}"/>
+      		<div>
+        		<button type="submit">Deletar Curso</button>
+        	</div>
+      		</form>
+      	</c:if>
 </body>
 
 </html>
