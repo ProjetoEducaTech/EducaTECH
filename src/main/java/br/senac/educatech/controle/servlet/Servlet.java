@@ -787,6 +787,7 @@ public class Servlet extends HttpServlet {
 		Optional<Modalidade> modalidade = Optional
 				.of(Modalidade.values()[Integer.parseInt(request.getParameter("modalidade"))]);
 		Optional<Double> notaDeCorte = Optional.of(Double.parseDouble(request.getParameter("notaCorte")));
+		System.out.println(notaDeCorte);
 		Optional<Turno> turno = Optional.of(Turno.values()[Integer.parseInt(request.getParameter("turno"))]);
 		Optional<Long> idArea = Optional.of(Long.parseLong(request.getParameter("area")));
 

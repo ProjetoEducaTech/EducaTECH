@@ -33,6 +33,7 @@
 				
 				<label>Turno<em>*</em></label>
 				<select name="turno">
+					<option selected value="null">Modalidade</option>
 					<option selected value="0">Matutino</option>
 					<option selected value="1">Vespertino</option>
 					<option selected value="2">Noturno</option>
@@ -49,7 +50,7 @@
 				</select>
 				
 				<label>Nota de Corte<em>*</em></label> 
-				<input type="text" name="notaCorte"> 
+				<input type="text" value="0.0" name="notaCorte"> 
 				
 			</div>
 			
