@@ -69,7 +69,6 @@
 		<p>Preço:</p>
 	</div>
 </body>
-
       		</form>
       		
       		<form  action="deletar-avaliacao" method="post">
@@ -96,5 +95,6 @@
     </div>
 	
     </body>
+
 
 </html>
