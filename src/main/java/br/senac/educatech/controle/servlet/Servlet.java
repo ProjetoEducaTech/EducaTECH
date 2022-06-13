@@ -251,7 +251,7 @@ public class Servlet extends HttpServlet {
 				break;
 
 			case "/inserir-usuario":
-				inserirUsuario(request, response, sessao);
+				inseririUsuario(request, response, sessao);
 				break;
 
 			case "/atualizar-usuario":
@@ -318,8 +318,8 @@ public class Servlet extends HttpServlet {
 		List<Area> areas = areaDAO.recuperarAreas();
 		request.setAttribute("areas", areas);
 
-		List<Curso> cursosAvaliados = cursoDAO.recuperarCincoCursosAvaliados();
-		request.setAttribute("cursosAvaliados", cursosAvaliados);
+		// List<Curso> cursosAvaliados = cursoDAO.recuperarCincoCursosAvaliados();
+		// request.setAttribute("cursosAvaliados", cursosAvaliados);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-inicial.jsp");
 		dispatcher.forward(request, response);
@@ -994,8 +994,8 @@ public class Servlet extends HttpServlet {
 		if (usuario.getSenha().equals(Hash.gerarHash(usuario.getSal(), senha)))
 			request.getSession().setAttribute("usuario", usuario);
 
-		List<Curso> cursosAvaliados = cursoDAO.recuperarCincoCursosAvaliados();
-		request.setAttribute("cursosAvaliados", cursosAvaliados);
+		// List<Curso> cursosAvaliados = cursoDAO.recuperarCincoCursosAvaliados();
+		// request.setAttribute("cursosAvaliados", cursosAvaliados);
 
 		List<Area> areas = areaDAO.recuperarAreas();
 		request.setAttribute("areas", areas);
@@ -1005,7 +1005,7 @@ public class Servlet extends HttpServlet {
 
 	}
 
-	private void inserirUsuario(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
+	private void inseririUsuario(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, IOException, ServletException, InvalidKeySpecException, NoSuchAlgorithmException {
 		String nome = request.getParameter("nome");
 		String senha = request.getParameter("senha");
