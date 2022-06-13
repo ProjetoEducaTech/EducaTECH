@@ -15,6 +15,7 @@ import br.senac.educatech.modelo.entidade.aluno.Aluno;
 import br.senac.educatech.modelo.entidade.aluno.Aluno_;
 import br.senac.educatech.modelo.entidade.avaliacao.Avaliacao;
 import br.senac.educatech.modelo.entidade.curso.Curso;
+import br.senac.educatech.modelo.entidade.curso.Curso_;
 import br.senac.educatech.modelo.factory.conexao.ConexaoFactory;
 
 public class AlunoDAOImpl implements AlunoDAO {

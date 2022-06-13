@@ -70,27 +70,20 @@
 	</div>
 </body>
 
-      		</form>
-      		
-      		<form  action="deletar-avaliacao" method="post">
-      		<div>
-        		<button type="submit">deletar avaliação</button>
-        	</div>
-      		</form>
-        	
-        	
-        	
-        	</c:forEach>
-        </div>	
-    </div>
-    
-     <div class="content-card">
-			<form action="favoritar-curso" method="post">
-				<input type="hidden" name="id" value='${curso.id}'/>
-				<button>Favoritar Curso</button>
-			</form>
+<form action="deletar-avaliacao" method="post">
+	<div>
+		<button type="submit">deletar avaliação</button>
 	</div>
-	
-    </body>
+</form>
+
+
+<div class="content-card">
+	<form action="favoritar-curso" method="post">
+		<input type="hidden" name="id" value='${curso.id}' />
+		<button>Favoritar Curso</button>
+	</form>
+</div>
+
+</body>
 
 </html>
