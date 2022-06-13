@@ -205,6 +205,46 @@ public class CursoDAOImpl implements CursoDAO {
 
 		return cursosRecuperados;
 	}
+	
+	public Curso recuperarCursoComAlunosPeloId(Curso curso) {
+
+		Session sessao = null;
+		Curso cursosRecuperados = null;
+
+		try {
+
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
+			Root<Curso> raizCurso = criteria.from(Curso.class);
+			raizCurso.fetch(Curso_.ALUNOS, JoinType.LEFT);
+
+			criteria.where(construtor.equal(raizCurso.get(Curso_.ID), curso.getId()));
+
+			cursosRecuperados = sessao.createQuery(criteria).getSingleResult();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return cursosRecuperados;
+	}
 		
 	
 
@@ -637,7 +677,6 @@ public class CursoDAOImpl implements CursoDAO {
 			CriteriaQuery<Long> queryContador = construtor.createQuery(Long.class);
 
 			queryContador.select(construtor.count(queryContador.from(Curso.class)));
-			Long contar = sessao.createQuery(queryContador).getSingleResult();
 
 			CriteriaQuery<Curso> criteriaQuery = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteriaQuery.from(Curso.class);
@@ -765,6 +804,10 @@ public class CursoDAOImpl implements CursoDAO {
 
 			if (modalidade.isPresent()) {
 				predicates.add(construtor.or(construtor.equal(raizCurso.get(Curso_.MODALIDADE), modalidade.get())));
+			}
+			
+			if (turno.isPresent()) {
+				predicates.add(construtor.or(construtor.equal(raizCurso.get(Curso_.TURNO), turno.get())));
 			}
 
 			if (notaDeCorte.isPresent()) {

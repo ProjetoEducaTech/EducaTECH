@@ -15,33 +15,45 @@
 <body>
 	<header>
 
-		<form class="form-culsulta-inicial" action="/consulta-incial"
+		<form class="consulta-inicial" action="consulta-inicial"
 			method="post">
 
 			<h1 class="intro">Selecione as suas preferências para encontrar
 				o curso perfeito!</h1>
 
 			<div class="container-field">
-				<select class="optn" name="modalidade">
-					<option selected disabled value="">Modalidade</option>
+				
+				<label>Modalidade<em>*</em></label>
+				<select name="modalidade">
 					<option selected value="0">EAD</option>
 					<option selected value="1">Presencial</option>
 					<option selected value="2">Semi Presencial</option>
-					<option selected value="3">AO Vivo</option>
-				</select> <select class="optn" name="turno">
-
-					<option selected disabled value="">Turno</option>
+					<option selected value="3">Ao Vivo</option>
+				</select> 
+				
+				<label>Turno<em>*</em></label>
+				<select name="turno">
 					<option selected value="0">Matutino</option>
 					<option selected value="1">Vespertino</option>
 					<option selected value="2">Noturno</option>
 					<option selected value="3">Integral</option>
 					<option selected value="4">Livre</option>
-				</select> <select class="optn" name="area">
-					<option selected disabled value="">Área</option>
-				</select> <select class="optn" name="preco">
-					<option selected disabled value="">Preço</option>
-				</select> <input class="btn-buscar" type="submit" value="Buscar">
+				</select> 
+				
+				<label>Área<em>*</em></label> 
+				<select name="area">
+				<c:forEach var="area" items="${areas}">
+					<option value="<c:out value="${area.id}"/>"><c:out
+							value="${area.nome}" /></option>
+				</c:forEach>
+				</select>
+				
+				<label>Nota de Corte<em>*</em></label> 
+				<input type="text" name="notaCorte"> 
+				
 			</div>
+			
+			<input class="btn-buscar" type="submit" value="Buscar">
 		</form>
 
 		<div>

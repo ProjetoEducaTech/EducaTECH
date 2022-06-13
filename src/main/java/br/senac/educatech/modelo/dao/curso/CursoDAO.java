@@ -21,6 +21,8 @@ public interface CursoDAO {
 	Curso recuperarCursoPeloId(Curso curso);
 	
 	Curso recuperarCursoComAvaliacoesPeloId(Curso curso);
+	
+	Curso recuperarCursoComAlunosPeloId(Curso curso);
 
 	List<Curso> recuperarCursos();
 
@@ -50,5 +52,6 @@ public interface CursoDAO {
 
 	List<Curso> recuperarCursosPorFiltroInicial(Optional<Modalidade> modalidade, Optional<Double> notaDeCorte,
 			Optional<Turno> turno, Optional<Long> idArea);
-
+	
+	
 }

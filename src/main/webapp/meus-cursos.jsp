@@ -1,30 +1,56 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<!DOCTYPE html>
 <html lang="pt-BR">
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style><%@include file="/assets/css/estilo.css"%></style>
-  	 	<script><%@include file="/assets/js/mascaras.js"%></script>
-    </head>
-    <body>
-        <nav>
-            <div class="barranav"> <!--barra de navegação*-->
-                <a href="index.html">Principal</a> <!--link 1*-->
-                <a href="sobre.html">Sobre o EducaTECH</a> <!--link 2-->
-                <div class="dropdown"> <!--botão que desce-->
-                  <button class="dropbtn">Dropdown</button>
-                  <div class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
-                  </div>
-                </div>
-              </div>
-        </nav>
-    </body>
-    <footer>
-    </footer>
+
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style><%@include file="/assets/css/estilo.css"%></style>
+	<title>Meus Cursos | Portal da Instituição</title>
+</head>
+
+<body>
+	<h1>Meus Cursos</h1>
+	<div class="card"></div>
+</body>
+
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meus Cursos | Portal da Instituição</title>
+</head>
+
+<body>
+<div>
+	<h1>Meus Cursos</h1>
+	
+	<div class="card">
+		<c:forEach var="curso" items="${cursos}">
+				<p>
+					<c:out value='${curso.nome}' />
+				</p>
+				<div>
+					<form  action="deletar-curso" method="post">
+      		<div>
+        		<button type="submit">deletar curso</button>
+        	</div>
+      		</form>
+				</div>
+					<form  action="editar-curso" method="post">
+      		<div>
+        		<button type="submit">editar curso</button>
+        	</div>
+      		</form>
+		</c:forEach>
+	</div>
+	</div>
+</body>
+
 </html>
