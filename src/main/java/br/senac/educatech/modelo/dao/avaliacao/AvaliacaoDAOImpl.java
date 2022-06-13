@@ -8,6 +8,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
@@ -156,6 +157,48 @@ public class AvaliacaoDAOImpl implements AvaliacaoDAO {
 
 		return avalicaoesRecuperadas;
 	}
+	
+	public Avaliacao recuperarAvaliacaoPeloAlunoCurso(Aluno aluno, Curso curso) {
+		Session sessao = null;
+		Avaliacao avalicaoRecuperada = null;
+
+		try {
+
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Avaliacao> criteria = construtor.createQuery(Avaliacao.class);
+			Root<Avaliacao> raizAvaliacao = criteria.from(Avaliacao.class);
+			
+			Predicate predicateAluno = construtor.equal(raizAvaliacao.get(Avaliacao_.ALUNO), aluno.getId());
+			Predicate predicateCurso = construtor.equal(raizAvaliacao.get(Avaliacao_.CURSO), curso.getId());
+			Predicate predicateFinal = construtor.and(predicateAluno, predicateCurso);
+
+			criteria.where(predicateFinal);
+
+			avalicaoRecuperada = sessao.createQuery(criteria).getSingleResult();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return avalicaoRecuperada;
+	}
 
 	public double recuperarMediaAvaliacaoPeloCurso(Curso curso) {
 
@@ -221,6 +264,48 @@ public class AvaliacaoDAOImpl implements AvaliacaoDAO {
 			criteria.where(construtor.equal(juncaoCurso.get(Curso_.ID), idCurso));
 
 			avaliacoes = sessao.createQuery(criteria).setParameter(idCurso, curso.getId()).getResultList();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return avaliacoes;
+	}
+	
+	public List<Avaliacao> recuperarAvaliacoesPeloAluno(Aluno aluno) {
+
+		Session sessao = null;
+		List<Avaliacao> avaliacoes = null;
+
+		try {
+
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Avaliacao> criteria = construtor.createQuery(Avaliacao.class);
+			Root<Avaliacao> raizAvaliacao = criteria.from(Avaliacao.class);
+
+			Join<Avaliacao, Aluno> juncaoAluno = raizAvaliacao.join(Avaliacao_.ALUNO);
+
+			ParameterExpression<Long> idAluno = construtor.parameter(Long.class);
+			criteria.where(construtor.equal(juncaoAluno.get(Aluno_.ID), idAluno));
+
+			avaliacoes = sessao.createQuery(criteria).setParameter(idAluno, aluno.getId()).getResultList();
 
 			sessao.getTransaction().commit();
 
