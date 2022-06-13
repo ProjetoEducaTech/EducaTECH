@@ -52,5 +52,6 @@ public interface CursoDAO {
 
 	List<Curso> recuperarCursosPorFiltroInicial(Optional<Modalidade> modalidade, Optional<Double> notaDeCorte,
 			Optional<Turno> turno, Optional<Long> idArea);
-
+	
+	
 }
