@@ -174,6 +174,10 @@ public class Servlet extends HttpServlet {
 				deletarCurso(request, response, sessao);
 				break;
 				
+			case "/cursos-favoritos":
+				mostrarCursosFavoritos(request, response, sessao);
+				break;
+				
 			case "/favoritar-curso":
 				favoritarCurso(request, response, sessao);
 				break;
@@ -602,6 +606,22 @@ public class Servlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 	
+	private void mostrarCursosFavoritos(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
+			throws ServletException, IOException {
+		
+		//long id = Long.parseLong(request.getParameter("id"));
+		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		Aluno aluno = alunoDAO.recuperarAlunoComCursosPeloId(new Aluno(usuario.getId()));
+		request.setAttribute("alunos", aluno);
+		
+		List<Curso> cursos = cursoDAO.recuperarCursosFavoritos(aluno);
+		request.setAttribute("cursos", cursos);
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("cursos-favoritos.jsp");
+		dispatcher.forward(request, response);
+		
+	}	
+	
 	private void favoritarCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
@@ -622,7 +642,8 @@ public class Servlet extends HttpServlet {
 		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoComCursosPeloId(new Aluno(usuario.getId()));
 		Curso curso = cursoDAO.recuperarCursoComAlunosPeloId(new Curso(id));
-		curso.removerAluno(aluno);
+		cursoDAO.deletarCurso(curso);		
+		curso.removerAluno(aluno);	
 		aluno.removerCursoFavorito(curso);
 		alunoDAO.atualizarAluno(aluno);
 		cursoDAO.atualizarCurso(curso);
