@@ -806,6 +806,10 @@ public class CursoDAOImpl implements CursoDAO {
 			if (modalidade.isPresent()) {
 				predicates.add(construtor.or(construtor.equal(raizCurso.get(Curso_.MODALIDADE), modalidade.get())));
 			}
+			
+			if (turno.isPresent()) {
+				predicates.add(construtor.or(construtor.equal(raizCurso.get(Curso_.TURNO), turno.get())));
+			}
 
 			if (notaDeCorte.isPresent()) {
 				predicates.add(construtor
