@@ -527,7 +527,7 @@ public class Servlet extends HttpServlet {
 		List<Avaliacao> avaliacoes = avaliacaoDAO.recuperarAvaliacoesPeloAluno(aluno);
 		request.setAttribute("avaliacoes", avaliacoes);
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("");//adicionar o jsp
+		RequestDispatcher dispatcher = request.getRequestDispatcher("minhas-avaliacoes");
 		dispatcher.forward(request, response);
 	}
 
@@ -784,8 +784,7 @@ public class Servlet extends HttpServlet {
 	private void consultaIncialCursos(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
 
-		Optional<Modalidade> modalidade = Optional
-				.of(Modalidade.values()[Integer.parseInt(request.getParameter("modalidade"))]);
+		Optional<Modalidade> modalidade = Optional.of(Modalidade.values()[Integer.parseInt(request.getParameter("modalidade"))]);
 		Optional<Double> notaDeCorte = Optional.of(Double.parseDouble(request.getParameter("notaCorte")));
 		System.out.println(notaDeCorte);
 		Optional<Turno> turno = Optional.of(Turno.values()[Integer.parseInt(request.getParameter("turno"))]);
