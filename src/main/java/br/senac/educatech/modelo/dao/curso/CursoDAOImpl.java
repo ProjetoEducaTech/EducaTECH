@@ -677,7 +677,6 @@ public class CursoDAOImpl implements CursoDAO {
 			CriteriaQuery<Long> queryContador = construtor.createQuery(Long.class);
 
 			queryContador.select(construtor.count(queryContador.from(Curso.class)));
-			Long contar = sessao.createQuery(queryContador).getSingleResult();
 
 			CriteriaQuery<Curso> criteriaQuery = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteriaQuery.from(Curso.class);

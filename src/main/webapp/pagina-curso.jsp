@@ -69,7 +69,6 @@
 		<p>Preço:</p>
 	</div>
 </body>
-
       		</form>
       		
       		<form  action="deletar-avaliacao" method="post">
@@ -79,18 +78,23 @@
       		</form>
         	
         	
-        	
-        	</c:forEach>
         </div>	
     </div>
     
-     <div class="content-card">
-			<form action="favoritar-curso" method="post">
-				<input type="hidden" name="id" value='${curso.id}'/>
-				<button>Favoritar Curso</button>
-			</form>
-	</div>
+     <div>
+        <c:forEach var="curso" items="${cursos}">
+                <div class="content-card">
+                    <form action="favoritar-curso" method="post">
+                        <input type="hidden" name="id" value='${curso.id}'/>
+                        <p><c:out value="${curso.nome}" /></p>
+                        <p><c:out value="${curso.descricao}" /></p>
+                        <button>Favoritar Curso</button>
+                    </form>
+                </div>                      
+        </c:forEach>
+    </div>
 	
     </body>
+
 
 </html>

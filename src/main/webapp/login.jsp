@@ -14,7 +14,9 @@
 
 <body>
 	<h1>Bem-Vindo!</h1>
+
 	<form action="efetuar-login" method="post">
+
 		<label for="email">E-mail<em>*</em></label> <input type="email"
 			name="email"> <label for="senha">Senha<em>*</em></label> <input
 			type="password" name="senha">
