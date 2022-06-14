@@ -13,59 +13,74 @@
 </head>
 
 <body>
+	
 	<form action="inserir-instituicao" method="post">
-		<div class="aba">
-			<h1>Bem-Vindo!</h1>
-			<h2>Passo 1 - Informações Básicas</h2>
-			<label>Nome<em>*</em></label> 
-				<input type="text" name="nome" id="input-nome-instituicao">
-			<label>CNPJ<em>*</em></label> 
-				<input type="text" name="cnpj" id="input-cnpj">
-			<p>Já possui cadastro? <a href="login.jsp">Fazer login</a></p>
-			<p>Não é uma instituição?<a href="cadastrar-aluno.jsp">Cadastrar-se como Aluno</a></p>
+		
+		<h1>Bem-Vindo!</h1>
+		
+		<div class="passos">
+		
 		</div>
+			
+		<div class="aba">
+			<h2>Passo 1 - Informações Básicas</h2>
+			<label for="nome">Nome<em>*</em></label> 
+			<input type="text" name="nome" id="nome">
+			<label for="cnpj">CNPJ<em>*</em></label> 
+			<input type="text" name="cnpj" id="cnpj">
+		</div>
+		
 		<div class="aba">
 			<h2>Passo 2 - Informações de Contato</h2>
-			<label>Celular<em>*</em></label> 
-				<input type="tel" name="celular" id="input-celular">
-			<label>Telefone</label> 
-				<input type="tel" name="telefone" id="input-telefone"> 
-			<label>E-mail Corporativo<em>*</em></label> 
-				<input type="email" name="email" id="input-email">
+			<label for="celular">Celular<em>*</em></label> 
+			<input type="tel" name="celular" id="celular">
+			<label for="telefone">Telefone</label> 
+			<input type="tel" name="telefone" id="telefone"> 
+			<label for="email">E-mail Corporativo<em>*</em></label> 
+			<input type="email" name="email" id="email">
 		</div>
+		
 		<div class="aba">
 			<h2>Passo 3 - Endereço</h2>
-			<label>CEP<em>*</em></label>
+			<label for="cep">CEP<em>*</em></label>
 			<input type="text" name="cep" id="cep"> 
-			<label>Cidade<em>*</em></label>
+			<label for="cidade">Cidade<em>*</em></label>
 			<input type="text" name="cidade" id="cidade"> 
-			<label>Estado<em>*</em></label>
-			<input type="text" name="estado" id="input-estado"> 
-			<label>Complemento<em>*</em></label>
-			<input type="text" name="complemento" id="input-complemento"> 
-			<label>Bairro<em>*</em></label>
-			<input type="text" name="bairro" id="input-bairro"> 
-			<label>Rua<em>*</em></label>
-			<input type="text" name="logradouro" id="input-logradouro"> 
-			<label>Número<em>*</em></label>
-			<input type="text" name="numero" id="input-numero"> 
-			<label>Referência<em>*</em></label>
-			<input type="text" name="referencia" id="input-referencia">
+			<label for="estado">Estado<em>*</em></label>
+			<input type="text" name="estado" id="estado"> 
+			<label for="complemento">Complemento<em>*</em></label>
+			<input type="text" name="complemento" id="complemento"> 
+			<label for="bairro">Bairro<em>*</em></label>
+			<input type="text" name="bairro" id="bairro"> 
+			<label for="logradouro">Rua<em>*</em></label>
+			<input type="text" name="logradouro" id="logradouro"> 
+			<label for="numero">Número<em>*</em></label>
+			<input type="text" name="numero" id="numero"> 
+			<label for="referencia">Referência<em>*</em></label>
+			<input type="text" name="referencia" id="referencia">
 		</div>
+		
 		<div class="aba">
 			<h2>Passo 4 - Senha</h2>
-			<label>Senha<em>*</em></label> 
-			<input type="text" name="senha" id="input-senha">
-			<label>Repita a Senha<em>*</em></label> 
-			<input type="text" name="repita-senha" id="input-senha-repetir">
+			<label for="senha">Senha<em>*</em></label> 
+			<input type="text" name="senha" id="senha">
+			<label for="senha-repetida">Repita a Senha<em>*</em></label> 
+			<input type="text" name="repita-senha" id="senha-repetida">
 		</div>
+		
 		<div class="aba">
 			<h2>Passo 5 - Informações Adicionais</h2>
-			<label>Descrição</label> 
-			<input type="text" name="descricao" id="input-descricao">
-			<label>Foto de Perfil</label> 
-			<input type="file" name="logo-instituicao" id="input-logo">
+			<label for="descricao">Descrição</label> 
+			<input type="text" name="descricao" id="descricao">
+			<label for="logo">Logo da Instituição</label> 
+			<input type="file" name="logo-instituicao" id="logo">
 		</div>
+		
+		<div>
+			<p>Já possui cadastro? <a href="<%=request.getContextPath()%>/login">Fazer login</a></p>
+			<p>Não é uma instituição?<a href="<%=request.getContextPath()%>/novo-aluno">Cadastrar-se como Aluno</a></p>
+		</div>
+		
 			<button type="button" id="botao-voltar">Voltar</button>
 			<button type="button" id="botao-avancar">Avançar</button>
 			<button type="submit" id="botao-cadastrar">Cadastrar-se</button>

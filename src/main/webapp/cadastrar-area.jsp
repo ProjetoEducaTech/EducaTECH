@@ -13,11 +13,14 @@
 </head>
 
 <body>
+
+	<%@include file="/cabecalho-instituicao.jsp"%>
+
 	<form action="inserir-area" method="post">
 		<label for="nome">Área</label> 
-			<input type="text" name="area" id="input-area">
-		<button type="reset" id="botao-cancelar">Cancelar</button>
-		<button type="submit" id="botao-cadastrar">Cadastrar</button>
+		<input type="text" name="area" id="nome">
+		<button type="reset">Cancelar</button>
+		<button type="submit">Cadastrar</button>
 	</form>
 </body>
 

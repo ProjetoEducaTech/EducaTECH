@@ -13,17 +13,18 @@
 </head>
 
 <body>
+
 	<h1>Bem-Vindo!</h1>
-
-	<form action="efetuar-login" method="post">
-
-		<label for="email">E-mail<em>*</em></label> <input type="email"
-			name="email"> <label for="senha">Senha<em>*</em></label> <input
-			type="password" name="senha">
+	
+	<form action = "efetuar-login" method = "post">
+		<label for="email">E-mail<em>*</em></label>
+		<input type="email" name="email" id="email">
+		<label for="senha">Senha<em>*</em></label>
+		<input type="password" name="senha" id="senha">
 		<button type="submit">Entrar</button>
 	</form>
-	<p>
-		Não possui cadastro? Cadastrar-se como <a href="cadastrar-aluno.jsp">Aluno</a> ou <a href="cadastrar-instituicao.jsp">Instituição</a>
-	</p>
+	
+	<p>Não possui cadastro? Cadastrar-se como <a href="<%=request.getContextPath()%>/novo-aluno">Aluno</a> ou <a href="<%=request.getContextPath()%>/nova-instituicao">Instituição</a></p>
+	
 </body>
 </html>
