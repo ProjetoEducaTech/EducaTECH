@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style><%@include file="/assets/css/estilo.css"%></style>
 <title>Página Curso | Educatech</title>
 </head>
 
@@ -17,8 +18,8 @@
 
 		<img alt="Logo da Instituição">
 		<p>Curso de graduação em</p>
-		<h1>Nome do curso</h1>
-		<p>Localização</p>
+		<h1><c:out value='${curso.nome}' /></h1>
+		<p>Localização <c:out value='${endereco.cidade}' />/<c:out value='${endereco.estado}' /></p>
 	</header>
 
 	<h2>Descrição do Curso</h2>
@@ -29,58 +30,52 @@
 	<div class="avaliacao">
 		<h2>É estudante do curso? Que tal deixar uma avaliação para
 			outros alunos?</h2>
-		<form>
-			<textarea></textarea>
+		<form action="inserir-avaliacao" method="post">
+		<input type="hidden" name = "id" value="${curso.id}"/>
+			<textarea name="comentario"></textarea>
 			<div class="estrelas">
-				<input type="radio" id="estrela5" name="avaliar" value="5" /> <label
-					for="estrela5" title="text">5 estrelas</label> <input type="radio"
-					id="estrela54" name="avaliar" value="4" /> <label for="estrela4"
-					title="text">4 estrelas</label> <input type="radio" id="estrela3"
-					name="avaliar" value="3" /> <label for="estrel3" title="text">3
-					esrtrelas</label> <input type="radio" id="estrela2" name="avaliar"
-					value="2" /> <label for="estrela2" title="text">2 estrelas</label>
-				<input type="radio" id="estrel1" name="avaliar" value="1" /> <label
-					for="estrela1" title="text">1 estrela</label>
+				<input type="radio" id="estrela5" name="nota" value="5" /> <label for="estrela5" title="text">5 estrelas</label> 
+				<input type="radio" id="estrela4" name="nota" value="4" /> <label for="estrela4" title="text">4 estrelas</label>
+				<input type="radio" id="estrela3" name="nota" value="3" /> <label for="estrela3" title="text">3 estrelas</label>
+				<input type="radio" id="estrela2" name="nota" value="2" /> <label for="estrela2" title="text">2 estrelas</label>
+				<input type="radio" id="estrela1" name="nota" value="1" /> <label for="estrela1" title="text">1 estrela</label>
 			</div>
-			<button>Submeter avaliação</button>
+			<button type="submit">Submeter avaliação</button>
 		</form>
 	</div>
 
 	<h2>Avaliações</h2>
-	<c:forEach var="avaliacao" items="${curso.avaliacoes}">
+	<c:forEach var="avaliacao" items="${avaliacoes}">
 		<p>
-			<c:out value='${avaliacao.nota}' />
-		</p>
-		<p>
-			<c:out value='${avaliacao.comentario}' />
-		</p>
-		<p>
-			<c:out value='${avaliacao.data}' />
-		</p>
-		<p>
-			<c:out value='${avaliacao.aluno}' />
-		</p>
+				<c:out value='${avaliacao.nota}' />
+			</p>
+			<p>
+				<c:out value='${avaliacao.comentario}' />
+			</p>
+			<p>
+				<c:out value='${avaliacao.dataAvaliacao}' />
+			</p>
+			<p>
+				<c:out value='${avaliacao.aluno.nome}' />
+			</p>
+	        <p>
+				<c:out value='${avaliacao.aluno.pronome}' />
+			</p>
+			
+			<a href="editar-avaliacao?id=<c:out value='${avaliacao.id}'/>">Editar</a>
+			<a href="deletar-avaliacao?id=<c:out value='${avaliacao.id}'/>">Deletar</a>
+			
 	</c:forEach>
 
 	<div class="detalhes">
-		<p>Área:</p>
-		<p>Duração do Curso:</p>
-		<p>Modalidade:</p>
-		<p>Turno:</p>
-		<p>Preço:</p>
+		<p>Área: <c:out value='${area.nome}' /></p>
+		<p>Duração do Curso: <c:out value='${curso.duracao}' /></p>
+		<p>Modalidade: <c:out value='${curso.modalidade}' /></p>
+		<p>Turno: <c:out value='${curso.turno}' /></p>
+		<p>Preço: <c:out value='${curso.preco}' /></p>
 	</div>
 </body>
-      		</form>
       		
-      		<form  action="deletar-avaliacao" method="post">
-      		<div>
-        		<button type="submit">deletar avaliação</button>
-        	</div>
-      		</form>
-        	
-        	
-        </div>	
-    </div>
     
      <div>
         <c:forEach var="curso" items="${cursos}">

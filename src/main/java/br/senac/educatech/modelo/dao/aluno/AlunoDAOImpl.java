@@ -160,7 +160,7 @@ public class AlunoDAOImpl implements AlunoDAO {
 	public Aluno recuperarAlunoComCursosPeloId(Aluno aluno) {
 
 		Session sessao = null;
-		Aluno alunosRecuperados = null;
+		Aluno alunoRecuperado = null;
 
 		try {
 
@@ -175,7 +175,7 @@ public class AlunoDAOImpl implements AlunoDAO {
 
 			criteria.where(construtor.equal(raizAluno.get(Aluno_.ID), aluno.getId()));
 
-			alunosRecuperados = sessao.createQuery(criteria).getSingleResult();
+			alunoRecuperado = sessao.createQuery(criteria).getSingleResult();
 
 			sessao.getTransaction().commit();
 
@@ -194,7 +194,47 @@ public class AlunoDAOImpl implements AlunoDAO {
 			}
 		}
 
-		return alunosRecuperados;
+		return alunoRecuperado;
+	}
+	
+	public Aluno recuperarAlunoComAvaliacoesPeloId(Aluno aluno) {
+
+		Session sessao = null;
+		Aluno alunoRecuperado = null;
+
+		try {
+
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Aluno> criteria = construtor.createQuery(Aluno.class);
+			Root<Aluno> raizAluno = criteria.from(Aluno.class);
+			raizAluno.fetch(Aluno_.AVALIACOES, JoinType.LEFT);
+
+			criteria.where(construtor.equal(raizAluno.get(Aluno_.ID), aluno.getId()));
+
+			alunoRecuperado = sessao.createQuery(criteria).getSingleResult();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return alunoRecuperado;
 	}
 
 	public List<Aluno> recuperarAlunos() {

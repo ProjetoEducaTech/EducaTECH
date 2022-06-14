@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
@@ -131,6 +132,46 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 			instituicaoRecuperada = sessao.createQuery(criteria).getSingleResult();
 
 			sessao.getTransaction().commit();
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+
+		return instituicaoRecuperada;
+	}
+	
+	public Instituicao recuperarInstituicaoComAreasPeloId(Instituicao instituicao) {
+
+		Session sessao = null;
+		Instituicao instituicaoRecuperada = null;
+
+		try {
+
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Instituicao> criteria = construtor.createQuery(Instituicao.class);
+			Root<Instituicao> raizInstituicao = criteria.from(Instituicao.class);
+			raizInstituicao.fetch(Instituicao_.AREAS, JoinType.LEFT);
+
+			criteria.where(construtor.equal(raizInstituicao.get(Instituicao_.ID), instituicao.getId()));
+
+			instituicaoRecuperada = sessao.createQuery(criteria).getSingleResult();
+
+			sessao.getTransaction().commit();
+
 		} catch (Exception sqlException) {
 
 			sqlException.printStackTrace();

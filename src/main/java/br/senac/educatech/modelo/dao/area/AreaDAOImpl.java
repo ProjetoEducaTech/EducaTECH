@@ -12,6 +12,7 @@ import org.hibernate.Session;
 
 import br.senac.educatech.modelo.entidade.area.Area;
 import br.senac.educatech.modelo.entidade.area.Area_;
+import br.senac.educatech.modelo.entidade.curso.Curso;
 import br.senac.educatech.modelo.entidade.instituicao.Instituicao;
 import br.senac.educatech.modelo.entidade.instituicao.Instituicao_;
 import br.senac.educatech.modelo.factory.conexao.ConexaoFactory;
@@ -188,6 +189,45 @@ public class AreaDAOImpl implements AreaDAO {
 			}
 		}
 
+		return areaRecuperada;
+	}
+	
+	public Area recuperarAreaPeloCurso(Curso curso) {
+		
+		Session sessao = null;
+		Area areaRecuperada = null;
+
+		try {
+
+			sessao = conexao.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+			CriteriaQuery<Area> criteria = construtor.createQuery(Area.class);
+			Root<Area> raizArea = criteria.from(Area.class);
+
+			criteria.where(construtor.equal(raizArea.get(Area_.ID), curso.getId()));
+
+			areaRecuperada = sessao.createQuery(criteria).getSingleResult();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
+		
 		return areaRecuperada;
 	}
 	

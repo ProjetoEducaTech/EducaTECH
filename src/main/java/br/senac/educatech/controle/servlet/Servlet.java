@@ -249,6 +249,10 @@ public class Servlet extends HttpServlet {
 			case "/minhas-avaliacoes":
 				mostrarMinhasAvaliacoes(request, response, sessao);
 				break;
+				
+			case "/minhas-areas":
+				mostrarMinhasAreas(request, response, sessao);
+				break;
 
 			case "index":
 				index(request, response, sessao);
@@ -348,11 +352,13 @@ public class Servlet extends HttpServlet {
 
 	private void atualizarAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
-		String nome = request.getParameter("nome");
-		String senha = request.getParameter("senha");
-		String cpf = request.getParameter("cpf");
-		String sobrenome = request.getParameter("sobrenome");
-		LocalDate dataNascimento = LocalDate.parse(request.getParameter("nascimento"));
+		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
+		String nome = aluno.getNome();
+		String senha = aluno.getSenha();
+		String cpf = aluno.getCpf();
+		String sobrenome = aluno.getSobrenome();
+		LocalDate dataNascimento = aluno.getDataNascimento();
 		Genero genero = Genero.values()[Integer.parseInt(request.getParameter("genero"))];
 		byte[] sal = Hash.gerarSal();
 		String biografia = request.getParameter("biografia");
@@ -362,16 +368,14 @@ public class Servlet extends HttpServlet {
 		String celular = request.getParameter("celular");
 		String email = request.getParameter("email");
 		
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
 
-		Aluno aluno = new Aluno(usuario.getId(), nome, Hash.gerarHash(sal, senha), sal, cpf, sobrenome, biografia,
-				dataNascimento, genero, pronome, null);
-
-		Contato contato = new Contato(telefone, celular, email, aluno);
+		Contato contato = contatoDAO.recuperarContatoPeloUsuario(aluno);
+		new Contato(telefone, celular, email, aluno);
 		
-		alunoDAO.atualizarAluno(aluno);
+		alunoDAO.atualizarAluno(new Aluno(usuario.getId(), nome, Hash.gerarHash(sal, senha), sal, cpf, sobrenome, biografia,
+				dataNascimento, genero, pronome, null));
 		
-		contatoDAO.atualizarContato(contato);
+		contatoDAO.atualizarContato(new Contato(contato.getId(),telefone, celular, email, aluno));
 
 		byte[] conteudoFoto = FileUtils.readFileToByteArray(new File(request.getParameter("foto-perfil")));
 		String extensaoFoto = FilenameUtils.getExtension(request.getParameter("foto-perfil"));
@@ -465,15 +469,12 @@ public class Servlet extends HttpServlet {
 
 	private void preencherFormularioAvaliacao(HttpServletRequest request, HttpServletResponse response,
 			HttpSession sessao) throws SQLException, ServletException, IOException {
+		
 		long id = Long.parseLong(request.getParameter("id"));
-		Curso curso = cursoDAO.recuperarCursoComAvaliacoesPeloId(new Curso(id));
-		request.setAttribute("curso", curso);
-
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
-		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
-		request.setAttribute("aluno", aluno);
-
-		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-curso.jsp");
+		Avaliacao avaliacao = avaliacaoDAO.recuperarAvaliacaoPeloId(new Avaliacao(id));
+		request.setAttribute("avaliacao", avaliacao);
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("editar-avaliacao.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -483,10 +484,10 @@ public class Servlet extends HttpServlet {
 		int nota = Integer.parseInt(request.getParameter("nota"));
 		String comentario = request.getParameter("comentario");
 		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
-		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
+		Aluno aluno = alunoDAO.recuperarAlunoComAvaliacoesPeloId(new Aluno(usuario.getId()));
 
 		long idCurso = Long.parseLong(request.getParameter("id"));
-		Curso curso = cursoDAO.recuperarCursoPeloId(new Curso(idCurso));
+		Curso curso = cursoDAO.recuperarCursoComAvaliacoesPeloId(new Curso(idCurso));
 
 		LocalDate dataComentario = LocalDate.now();
 		Avaliacao avaliacao = new Avaliacao(nota, comentario, aluno, curso, dataComentario);
@@ -510,7 +511,21 @@ public class Servlet extends HttpServlet {
 		request.setAttribute("avaliacoes", avaliacoes);
 
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("minhas-avaliacoes");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("minhas-avaliacoes.jsp");
+		dispatcher.forward(request, response);
+	}
+	
+	private void mostrarMinhasAreas(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
+			throws SQLException, IOException, ServletException, InvalidKeySpecException, NoSuchAlgorithmException {
+		
+		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoComAreasPeloId(new Instituicao(usuario.getId()));
+
+		List<Area> areas = areaDAO.recuperarAreasPelaInstituicao(instituicao);
+		request.setAttribute("areas", areas);
+
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("minhas-areas.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -518,13 +533,14 @@ public class Servlet extends HttpServlet {
 			throws SQLException, ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
-		long idCurso = Long.parseLong(request.getParameter("idCurso"));
+
+		Avaliacao avaliacao = avaliacaoDAO.recuperarAvaliacaoPeloId(new Avaliacao(id));
 
 		int nota = Integer.parseInt(request.getParameter("nota"));
 		String comentario = request.getParameter("comentario");
 		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
-		Curso curso = cursoDAO.recuperarCursoPeloId(new Curso(idCurso));
+		Curso curso = avaliacao.getCurso();
 		LocalDate dataComentario = LocalDate.now();
 		avaliacaoDAO.atualizarAvaliacao(new Avaliacao(id, nota, comentario, aluno, curso, dataComentario));
 		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-curso.jsp");
@@ -620,14 +636,19 @@ public class Servlet extends HttpServlet {
 			throws ServletException, IOException {
 
 
-		long id = Long.parseLong(request.getParameter("id"));
-		Curso curso = cursoDAO.recuperarCursoComAvaliacoesPeloId(new Curso(id));
+		//long id = Long.parseLong(request.getParameter("id"));
+		Curso curso = cursoDAO.recuperarCursoComAvaliacoesPeloId(new Curso(2L));
 		request.setAttribute("curso", curso);
-
-		// Usuario usuario = (Usuario) sessao.getAttribute("usuario");
-		List<Aluno> alunos = alunoDAO.recuperarAlunosAvaliaramCurso(curso);
-		request.setAttribute("alunos", alunos);
-
+		
+		Endereco endereco = enderecoDAO.recuperarEnderecoPelaInstituicao(curso.getInstituicao());
+		request.setAttribute("endereco", endereco);
+		
+		Area area = areaDAO.recuperarAreaPeloCurso(curso);
+		request.setAttribute("area", area);
+		
+		List<Avaliacao> avaliacoes = avaliacaoDAO.recuperarAvaliacoesPeloCurso(curso);
+		request.setAttribute("avaliacoes", avaliacoes);
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-curso.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -731,8 +752,7 @@ public class Servlet extends HttpServlet {
 
 	}
 
-	private void cursosInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws ServletException, IOException {
+	private void cursosInstituicao1(HttpServletRequest request, HttpServletResponse response, HttpSession sessao) throws ServletException, IOException {
 
 		double precoMinimo = cursoDAO.recuperaMenorPrecoCurso();
 		request.setAttribute("precoMinimo", precoMinimo);
