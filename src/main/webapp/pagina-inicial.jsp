@@ -25,6 +25,7 @@
 				
 				<label>Modalidade<em>*</em></label>
 				<select name="modalidade">
+					<option selected value="4">Modalidade</option>
 					<option selected value="0">EAD</option>
 					<option selected value="1">Presencial</option>
 					<option selected value="2">Semi Presencial</option>
@@ -33,6 +34,7 @@
 				
 				<label>Turno<em>*</em></label>
 				<select name="turno">
+					<option selected value="5">Turno</option>
 					<option selected value="0">Matutino</option>
 					<option selected value="1">Vespertino</option>
 					<option selected value="2">Noturno</option>
@@ -42,6 +44,7 @@
 				
 				<label>Área<em>*</em></label> 
 				<select name="area">
+				<option selected value="0">Area</option>
 				<c:forEach var="area" items="${areas}">
 					<option value="<c:out value="${area.id}"/>"><c:out
 							value="${area.nome}" /></option>
@@ -49,7 +52,7 @@
 				</select>
 				
 				<label>Nota de Corte<em>*</em></label> 
-				<input type="text" name="notaCorte"> 
+				<input type="text" value="0.0" name="notaCorte"> 
 				
 			</div>
 			

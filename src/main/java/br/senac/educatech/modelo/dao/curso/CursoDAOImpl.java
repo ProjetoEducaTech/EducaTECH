@@ -729,24 +729,23 @@ public class CursoDAOImpl implements CursoDAO {
 						construtor.or(construtor.equal(juncaoInstituicao.get(Instituicao_.ID), idInstituicao.get())));
 			}
 
+			if (modalidade.isPresent() && (modalidade.get().ordinal() < 4)) {
+				predicates.add(construtor.and(construtor.equal(raizCurso.get(Curso_.MODALIDADE), modalidade.get())));
+			}
+			
+			if (turno.isPresent() && (turno.get().ordinal() < 5)) {
+				predicates.add(construtor.and(construtor.equal(raizCurso.get(Curso_.TURNO), turno.get())));
+			}
+
+			if (nota.isPresent() && (nota.get() > 0)) {
+				predicates.add(construtor
+						.and(construtor.lessThanOrEqualTo(raizCurso.<Double>get(Curso_.NOTA_CORTE), nota.get())));
+			}
+
 			if (idArea.isPresent() && (idArea.get() > 0)) {
 
-				Join<Curso, Area> juncaoArea = raizCurso.join(Curso_.AREA);
 
-				predicates.add(construtor.or(construtor.equal(juncaoArea.get(Area_.ID), idArea.get())));
-			}
-
-			if (nota.isPresent()) {
-				predicates.add(construtor
-						.or(construtor.lessThanOrEqualTo(raizCurso.<Double>get(Curso_.NOTA_CORTE), nota.get())));
-			}
-
-			if (turno.isPresent()) {
-				predicates.add(construtor.or(construtor.equal(raizCurso.get(Curso_.TURNO), turno.get())));
-			}
-
-			if (modalidade.isPresent()) {
-				predicates.add(construtor.or(construtor.equal(raizCurso.get(Curso_.MODALIDADE), modalidade.get())));
+				predicates.add(construtor.and(construtor.equal(raizCurso.get(Curso_.AREA), idArea.get())));
 			}
 
 			if (preco.isPresent() && (preco.get() != 0)) {
@@ -802,24 +801,23 @@ public class CursoDAOImpl implements CursoDAO {
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteria.from(Curso.class);
 
-			if (modalidade.isPresent()) {
-				predicates.add(construtor.or(construtor.equal(raizCurso.get(Curso_.MODALIDADE), modalidade.get())));
+			if (modalidade.isPresent() && (modalidade.get().ordinal() < 4)) {
+				predicates.add(construtor.and(construtor.equal(raizCurso.get(Curso_.MODALIDADE), modalidade.get())));
 			}
 			
-			if (turno.isPresent()) {
-				predicates.add(construtor.or(construtor.equal(raizCurso.get(Curso_.TURNO), turno.get())));
+			if (turno.isPresent() && (turno.get().ordinal() < 5)) {
+				predicates.add(construtor.and(construtor.equal(raizCurso.get(Curso_.TURNO), turno.get())));
 			}
 
-			if (notaDeCorte.isPresent()) {
+			if (notaDeCorte.isPresent() && (notaDeCorte.get() > 0)) {
 				predicates.add(construtor
-						.or(construtor.lessThanOrEqualTo(raizCurso.<Double>get(Curso_.NOTA_CORTE), notaDeCorte.get())));
+						.and(construtor.lessThanOrEqualTo(raizCurso.<Double>get(Curso_.NOTA_CORTE), notaDeCorte.get())));
 			}
 
 			if (idArea.isPresent() && (idArea.get() > 0)) {
 
-				Join<Curso, Area> juncaoIdArea = raizCurso.join(Curso_.AREA);
 
-				predicates.add(construtor.or(construtor.equal(juncaoIdArea.get(Area_.ID), idArea.get())));
+				predicates.add(construtor.and(construtor.equal(raizCurso.get(Curso_.AREA), idArea.get())));
 			}
 
 			criteria.where(construtor.and(predicates.toArray(new Predicate[predicates.size()])));
