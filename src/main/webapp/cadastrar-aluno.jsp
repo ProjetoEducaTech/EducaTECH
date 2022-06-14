@@ -14,12 +14,16 @@
 
 <body>
 
-	<form action="inserir-aluno" method="post">
+	<form action="inserir-aluno" method="post" id="formulario">
 		
 		<h1>Bem-Vindo!</h1>
 		
 		<div class="passos">
-		
+			<span class="passo"></span>
+            <span class="passo"></span>
+            <span class="passo"></span>
+            <span class="passo"></span>
+            <span class="passo"></span>
 		</div>
 		
 		<div class="aba">
@@ -77,17 +81,18 @@
 		</div>
 		
 		<div>
+			<button type="button" id="botao-voltar" onclick="navegarAba(-1)">Voltar</button>
+            <button type="button" id="botao-proximo" onclick="navegarAba(1)">Avançar</button>
+		</div>
+		
+			<div>
 			<p>Já possui cadastro? <a href="<%=request.getContextPath()%>/login">Fazer login</a></p>
 			<p>Não é um aluno? <a href="<%=request.getContextPath()%>/nova-instituicao">Cadastrar-se como Instituição</a></p>
 		</div>
 		
-		
-		<div class="botoes">
-			<button type="button" id="botao-voltar">Voltar</button>
-			<button type="button" id="botao-avancar">Avançar</button>
-			<button type="submit" id="botao-cadastrar">Cadastrar-se</button>
-		</div>
-		
 	</form>
+	
+	<script><%@include file="/assets/js/navegar-abas.js"%></script>
+	
 </body>
 </html>

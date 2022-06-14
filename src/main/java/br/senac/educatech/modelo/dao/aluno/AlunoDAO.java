@@ -16,6 +16,8 @@ public interface AlunoDAO {
 	Aluno recuperarAlunoPeloId(Aluno aluno);
 	
 	Aluno recuperarAlunoComCursosPeloId(Aluno aluno);
+	
+	Aluno recuperarAlunoComAvaliacoesPeloId(Aluno aluno);
 
 	List<Aluno> recuperarAlunos();
 	

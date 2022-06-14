@@ -13,6 +13,8 @@ public interface InstituicaoDAO {
 	void deletarInstituicao(Instituicao instuicao);
 
 	Instituicao recuperarInstituicaoPeloId(Instituicao instituicao);
+	
+	Instituicao recuperarInstituicaoComAreasPeloId(Instituicao instituicao);
 
 	List<Instituicao> recuperarInstituicoes();
 

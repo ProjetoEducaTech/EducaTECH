@@ -43,25 +43,25 @@ public class Avaliacao implements Serializable {
 	private Curso curso;
 	
 	@Column(name = "data_avaliacao", nullable = false)
-	private LocalDate data; 
+	private LocalDate dataAvaliacao; 
 
 	public Avaliacao() {}
 
-	public Avaliacao(int nota, String comentario, Aluno aluno, Curso curso, LocalDate dataComentario) {
+	public Avaliacao(int nota, String comentario, Aluno aluno, Curso curso, LocalDate dataAvaliacao) {
 		setNota(nota);
 		setComentario(comentario);
 		setAluno(aluno);
 		setCurso(curso);
-		setDataComentario(dataComentario);
+		setDataAvaliacao(dataAvaliacao);
 	}
 
-	public Avaliacao(Long id, int nota, String comentario, Aluno aluno, Curso curso, LocalDate dataComentario) {
+	public Avaliacao(Long id, int nota, String comentario, Aluno aluno, Curso curso, LocalDate dataAvaliacao) {
 		setId(id);
 		setNota(nota);
 		setComentario(comentario);
 		setAluno(aluno);
 		setCurso(curso);
-		setDataComentario(dataComentario);
+		setDataAvaliacao(dataAvaliacao);
 	}
 
 	public Avaliacao(Long id) {
@@ -109,12 +109,12 @@ public class Avaliacao implements Serializable {
 		this.curso = curso;
 	}
 
-	public LocalDate getDataComentario() {
-		return data;
+	public LocalDate getDataAvaliacao() {
+		return dataAvaliacao;
 	}
 
-	public void setDataComentario(LocalDate dataComentario) {
-		this.data = dataComentario;
+	public void setDataAvaliacao(LocalDate dataAvaliacao) {
+		this.dataAvaliacao = dataAvaliacao;
 	}
 	
 	public boolean equals(Object obj) {

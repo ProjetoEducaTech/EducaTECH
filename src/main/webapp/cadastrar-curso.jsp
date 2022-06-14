@@ -14,7 +14,7 @@
 
 <body>
 
-	<%@include file="/cabecalho-instituicao.jsp"%>
+	<%@include file="/menu-instituicao.jsp"%>
 
 	<form action="inserir-curso" method="post">
 		

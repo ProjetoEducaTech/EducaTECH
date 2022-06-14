@@ -1,203 +1,101 @@
-/*Página responsiva fluída e híbrida*/
+@import	url('https://fonts.googleapis.com/css2?family=Red+Hat+Display&display=swap');
 
-/*Importa a fonte de letra externa*/
-@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display&display=swap');
+:root {
+	
+	--fonte-primaria: "Red Hat Display", Helvetica, Arial; 
+	--texto-tamanho-pequeno: 13px;
+	--texto-tamanho-medio: 20px;
+	--cor-texto-preto: #000000;
+	--cor-branco: #FFFFFF;
+	--cor-vermelho: #F9665E;
+	--cor-cinza-primaria: #EEF1F9;
+	--cor-roxa-secundaria: #690AC2;
+	--cor-azul-secundaria: #0D19A3;
+	--tamanho-maximo-largura: 1250px;
+	--formulario-tamanho-largura: 930px;
+	--formulario-tamanho-altura: 604px;
+}
 
-/* Propriedades que serão aplicados a todos os elementos da página.*/
 * {
-    /* Remove a margem externa e interna, remove a borda, de todos os lados do elemento.*/
-    margin: 0;
-    padding: 0;
-    border: 0;
-
-    /* O preenchimento e a borda não serão incluídos na largura e na altura. */
-    box-sizing: 0;
-
-    /* Configurações gerais da fonte, tipo, cor e tamanho. */
-    font-family: "Red Hat Display", Arial;
-    color: #616161;
-    font-size: 14px;
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: var(--fonte-primaria);
 }
 
 body {
-    /* Define a largura do elemento, neste caso 100% da tela na horizontal, largura.*/
-    width: 100%;
-
-    /* Altura do elemento. Unidades de tamanho da tela vh e vw. */
-    height: 100vh;
-
-    /*Define que os seus filhos sejam flex-itens e torna o elemento em flex contaier*/
-    display: flex;
-
-    /*Os elementos são distribuídos ao longo do eixo transversal (horizontal) do container*/
-    align-items: center;
-
-    /*alinhar os elementos ao longo do eixo principal, direção ( row ou column ) é definida a partir da propriedade flex-direction*/
-    justify-content: center;
-
-    /*fundo*/
-    background: #E5E5E5;
+	background-color: var(--cor-cinza-primaria);
 }
 
 form {
-    margin: 0 auto;
-    flex: wrap;
-    width: min-content;
-    height: min-content;
-    min-width: 550px;
-    max-width: 1100px;
-    background: #ECF0F3;
-
-    /*Define a borda aredondada*/
-    border-radius: 30px;
-
-    /*Define a sombra do elemento*/
-    box-shadow: -8px -8px 12px #F8FBFF, 8px 8px 12px #B5BBC2;
-}
-
-fieldset {
-    width: 100%;
-    display: inline-flex;
-    height: fit-content;
-}
-
-.container {
-    padding-left: 25px;
-    padding-bottom: 15px;
-    width: 100%;
-}
-
-input {
-    width: calc(100% - 50px);
-    height: 25px;
-    padding-left: 20px;
-    background: #ECF0F3;
-    font-size: small;
-    border-bottom: 1px #979797;
-    border-style: solid;
-}
-
-em {
-    color: #ff6961;
+	background-color: var(--cor-branco);
+	width: var(--formulario-tamanho-largura);
+	height: var(--formulario-tamanho-altura);
 }
 
 h1 {
-    margin: 0 auto;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    font-size: 30px;
-    color: #513ECF;
-    width: max-content;
-    font-family: "Helvetica";
-    font-weight: bolder;
+	text-align: center;
+	color: var(--cor-texto-preto);
 }
 
-h4 {
-    text-align: right;
-    margin-right: 25%;
+em {
+	color: var(--cor-vermelho);
 }
 
-span {
-    margin-left: 75%;
-    font-size: smaller;
-    width: max-content;
+input {
+	
+	padding: 10px;
+	width: 100%;
+	font-size: 17px;
+	border: 1px solid #aaaaaa;
 }
 
-#genero {
-    display: block;
-    width: 225px;
-    justify-content: space-between;
-    font-size: 14px;
+input.invalid {
+	background-color: #ffdddd;
 }
 
-#genero [type="radio"] {
-    width: fit-content;
-    height: fit-content;
-    /*accent-color: #513ECF;*/
-    /*transform: scale(0.85);*/
+.aba {
+	display: none;
 }
 
-#dataNascimento {
-    width: 225px;
-    display: inline-block;
+button {
+	
+	background-color: var(--cor-roxa-secundaria);
+	color: #ffffff;
+	border: none;
+	padding: 10px 20px;
+	font-size: 17px;
+	cursor: pointer;
 }
 
-.botao {
-    margin: 0 auto;
-    display: block;
-    width: fit-content;
-    height: fit-content;
-    margin-top: 15px;
-    margin-bottom: 15px;
+button:hover {
+	opacity: 0.8;
 }
 
-.botao input {
-    padding: 0;
-    font-style: normal;
-    border: none;
-    width: 150px;
-    height: 40px;
-    font-weight: 700;
-    border-radius: 32px;
-    color: white;
-    background: #513ECF;
-    box-shadow: -6px -4px 15px #FFFFFF, 4px 4px 15px #C4C4C4;
-
-    /*Muda o tipo do ponteiro do mouse*/
-    cursor: pointer;
+#botao-voltar {
+	background-color: #bbbbbb;
 }
 
-#novaSenha {
-    font-size: 12px;
-    font-weight: 500;
-    text-decoration: none;
+.passos{
+	
+	text-align:center;
+	margin-top:40px;
 }
 
-.possuiConta,
-.possuiConta a {
-    text-align: center;
-    font-size: 12px;
+.passo {
+	height: 15px;
+	width: 15px;
+	margin: 0;
+	background-color: var(--cor-branco);
+	border: 2px solid var(--cor-roxa-secundaria);
+	border-radius: 50%;
+	display: inline-block;
 }
 
-.possuiConta a {
-    color: #513ECF;
+.passo.active {
+	background-color: var(--cor-roxa-secundaria);
 }
 
-/*Cadastro Instituição*/
-
-.colunas {
-    width: 1100px;
-    height: max-content;
-    /*
-    position: absolute;
-    width: 1100px;
-    height: 600px;
-    */
-}
-
-.coluna-esquerda,
-.coluna-direita {
-    width: 50%;
-    float: left;
-}
-
-.coluna-direita input {
-    display: inline-flex;
-    max-width: 550px;
-}
-
-#num.container,
-#cep.container {
-    width: 170px;
-}
-
-#estado.container {
-    width: fit-content;
-}
-
-/*Cadastro Curso*/
-
-textarea {
-    width: 95%;
-    display: block;
+.passo.finish {
+	background-color: var(- -cor-roxa-secundaria);
 }

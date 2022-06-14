@@ -14,12 +14,16 @@
 
 <body>
 	
-	<form action="inserir-instituicao" method="post">
-		
-		<h1>Bem-Vindo!</h1>
+	<h1>Bem-Vindo!</h1>
+	
+	<form action="inserir-instituicao" method="post" id="formulario">
 		
 		<div class="passos">
-		
+			<span class="passo"></span>
+            <span class="passo"></span>
+            <span class="passo"></span>
+            <span class="passo"></span>
+            <span class="passo"></span>
 		</div>
 			
 		<div class="aba">
@@ -75,16 +79,21 @@
 			<label for="logo">Logo da Instituição</label> 
 			<input type="file" name="logo-instituicao" id="logo">
 		</div>
+	
+		<div>
+			<button type="button" id="botao-voltar" onclick="navegarAba(-1)">Voltar</button>
+            <button type="button" id="botao-proximo" onclick="navegarAba(1)">Avançar</button>
+		</div>
 		
 		<div>
 			<p>Já possui cadastro? <a href="<%=request.getContextPath()%>/login">Fazer login</a></p>
-			<p>Não é uma instituição?<a href="<%=request.getContextPath()%>/novo-aluno">Cadastrar-se como Aluno</a></p>
+			<p>Não é uma instituição? <a href="<%=request.getContextPath()%>/novo-aluno">Cadastrar-se como Aluno</a></p>
 		</div>
 		
-			<button type="button" id="botao-voltar">Voltar</button>
-			<button type="button" id="botao-avancar">Avançar</button>
-			<button type="submit" id="botao-cadastrar">Cadastrar-se</button>
 	</form>
+	
+	<script><%@include file="/assets/js/navegar-abas.js"%></script>
+	
 </body>
 
 </html>

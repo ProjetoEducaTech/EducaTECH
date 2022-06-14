@@ -7,6 +7,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -257,6 +258,7 @@ public class AvaliacaoDAOImpl implements AvaliacaoDAO {
 
 			CriteriaQuery<Avaliacao> criteria = construtor.createQuery(Avaliacao.class);
 			Root<Avaliacao> raizAvaliacao = criteria.from(Avaliacao.class);
+			raizAvaliacao.fetch(Avaliacao_.ALUNO, JoinType.LEFT);
 
 			Join<Avaliacao, Curso> juncaoCurso = raizAvaliacao.join(Avaliacao_.CURSO);
 
@@ -299,9 +301,10 @@ public class AvaliacaoDAOImpl implements AvaliacaoDAO {
 
 			CriteriaQuery<Avaliacao> criteria = construtor.createQuery(Avaliacao.class);
 			Root<Avaliacao> raizAvaliacao = criteria.from(Avaliacao.class);
+			raizAvaliacao.fetch(Avaliacao_.ALUNO, JoinType.LEFT);
 
 			Join<Avaliacao, Aluno> juncaoAluno = raizAvaliacao.join(Avaliacao_.ALUNO);
-
+			
 			ParameterExpression<Long> idAluno = construtor.parameter(Long.class);
 			criteria.where(construtor.equal(juncaoAluno.get(Aluno_.ID), idAluno));
 
