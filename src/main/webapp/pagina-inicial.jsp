@@ -44,24 +44,12 @@
 		</form>
 		<div class="destaques">
 		<h1>Cursos de graduação mais bem avaliados</h1>
-			<table id="tabela-curso">
-				<thead>
-					<tr>
-						<th>Nome</th>
-						<th>Duracao</th>
-						<th>Turno</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="curso" items="${cursosAvaliados}">
-						<tr>
-						<td><c:out value="${curso.nome}" /></td>
-						<td><c:out value="${curso.duracao}" /></td>
-						<td><c:out value="${curso.Turno}" /></td>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
+		<c:forEach var="curso" items="${cursosAvaliados}">
+		<div class="card" id="card destaque">
+			<c:out value="${curso.nome}"/>
+			<c:out value="${curso.avaliacao}"/>
+		</div>
+		</c:forEach>
 		</div>
 </body>
 

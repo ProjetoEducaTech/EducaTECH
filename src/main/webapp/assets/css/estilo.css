@@ -13,13 +13,14 @@
 	--cor-cinza-primaria: #EEF1F9;
 	--cor-roxa-secundaria: #690AC2;
 	--cor-azul-secundaria: #0D19A3;
+	--cor-fucsia-terciaria: #A733FF;
 	
 	--tamanho-maximo-largura: 1250px;
 	--formulario-tamanho-largura: 930px;
 	--formulario-tamanho-altura: 604px;
 	
 	--raio-borda: 15px;
-	
+	--grossura-borda: 3px solid;
 }
 
 * {
@@ -35,6 +36,8 @@ body {
 
 form {
 	background-color: var(--cor-branco);
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 20px;
 	width: var(--formulario-tamanho-largura);
 	height: var(--formulario-tamanho-altura);
 }
@@ -42,6 +45,7 @@ form {
 h1,h2 {
 	text-align: center;
 	color: var(--cor-texto-preto);
+	font-weight: bold;
 }
 
 em {
@@ -49,9 +53,8 @@ em {
 }
 
 a{
-	
 	text-decoration: none;
-	color: var(--cor-roxa-secundaria);
+	font-weight: bold;
 }
 
 input {
@@ -59,7 +62,7 @@ input {
 	padding: 10px;
 	width: 100%;
 	font-size: 17px;
-	border: 1px solid var(--cor-roxa-secundaria);
+	border: 3px solid var(--cor-roxa-secundaria);
 	border-radius: var(--raio-borda);
 }
 
@@ -72,30 +75,33 @@ input.invalid {
 }
 
 button {
-	
 	background-color: var(--cor-roxa-secundaria);
 	color: #ffffff;
 	border-radius: var(--raio-borda);
 	padding: 10px 20px;
 	font-size: 17px;
 	cursor: pointer;
+	border-style: none;
 }
 
-button:hover {
+button:hover{
 	opacity: 0.8;
 }
 
 #botao-voltar {
-	background-color: #bbbbbb;
+	background-color: #690AC2;;
+}
+
+#botao-proximo{
+	background: linear-gradient(180deg, #B18DFF 0%, #690AC2 100%);
 }
 
 .passos{
-	
 	text-align:center;
 	margin-top:40px;
 }
 
-.passo {
+.passo{
 	height: 15px;
 	width: 15px;
 	margin: 0 1px;
@@ -111,4 +117,22 @@ button:hover {
 
 .passo.finish {
 	background-color: var(- -cor-roxa-secundaria);
+}
+
+#botao-entrar {
+	background: linear-gradient(180deg, #D0BBFF 0%, #5271FF 0.01%, #A733FF 100%);
+}
+
+#input-login{
+	border: 3px solid #A733FF;
+}
+
+#a-aluno{
+	color: var(--cor-roxa-secundaria);
+	font-weight: bolder;
+}
+
+#a-instituicao{
+	color: var(--cor-azul-secundaria);
+	font-weight: bolder;
 }
