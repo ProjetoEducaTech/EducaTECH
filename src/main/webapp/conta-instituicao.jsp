@@ -29,7 +29,7 @@
 			<label id="cnpj">CNPJ</label> 
 				<input type="text" value="<c:out value='${instituicao.cnpj}'/>" id="input-cnpj"> 
 			<label>Celular</label>
-				<input type="tel" value="<c:out value='${contato.celualar}'/>" id="input-celular"> 
+				<input type="tel" value="<c:out value='${contato.celular}'/>" id="input-celular"> 
 			<label>E-mail corporativo</label> 
 				<input type="email" value="<c:out value='${contato.email}'/>" id="input-email-corp"> 
 			<label>Telefone</label> 

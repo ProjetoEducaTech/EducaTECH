@@ -205,6 +205,10 @@ public class Servlet extends HttpServlet {
 			case "/deletar-instituicao":
 				deletarInstituicao(request, response, sessao);
 				break;
+				
+			case "/conta-instituicao":
+				mostrarContaInstituicao(request, response, sessao);
+				break;
 
 			case "/login":
 				mostrarFormularioLogin(request, response, sessao);
@@ -307,6 +311,9 @@ public class Servlet extends HttpServlet {
 		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
 		request.setAttribute("aluno", aluno);
+		
+		Contato contato = contatoDAO.recuperarContatoPeloUsuario(usuario);
+		request.setAttribute("contato", contato);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("editar-perfil-aluno.jsp");
 		dispatcher.forward(request, response);
 
@@ -942,6 +949,14 @@ public class Servlet extends HttpServlet {
 		// redirect or response
 	}
 
+	
+	private void mostrarContaInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
+			throws SQLException, ServletException, IOException {
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("conta-instituicao.jsp");
+		dispatcher.forward(request, response);
+	}
+	
 	private void mostrarFormularioLogin(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
