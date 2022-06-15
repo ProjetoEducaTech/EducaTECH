@@ -17,14 +17,6 @@
 	<h1>Bem-Vindo!</h1>
 	
 	<form action="inserir-instituicao" method="post" id="formulario">
-		
-		<div class="passos">
-			<span class="passo"></span>
-            <span class="passo"></span>
-            <span class="passo"></span>
-            <span class="passo"></span>
-            <span class="passo"></span>
-		</div>
 			
 		<div class="aba">
 			<h2>Passo 1 - Informações Básicas</h2>

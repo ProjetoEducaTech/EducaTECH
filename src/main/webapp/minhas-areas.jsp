@@ -5,26 +5,19 @@
 <html lang="pt-br">
 
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Minhas Áreas | Portal da Instituição</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style><%@include file="/assets/css/estilo.css"%></style>
+	<title>Minhas Áreas | Portal da Instituição</title>
 </head>
 
 <body>
-
 	<h1>Minhas Áreas</h1>
-
 	<c:forEach var="area" items="${areas}">
-		<p>
-			<c:out value='${area.nome}' />
-		</p>
-
+		<p><c:out value='${area.nome}'/></p>
 	</c:forEach>
-
-	<div>
-		<a href="<%=request.getContextPath()%>/nova-area">+</a>
-	</div>
-
+	<a href="<%=request.getContextPath()%>/nova-area">+</a>
 </body>
+
 </html>

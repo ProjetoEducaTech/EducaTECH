@@ -1,44 +1,30 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style><%@include file="/assets/css/estilo.css"%></style>
 	<title>Editar Perfil Aluno| EducaTECH</title>
 </head>
 
 <body>
-	<div>
     <h1>Minha Conta</h1>
-    <div>
-        <label id="foto"> *foto*</label><br>
-        <label for="name">Nome</label><br>
-        <label for="cpf">CPF<label><br>
-        <label id="birth-date">Data de Nascimento</label>
-      </div>
-      <div>
-        <label for="pronoun">Pronome</label>
-      </div>
-
-      <div>
-          <label>Gênero</label>
-        
-    </div>
-  
-      <div>
-        <label id="cellphone">Celular</label><br>
-        <label id="telephone">Telefone</label><br>
-        <label id="email-corporate">E-mail </label>
-      </div>
-  
-      <div>
-        <label id="biography">Biografia</label>
-       
-      <div>
-        <button>Alterar Dados</button>
-      </div>
-    
+	<label>Foto de Perfil</label>
+	<label>Nome</label>
+	<label>CPF</label>
+	<label>Data de Nascimento</label>
+	<label>Pronome</label>
+	<label>Gênero</label>
+	<label>Celular</label><br>
+	<label>Telefone</label><br>
+	<label>E-mail </label>
+	<label>Biografia</label>
+	<button type="button">Alterar Dados</button>
 </body>
 
 </html>
