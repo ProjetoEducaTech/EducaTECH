@@ -3,17 +3,23 @@
 :root {
 	
 	--fonte-primaria: "Red Hat Display", Helvetica, Arial; 
+	
 	--texto-tamanho-pequeno: 13px;
 	--texto-tamanho-medio: 20px;
+	
 	--cor-texto-preto: #000000;
 	--cor-branco: #FFFFFF;
 	--cor-vermelho: #F9665E;
 	--cor-cinza-primaria: #EEF1F9;
 	--cor-roxa-secundaria: #690AC2;
 	--cor-azul-secundaria: #0D19A3;
+	
 	--tamanho-maximo-largura: 1250px;
 	--formulario-tamanho-largura: 930px;
 	--formulario-tamanho-altura: 604px;
+	
+	--raio-borda: 15px;
+	
 }
 
 * {
@@ -33,7 +39,7 @@ form {
 	height: var(--formulario-tamanho-altura);
 }
 
-h1 {
+h1,h2 {
 	text-align: center;
 	color: var(--cor-texto-preto);
 }
@@ -42,12 +48,19 @@ em {
 	color: var(--cor-vermelho);
 }
 
+a{
+	
+	text-decoration: none;
+	color: var(--cor-roxa-secundaria);
+}
+
 input {
 	
 	padding: 10px;
 	width: 100%;
 	font-size: 17px;
-	border: 1px solid #aaaaaa;
+	border: 1px solid var(--cor-roxa-secundaria);
+	border-radius: var(--raio-borda);
 }
 
 input.invalid {
@@ -62,7 +75,7 @@ button {
 	
 	background-color: var(--cor-roxa-secundaria);
 	color: #ffffff;
-	border: none;
+	border-radius: var(--raio-borda);
 	padding: 10px 20px;
 	font-size: 17px;
 	cursor: pointer;
@@ -85,7 +98,7 @@ button:hover {
 .passo {
 	height: 15px;
 	width: 15px;
-	margin: 0;
+	margin: 0 1px;
 	background-color: var(--cor-branco);
 	border: 2px solid var(--cor-roxa-secundaria);
 	border-radius: 50%;

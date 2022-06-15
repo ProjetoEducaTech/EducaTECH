@@ -14,18 +14,10 @@
 
 <body>
 
+	<h1>Bem-Vindo!</h1>
+
 	<form action="inserir-aluno" method="post" id="formulario">
-		
-		<h1>Bem-Vindo!</h1>
-		
-		<div class="passos">
-			<span class="passo"></span>
-            <span class="passo"></span>
-            <span class="passo"></span>
-            <span class="passo"></span>
-            <span class="passo"></span>
-		</div>
-		
+			
 		<div class="aba">
 			<h2>Passo 1 - Informações Básicas</h2>
 			<label for="data-nascimento">Data de nascimento<em>*</em></label>

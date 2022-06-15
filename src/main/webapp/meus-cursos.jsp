@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 
 <head>
 	<meta charset="UTF-8">
@@ -15,19 +15,14 @@
 <body>
 <div>
 	<h1>Meus Cursos</h1>
-	
 	<div class="card">
 		<c:forEach var="curso" items="${cursos}">
-				<p>
-					<c:out value='${curso.nome}' />
-				</p>
-
+			<p><c:out value='${curso.nome}'/></p>
         	<a href="editar-curso?id=<c:out value='${curso.id}'/>">Editar</a>
 			<a href="deletar-curso?id=<c:out value='${curso.id}'/>">Deletar</a>
-
 		</c:forEach>
 	</div>
-	</div>
+</div>
 </body>
 
 </html>

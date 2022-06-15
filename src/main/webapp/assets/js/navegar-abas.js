@@ -59,10 +59,22 @@ function validarFormulario() {
 
 function ajustarIndicadorPasso(aba) {
 
-	var passos = document.getElementsByClassName("passo");
-	
-	for (i = 0; i < passos.length; i++)
-		passos[i].className = passos[i].className.replace(" active", "");
+	var abas = document.getElementsByClassName("aba");
+	if ((aba - 1) >= 0)
+		abas[aba - 1].firstElementChild.nextElementSibling.remove();
 
+	var div = document.createElement("div");
+	div.className = "passos";
+
+	for (var i = 0; i < abas.length; i++) {
+
+		var novaDiv = document.createElement("div");
+		novaDiv.className = "passo";
+		div.appendChild(novaDiv);
+	}
+
+	abas[aba].firstElementChild.nextElementSibling.before(div);
+
+	var passos = document.getElementsByClassName("passo");
 	passos[aba].className += " active";
 }   
