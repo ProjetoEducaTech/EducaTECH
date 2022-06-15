@@ -33,7 +33,9 @@
 		        <option value="2">Elu/Delu</option>
 		      </select>
 	</div>
-		<label for="email">E-mail</label>
+		<label for="senha">Senha<em>*</em></label> 
+		 <input type="text" name="senha" id="senha">
+		<label for="senha">E-mail</label>
 			<input type="email" id="input-mail" value="<c:out value='${contato.email}'/>" placeholder="Digite seu e-mail" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$" maxlength="100" required>
       	<label for="celular">Celular</label>
 			<input type="tel" id="input-celular" placeholder="(xx) xxxxx-xxxx" value="<c:out value='${contato.celular}'/>" min="15" max="15" pattern="\([0-9]{2}\)[\s][0-9]{5}-[0-9]{4}" required>
