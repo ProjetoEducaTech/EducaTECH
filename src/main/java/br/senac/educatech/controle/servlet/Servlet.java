@@ -254,10 +254,10 @@ public class Servlet extends HttpServlet {
 				mostrarMinhasAreas(request, response, sessao);
 				break;
 
-			case "index":
-				index(request, response, sessao);
+			case "/teste":
+				teste(request, response, sessao);
 				break;
-
+				
 			default:
 				padrao(request, response, sessao);
 				break;
@@ -269,16 +269,16 @@ public class Servlet extends HttpServlet {
 		}
 	}
 
-	private void index(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws ServletException, IOException {
-
-		List<Area> areas = areaDAO.recuperarAreas();
-		request.setAttribute("areas", areas);
-
-		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-inicial.jsp");
-		dispatcher.forward(request, response);
-
+	private void teste(HttpServletRequest request, HttpServletResponse response, HttpSession sessao) {
+		
+		
+		Curso curso = cursoDAO.recuperarCursoPeloId(new Curso(2L));
+		Area area = areaDAO.recuperarAreaPeloCurso(curso);
+		//System.out.println(curso.getArea());
+		System.out.println(area.getNome());
+		
 	}
+
 
 	private void padrao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
@@ -636,15 +636,15 @@ public class Servlet extends HttpServlet {
 			throws ServletException, IOException {
 
 
-		//long id = Long.parseLong(request.getParameter("id"));
-		Curso curso = cursoDAO.recuperarCursoComAvaliacoesPeloId(new Curso(2L));
+		long id = Long.parseLong(request.getParameter("id"));
+		Curso curso = cursoDAO.recuperarCursoPeloId(new Curso(id));
 		request.setAttribute("curso", curso);
 		
 		Endereco endereco = enderecoDAO.recuperarEnderecoPelaInstituicao(curso.getInstituicao());
 		request.setAttribute("endereco", endereco);
 		
-		Area area = areaDAO.recuperarAreaPeloCurso(curso);
-		request.setAttribute("area", area);
+		//Area area = areaDAO.recuperarAreaPeloCurso(curso);
+		//request.setAttribute("area", area);
 		
 		List<Avaliacao> avaliacoes = avaliacaoDAO.recuperarAvaliacoesPeloCurso(curso);
 		request.setAttribute("avaliacoes", avaliacoes);
@@ -744,6 +744,17 @@ public class Servlet extends HttpServlet {
 
 		List<Curso> cursos = cursoDAO.recuperarCursoPorFiltro(instituicao, area, notaCorte, turno, modalidade, preco,
 				duracao);
+		
+		double precoMinimo = cursoDAO.recuperaMenorPrecoCurso();
+		double precoMaximo = cursoDAO.recuperarMaiorPrecoCurso();
+
+		List<Area> areas = areaDAO.recuperarAreas();
+		List<Instituicao> instituicoes = instituicaoDAO.recuperarInstituicoes();
+
+		request.setAttribute("precoMinimo", precoMinimo);
+		request.setAttribute("precoMaximo", precoMaximo);
+		request.setAttribute("areas", areas);
+		request.setAttribute("instituicoes", instituicoes);
 		request.setAttribute("cursos", cursos);
 
 

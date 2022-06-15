@@ -78,7 +78,7 @@
 						</div>
 						<div class="card-info">
 							<div>
-								<a href="${curso.link}" class="card-link">${curso.nome}</a>
+								<a href="pagina-curso?id=<c:out value='${curso.id}'/>">${curso.nome}</a>
 							</div>
 						</div>
 					</div>

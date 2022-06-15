@@ -207,7 +207,7 @@ public class AreaDAOImpl implements AreaDAO {
 			CriteriaQuery<Area> criteria = construtor.createQuery(Area.class);
 			Root<Area> raizArea = criteria.from(Area.class);
 
-			criteria.where(construtor.equal(raizArea.get(Area_.ID), curso.getId()));
+			criteria.where(construtor.equal(raizArea.get(Area_.ID), curso.getArea()));
 
 			areaRecuperada = sessao.createQuery(criteria).getSingleResult();
 
