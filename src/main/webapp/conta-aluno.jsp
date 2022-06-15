@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="PT-br">
+<html lang="pt-br">
 
 <head>
   <meta charset="UTF-8">
@@ -43,7 +43,7 @@
       </div>
 
       <div>
-          <label>Gênero</label>
+          <label>Genero</label>
         
     </div>
   
