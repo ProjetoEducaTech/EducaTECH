@@ -165,9 +165,9 @@ public class CursoDAOImpl implements CursoDAO {
 
 		return cursosRecuperados;
 	}
-	
+
 	public Curso recuperarCursoComAvaliacoesPeloId(Curso curso) {
-		
+
 		Session sessao = null;
 		Curso cursosRecuperados = null;
 
@@ -205,7 +205,7 @@ public class CursoDAOImpl implements CursoDAO {
 
 		return cursosRecuperados;
 	}
-	
+
 	public Curso recuperarCursoComAlunosPeloId(Curso curso) {
 
 		Session sessao = null;
@@ -245,8 +245,6 @@ public class CursoDAOImpl implements CursoDAO {
 
 		return cursosRecuperados;
 	}
-		
-	
 
 	public List<Curso> recuperarCursos() {
 
@@ -376,47 +374,47 @@ public class CursoDAOImpl implements CursoDAO {
 		return consultaArea;
 	}
 
-	public List<Curso> recuperarCursosPelaNota(Aluno aluno) {
-
-		Session sessao = null;
-		List<Curso> consultaNota = null;
-
-		try {
-
-			sessao = conexao.getConexao().openSession();
-			sessao.beginTransaction();
-
-			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
-
-			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
-			Root<Curso> raizCurso = criteria.from(Curso.class);
-
-			//criteria.where(construtor.lessThanOrEqualTo(raizCurso.<Double>get(Curso_.NOTA_CORTE), aluno.getNota()));
-
-		//	criteria.orderBy(construtor.desc(raizCurso.get(Curso_.NOTA_CORTE)),
-		//			construtor.asc(raizCurso.get(Curso_.NOME)));
-
-			consultaNota = sessao.createQuery(criteria).getResultList();
-
-			sessao.getTransaction().commit();
-
-		} catch (Exception sqlException) {
-
-			sqlException.printStackTrace();
-
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
-
-		} finally {
-
-			if (sessao != null) {
-				sessao.close();
-			}
-		}
-
-		return consultaNota;
-	}
+//	public List<Curso> recuperarCursosPelaNota(Aluno aluno) {
+//
+//		Session sessao = null;
+//		List<Curso> consultaNota = null;
+//
+//		try {
+//
+//			sessao = conexao.getConexao().openSession();
+//			sessao.beginTransaction();
+//
+//			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+//
+//			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
+//			Root<Curso> raizCurso = criteria.from(Curso.class);
+//
+//			criteria.where(construtor.lessThanOrEqualTo(raizCurso.<Double>get(Curso_.NOTA_CORTE), aluno.getNota()));
+//
+//			criteria.orderBy(construtor.desc(raizCurso.get(Curso_.NOTA_CORTE)),
+//					construtor.asc(raizCurso.get(Curso_.NOME)));
+//
+//			consultaNota = sessao.createQuery(criteria).getResultList();
+//
+//			sessao.getTransaction().commit();
+//
+//		} catch (Exception sqlException) {
+//
+//			sqlException.printStackTrace();
+//
+//			if (sessao.getTransaction() != null) {
+//				sessao.getTransaction().rollback();
+//			}
+//
+//		} finally {
+//
+//			if (sessao != null) {
+//				sessao.close();
+//			}
+//		}
+//
+//		return consultaNota;
+//	}
 
 	public List<Curso> recuperarCursosFavoritos(Aluno aluno) {
 
@@ -732,7 +730,7 @@ public class CursoDAOImpl implements CursoDAO {
 			if (modalidade.isPresent() && (modalidade.get().ordinal() < 4)) {
 				predicates.add(construtor.and(construtor.equal(raizCurso.get(Curso_.MODALIDADE), modalidade.get())));
 			}
-			
+
 			if (turno.isPresent() && (turno.get().ordinal() < 5)) {
 				predicates.add(construtor.and(construtor.equal(raizCurso.get(Curso_.TURNO), turno.get())));
 			}
@@ -743,7 +741,6 @@ public class CursoDAOImpl implements CursoDAO {
 			}
 
 			if (idArea.isPresent() && (idArea.get() > 0)) {
-
 
 				predicates.add(construtor.and(construtor.equal(raizCurso.get(Curso_.AREA), idArea.get())));
 			}
@@ -804,18 +801,17 @@ public class CursoDAOImpl implements CursoDAO {
 			if (modalidade.isPresent() && (modalidade.get().ordinal() < 4)) {
 				predicates.add(construtor.and(construtor.equal(raizCurso.get(Curso_.MODALIDADE), modalidade.get())));
 			}
-			
+
 			if (turno.isPresent() && (turno.get().ordinal() < 5)) {
 				predicates.add(construtor.and(construtor.equal(raizCurso.get(Curso_.TURNO), turno.get())));
 			}
 
 			if (notaDeCorte.isPresent() && (notaDeCorte.get() > 0)) {
-				predicates.add(construtor
-						.and(construtor.lessThanOrEqualTo(raizCurso.<Double>get(Curso_.NOTA_CORTE), notaDeCorte.get())));
+				predicates.add(construtor.and(
+						construtor.lessThanOrEqualTo(raizCurso.<Double>get(Curso_.NOTA_CORTE), notaDeCorte.get())));
 			}
 
 			if (idArea.isPresent() && (idArea.get() > 0)) {
-
 
 				predicates.add(construtor.and(construtor.equal(raizCurso.get(Curso_.AREA), idArea.get())));
 			}

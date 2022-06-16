@@ -1,9 +1,7 @@
 package br.senac.educatech.modelo.dao.avaliacao;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -158,7 +156,7 @@ public class AvaliacaoDAOImpl implements AvaliacaoDAO {
 
 		return avalicaoesRecuperadas;
 	}
-	
+
 	public Avaliacao recuperarAvaliacaoPeloAlunoCurso(Aluno aluno, Curso curso) {
 		Session sessao = null;
 		Avaliacao avalicaoRecuperada = null;
@@ -172,7 +170,7 @@ public class AvaliacaoDAOImpl implements AvaliacaoDAO {
 
 			CriteriaQuery<Avaliacao> criteria = construtor.createQuery(Avaliacao.class);
 			Root<Avaliacao> raizAvaliacao = criteria.from(Avaliacao.class);
-			
+
 			Predicate predicateAluno = construtor.equal(raizAvaliacao.get(Avaliacao_.ALUNO), aluno.getId());
 			Predicate predicateCurso = construtor.equal(raizAvaliacao.get(Avaliacao_.CURSO), curso.getId());
 			Predicate predicateFinal = construtor.and(predicateAluno, predicateCurso);
@@ -286,7 +284,7 @@ public class AvaliacaoDAOImpl implements AvaliacaoDAO {
 
 		return avaliacoes;
 	}
-	
+
 	public List<Avaliacao> recuperarAvaliacoesPeloAluno(Aluno aluno) {
 
 		Session sessao = null;
@@ -304,7 +302,7 @@ public class AvaliacaoDAOImpl implements AvaliacaoDAO {
 			raizAvaliacao.fetch(Avaliacao_.ALUNO, JoinType.LEFT);
 
 			Join<Avaliacao, Aluno> juncaoAluno = raizAvaliacao.join(Avaliacao_.ALUNO);
-			
+
 			ParameterExpression<Long> idAluno = construtor.parameter(Long.class);
 			criteria.where(construtor.equal(juncaoAluno.get(Aluno_.ID), idAluno));
 
@@ -330,51 +328,51 @@ public class AvaliacaoDAOImpl implements AvaliacaoDAO {
 		return avaliacoes;
 	}
 
-	public List<Avaliacao> recuperarPaginaPelaNotaComentarioNome(int numeroDaPagina, int tamanhoDaPagina) {
-
-		Session sessao = null;
-		List<Avaliacao> paginaAtual = new ArrayList<>();
-
-		try {
-			sessao = conexao.getConexao().openSession();
-			sessao.beginTransaction();
-
-			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
-
-			CriteriaQuery<Long> queryContador = construtor.createQuery(Long.class);
-
-			queryContador.select(construtor.count(queryContador.from(Avaliacao.class)));
-			Long contar = sessao.createQuery(queryContador).getSingleResult();
-
-			CriteriaQuery<Avaliacao> criteriaQuery = construtor.createQuery(Avaliacao.class);
-			Root<Avaliacao> raizAvaliacao = criteriaQuery.from(Avaliacao.class);
-			Join<Avaliacao, Aluno> juncaoAluno = raizAvaliacao.join(Avaliacao_.ALUNO);
-			CriteriaQuery<Avaliacao> select = criteriaQuery.select(raizAvaliacao);
-
-			ParameterExpression<String> nome = construtor.parameter(String.class);
-			criteriaQuery.where(construtor.equal(juncaoAluno.get(Aluno_.NOME), nome));
-
-			criteriaQuery.orderBy(construtor.desc(raizAvaliacao.get(Avaliacao_.NOTA)),
-					construtor.desc(raizAvaliacao.get(Avaliacao_.COMENTARIO)),
-					construtor.desc(raizAvaliacao.get(Aluno_.NOME)));
-			TypedQuery<Avaliacao> typedQuery = sessao.createQuery(select);
-			paginaAtual.addAll(typedQuery.getResultList());
-
-		} catch (Exception sqlException) {
-
-			sqlException.printStackTrace();
-
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
-
-		} finally {
-
-			if (sessao != null) {
-				sessao.close();
-			}
-		}
-		return paginaAtual;
-	}
+//	public List<Avaliacao> recuperarPaginaPelaNotaComentarioNome(int numeroDaPagina, int tamanhoDaPagina) {
+//
+//		Session sessao = null;
+//		List<Avaliacao> paginaAtual = new ArrayList<>();
+//
+//		try {
+//			sessao = conexao.getConexao().openSession();
+//			sessao.beginTransaction();
+//
+//			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+//
+//			CriteriaQuery<Long> queryContador = construtor.createQuery(Long.class);
+//
+//			queryContador.select(construtor.count(queryContador.from(Avaliacao.class)));
+//			Long contar = sessao.createQuery(queryContador).getSingleResult();
+//
+//			CriteriaQuery<Avaliacao> criteriaQuery = construtor.createQuery(Avaliacao.class);
+//			Root<Avaliacao> raizAvaliacao = criteriaQuery.from(Avaliacao.class);
+//			Join<Avaliacao, Aluno> juncaoAluno = raizAvaliacao.join(Avaliacao_.ALUNO);
+//			CriteriaQuery<Avaliacao> select = criteriaQuery.select(raizAvaliacao);
+//
+//			ParameterExpression<String> nome = construtor.parameter(String.class);
+//			criteriaQuery.where(construtor.equal(juncaoAluno.get(Aluno_.NOME), nome));
+//
+//			criteriaQuery.orderBy(construtor.desc(raizAvaliacao.get(Avaliacao_.NOTA)),
+//					construtor.desc(raizAvaliacao.get(Avaliacao_.COMENTARIO)),
+//					construtor.desc(raizAvaliacao.get(Aluno_.NOME)));
+//			TypedQuery<Avaliacao> typedQuery = sessao.createQuery(select);
+//			paginaAtual.addAll(typedQuery.getResultList());
+//
+//		} catch (Exception sqlException) {
+//
+//			sqlException.printStackTrace();
+//
+//			if (sessao.getTransaction() != null) {
+//				sessao.getTransaction().rollback();
+//			}
+//
+//		} finally {
+//
+//			if (sessao != null) {
+//				sessao.close();
+//			}
+//		}
+//		return paginaAtual;
+//	}
 
 }

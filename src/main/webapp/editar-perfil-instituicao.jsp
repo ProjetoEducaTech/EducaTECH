@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
 <!DOCTYPE html>
 <html lang="pt-br">
    <head>
@@ -19,15 +18,15 @@
             <a href="#usuario"><img src="" alt="" /></a>
          </div>
          <label for="foto">Foto de Perfil</label> 
-		 <input type="file" name="foto-perfil" id="foto">
+         <input type="file" name="foto-perfil" id="foto">
          <label for="nome">Descricao<em>*</em></label> 
-		 <input type="text" name="descricao" id="descricao" value="<c:out value='${instituicao.descricao}'/>">
+         <input type="text" name="descricao" id="descricao" value="<c:out value='${instituicao.descricao}'/>">
          <label for="nome">CNPJ<em>*</em></label> 
-		 <input type="text" name="cnpj" id="cnpj" value="<c:out value='${instituicao.cnpj}'/>">
+         <input type="text" name="cnpj" id="cnpj" value="<c:out value='${instituicao.cnpj}'/>">
          <label for="nome">Nome<em>*</em></label> 
-		 <input type="text" name="nome" id="nome" value="<c:out value='${instituicao.nome}'/>">
+         <input type="text" name="nome" id="nome" value="<c:out value='${instituicao.nome}'/>">
          <label for="senha">Senha<em>*</em></label> 
-		 <input type="text" name="senha" id="senha">
+         <input type="text" name="senha" id="senha">
          <label for="input-email">E-mail</label>
          <input type="email" id="input-email" name="email" value="<c:out value='${contato.email}'/>" placeholder="Digite seu e-mail" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$" max="100" required />
          <label for="input-celular">Celular</label>

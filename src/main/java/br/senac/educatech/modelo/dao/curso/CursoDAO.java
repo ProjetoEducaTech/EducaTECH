@@ -19,9 +19,9 @@ public interface CursoDAO {
 	void deletarCurso(Curso curso);
 
 	Curso recuperarCursoPeloId(Curso curso);
-	
+
 	Curso recuperarCursoComAvaliacoesPeloId(Curso curso);
-	
+
 	Curso recuperarCursoComAlunosPeloId(Curso curso);
 
 	List<Curso> recuperarCursos();
@@ -30,7 +30,7 @@ public interface CursoDAO {
 
 	List<Curso> recuperarCursosPelaArea(Area area);
 
-	List<Curso> recuperarCursosPelaNota(Aluno aluno);
+//	List<Curso> recuperarCursosPelaNota(Aluno aluno);
 
 	List<Curso> recuperarCursosFavoritos(Aluno aluno);
 
@@ -47,11 +47,9 @@ public interface CursoDAO {
 	List<Curso> recuperarPaginaPorAvaliacaoNomePreco(int numeroDaPagina, int tamanhoDaPagina);
 
 	List<Curso> recuperarCursoPorFiltro(Optional<Long> idInstituicao, Optional<Long> idArea, Optional<Double> nota,
-			Optional<Turno> turno, Optional<Modalidade> modalidade, Optional<Double> preco,
-			Optional<Double> duracao);
+			Optional<Turno> turno, Optional<Modalidade> modalidade, Optional<Double> preco, Optional<Double> duracao);
 
 	List<Curso> recuperarCursosPorFiltroInicial(Optional<Modalidade> modalidade, Optional<Double> notaDeCorte,
 			Optional<Turno> turno, Optional<Long> idArea);
-	
-	
+
 }

@@ -113,7 +113,7 @@ public class Servlet extends HttpServlet {
 			case "/deletar-aluno":
 				deletarAluno(request, response, sessao);
 				break;
-				
+
 			case "/conta-aluno":
 				mostrarContaAluno(request, response, sessao);
 				break;
@@ -220,18 +220,6 @@ public class Servlet extends HttpServlet {
 
 			case "/efetuar-login":
 				loginUsuario(request, response, sessao);
-				break;
-
-			case "/inserir-usuario":
-				inseririUsuario(request, response, sessao);
-				break;
-
-			case "/atualizar-usuario":
-				atualizarUsuario(request, response, sessao);
-				break;
-
-			case "/deletar-usuario":
-				deletarUsuario(request, response, sessao);
 				break;
 
 			case "/consulta-principal":
@@ -411,16 +399,16 @@ public class Servlet extends HttpServlet {
 		alunoDAO.deletarAluno(aluno);
 		// redirect or response
 	}
-	
+
 	private void mostrarContaAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
 		request.setAttribute("aluno", aluno);
-		
+
 		Contato contato = contatoDAO.recuperarContatoPeloUsuario(aluno);
 		request.setAttribute("contato", contato);
-		
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher("minha-conta-aluno.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -459,7 +447,6 @@ public class Servlet extends HttpServlet {
 
 	private void atualizarArea(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
-		long id = Long.parseLong("id");
 		String nome = request.getParameter("nome");
 		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
 		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
@@ -770,25 +757,25 @@ public class Servlet extends HttpServlet {
 
 	}
 
-	private void cursosInstituicao1(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws ServletException, IOException {
-
-		double precoMinimo = cursoDAO.recuperaMenorPrecoCurso();
-		request.setAttribute("precoMinimo", precoMinimo);
-
-		double precoMaximo = cursoDAO.recuperarMaiorPrecoCurso();
-		request.setAttribute("precoMaximo", precoMaximo);
-
-		List<Instituicao> instituicoes = instituicaoDAO.recuperarInstituicoes();
-		request.setAttribute("instituicoes", instituicoes);
-
-		List<Area> areas = areaDAO.recuperarAreas();
-		request.setAttribute("areas", areas);
-
-		RequestDispatcher dispatcher = request.getRequestDispatcher("consultar-curso.jsp");
-		dispatcher.forward(request, response);
-
-	}
+//	private void cursosInstituicao1(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
+//			throws ServletException, IOException {
+//
+//		double precoMinimo = cursoDAO.recuperaMenorPrecoCurso();
+//		request.setAttribute("precoMinimo", precoMinimo);
+//
+//		double precoMaximo = cursoDAO.recuperarMaiorPrecoCurso();
+//		request.setAttribute("precoMaximo", precoMaximo);
+//
+//		List<Instituicao> instituicoes = instituicaoDAO.recuperarInstituicoes();
+//		request.setAttribute("instituicoes", instituicoes);
+//
+//		List<Area> areas = areaDAO.recuperarAreas();
+//		request.setAttribute("areas", areas);
+//
+//		RequestDispatcher dispatcher = request.getRequestDispatcher("consultar-curso.jsp");
+//		dispatcher.forward(request, response);
+//
+//	}
 
 	private void consultaIncialCursos(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
@@ -1010,35 +997,6 @@ public class Servlet extends HttpServlet {
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-inicial.jsp");
 		dispatcher.forward(request, response);
-
-	}
-
-	private void inseririUsuario(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, IOException, ServletException, InvalidKeySpecException, NoSuchAlgorithmException {
-		String nome = request.getParameter("nome");
-		String senha = request.getParameter("senha");
-		byte[] sal = Hash.gerarSal();
-		// usuarioDAO.inserirUsuario(new Usuario(nome, Hash.gerarHash(sal, senha),
-		// sal));
-		// redirect or response
-	}
-
-	private void atualizarUsuario(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, IOException, ServletException, InvalidKeySpecException, NoSuchAlgorithmException {
-		Long id = Long.parseLong(request.getParameter("id"));
-		String nome = request.getParameter("nome");
-		String senha = request.getParameter("senha");
-		byte[] sal = Hash.gerarSal();
-		// usuarioDAO.atualizarUsuario(new Usuario(id, nome, Hash.gerarHash(sal, senha),
-		// sal));
-
-	}
-
-	private void deletarUsuario(HttpServletRequest request, HttpServletResponse response, HttpSession sessao) {
-		Long id = Long.parseLong(request.getParameter("id"));
-		Usuario usuario = usuarioDAO.recuperarUsuarioPeloId(new Usuario(id));
-		// nao sei pq tem esse metodo
-		usuarioDAO.deletarUsuario(usuario);
 
 	}
 
