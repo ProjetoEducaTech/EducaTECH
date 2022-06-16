@@ -136,3 +136,15 @@ button:hover{
 	color: var(--cor-azul-secundaria);
 	font-weight: bolder;
 }
+.avatar{
+
+border-radius: var(--raio-borda);
+border: 2px solid var(--cor-roxa-secundaria);
+}
+
+.avaliacao{
+
+border-radius: var(--raio-borda);
+border: 2px solid var(--cor-roxa-secundaria);
+margin-bottom: 10px;
+}

@@ -164,7 +164,7 @@ public class InstituicaoDAOImpl implements InstituicaoDAO {
 
 			CriteriaQuery<Instituicao> criteria = construtor.createQuery(Instituicao.class);
 			Root<Instituicao> raizInstituicao = criteria.from(Instituicao.class);
-			raizInstituicao.fetch(Instituicao_.AREAS, JoinType.LEFT);
+			raizInstituicao.fetch(Instituicao_.AREA, JoinType.LEFT);
 
 			criteria.where(construtor.equal(raizInstituicao.get(Instituicao_.ID), instituicao.getId()));
 
