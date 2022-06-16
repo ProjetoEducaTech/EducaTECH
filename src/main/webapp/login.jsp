@@ -18,12 +18,13 @@
 	
 	<form action = "efetuar-login" method = "post">
 		<label for="email">E-mail<em>*</em></label>
-			<input type="email" name="email" id="input-login">
+		<input type="email" name="email" id="email">
 		<label for="senha">Senha<em>*</em></label>
-			<input type="password" name="senha" id="input-login">
-		<button type="submit" id="botao-entrar">Entrar</button>
+		<input type="password" name="senha" id="senha">
+		<button type="submit">Entrar</button>
 	</form>
 	
-	<p>Não possui cadastro? Cadastrar-se como <a href="<%=request.getContextPath()%>/novo-aluno" id="a-aluno">Aluno</a> ou <a href="<%=request.getContextPath()%>/nova-instituicao" id="a-instituicao">Instituição</a></p>
+	<p>Não possui cadastro? Cadastrar-se como <a href="<%=request.getContextPath()%>/novo-aluno">Aluno</a> ou <a href="<%=request.getContextPath()%>/nova-instituicao">Instituição</a></p>
+	
 </body>
 </html>

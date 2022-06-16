@@ -30,7 +30,7 @@ public interface CursoDAO {
 
 	List<Curso> recuperarCursosPelaArea(Area area);
 
-	List<Curso> recuperarCursosPelaNota(Aluno aluno);
+	//List<Curso> recuperarCursosPelaNota(Aluno aluno);
 
 	List<Curso> recuperarCursosFavoritos(Aluno aluno);
 

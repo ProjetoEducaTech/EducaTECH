@@ -13,6 +13,7 @@
 </head>
 
 <body>
+	<%@ include file="menu-instituicao.jsp"%>
 	 <h1>Minha Conta</h1>
 	
 	<p>Nome: <c:out value='${instituicao.nome}'/></p>
