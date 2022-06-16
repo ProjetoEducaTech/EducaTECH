@@ -9,10 +9,11 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<style><%@include file="/assets/css/estilo.css"%></style>
-	<title>Editar Perfil Aluno| EducaTECH</title>
+	<title>Perfil Aluno| EducaTECH</title>
 </head>
 
 <body>
+
 	<h1>Minha Conta</h1>
 	<label>Foto de Perfil</label>
 	<img>
@@ -35,6 +36,7 @@
 	<label>Biografia</label>
 	<span></span>
 	<button type="button">Alterar Dados</button>
+
 </body>
 
 </html>
