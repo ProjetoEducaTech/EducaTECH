@@ -13,6 +13,8 @@
       <title>Resultados da busca | EducaTECH</title>
    </head>
    <body>
+   	   <%@ include file="menu-instituicao.jsp"%>
+   
       <form action="atualizar-instituicao" method="post">
          <div>
             <h1>Minha Conta</h1>
