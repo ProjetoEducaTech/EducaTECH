@@ -13,6 +13,8 @@
 </head>
 
 <body>
+	<%@ include file="menu-instituicao.jsp"%>
+	
 	<h1>Minhas Áreas</h1>
 	<c:forEach var="area" items="${areas}">
 		<p><c:out value='${area.nome}'/></p>

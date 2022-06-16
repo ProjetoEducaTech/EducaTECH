@@ -13,6 +13,7 @@
 </head>
 
 <body>
+	<%@ include file="menu-instituicao.jsp"%>
 <div>
 	<h1>Meus Cursos</h1>
 	<div class="card">
