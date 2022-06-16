@@ -113,7 +113,7 @@ public class Servlet extends HttpServlet {
 			case "/deletar-aluno":
 				deletarAluno(request, response, sessao);
 				break;
-				
+
 			case "/conta-aluno":
 				mostrarContaAluno(request, response, sessao);
 				break;
@@ -210,6 +210,10 @@ public class Servlet extends HttpServlet {
 				deletarInstituicao(request, response, sessao);
 				break;
 
+			case "/pagina-instituicao":
+				mostrarPaginaInstituicao(request, response, sessao);
+				break;
+
 			case "/conta-instituicao":
 				mostrarContaInstituicao(request, response, sessao);
 				break;
@@ -220,18 +224,6 @@ public class Servlet extends HttpServlet {
 
 			case "/efetuar-login":
 				loginUsuario(request, response, sessao);
-				break;
-
-			case "/inserir-usuario":
-				inseririUsuario(request, response, sessao);
-				break;
-
-			case "/atualizar-usuario":
-				atualizarUsuario(request, response, sessao);
-				break;
-
-			case "/deletar-usuario":
-				deletarUsuario(request, response, sessao);
 				break;
 
 			case "/consulta-principal":
@@ -264,6 +256,10 @@ public class Servlet extends HttpServlet {
 
 			case "index":
 				index(request, response, sessao);
+				break;
+
+			case "/conheca-faculdades":
+				mostrarInstituicoes(request, response, sessao);
 				break;
 
 			default:
@@ -316,11 +312,11 @@ public class Servlet extends HttpServlet {
 		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
 		request.setAttribute("aluno", aluno);
 
-		Contato contato = contatoDAO.recuperarContatoPeloUsuario(usuario);
+		Contato contato = contatoDAO.recuperarContatoPeloUsuario(aluno);
 		request.setAttribute("contato", contato);
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher("editar-perfil-aluno.jsp");
 		dispatcher.forward(request, response);
-
 	}
 
 	private void inserirAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
@@ -363,12 +359,14 @@ public class Servlet extends HttpServlet {
 
 	private void atualizarAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
+
 		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
-		String nome = aluno.getNome();
-		String senha = aluno.getSenha();
-		String cpf = aluno.getCpf();
-		String sobrenome = aluno.getSobrenome();
+
+		String nome = request.getParameter("nome");
+		String senha = request.getParameter("senha");
+		String cpf = request.getParameter("cpf");
+		String sobrenome = request.getParameter("sobrenome");
 		LocalDate dataNascimento = aluno.getDataNascimento();
 		Genero genero = Genero.values()[Integer.parseInt(request.getParameter("genero"))];
 		byte[] sal = Hash.gerarSal();
@@ -411,17 +409,17 @@ public class Servlet extends HttpServlet {
 		alunoDAO.deletarAluno(aluno);
 		// redirect or response
 	}
-	
+
 	private void mostrarContaAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
 		request.setAttribute("aluno", aluno);
-		
+
 		Contato contato = contatoDAO.recuperarContatoPeloUsuario(aluno);
 		request.setAttribute("contato", contato);
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("minha-conta-aluno.jsp");
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("conta-aluno.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -970,8 +968,11 @@ public class Servlet extends HttpServlet {
 
 	private void mostrarContaInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
-		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
+		// Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		// Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new
+		// Instituicao(usuario.getId()));
+
+		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(3L));
 		request.setAttribute("instituicao", instituicao);
 
 		Contato contato = contatoDAO.recuperarContatoPeloUsuario(instituicao);
@@ -981,6 +982,33 @@ public class Servlet extends HttpServlet {
 		request.setAttribute("endereco", endereco);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("conta-instituicao.jsp");
+		dispatcher.forward(request, response);
+	}
+
+	private void mostrarPaginaInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
+			throws SQLException, ServletException, IOException {
+
+		long id = Long.parseLong(request.getParameter("id"));
+		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(id));
+		request.setAttribute("instituicao", instituicao);
+
+		Contato contato = contatoDAO.recuperarContatoPeloUsuario(instituicao);
+		request.setAttribute("contato", contato);
+
+		Endereco endereco = enderecoDAO.recuperarEnderecoPelaInstituicao(instituicao);
+		request.setAttribute("endereco", endereco);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-instituicao.jsp");
+		dispatcher.forward(request, response);
+	}
+
+	private void mostrarInstituicoes(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
+			throws SQLException, ServletException, IOException {
+
+		List<Instituicao> instituicoes = instituicaoDAO.recuperarInstituicoes();
+		request.setAttribute("instituicoes", instituicoes);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("conheca-faculdades.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -1010,35 +1038,6 @@ public class Servlet extends HttpServlet {
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-inicial.jsp");
 		dispatcher.forward(request, response);
-
-	}
-
-	private void inseririUsuario(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, IOException, ServletException, InvalidKeySpecException, NoSuchAlgorithmException {
-		String nome = request.getParameter("nome");
-		String senha = request.getParameter("senha");
-		byte[] sal = Hash.gerarSal();
-		// usuarioDAO.inserirUsuario(new Usuario(nome, Hash.gerarHash(sal, senha),
-		// sal));
-		// redirect or response
-	}
-
-	private void atualizarUsuario(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, IOException, ServletException, InvalidKeySpecException, NoSuchAlgorithmException {
-		Long id = Long.parseLong(request.getParameter("id"));
-		String nome = request.getParameter("nome");
-		String senha = request.getParameter("senha");
-		byte[] sal = Hash.gerarSal();
-		// usuarioDAO.atualizarUsuario(new Usuario(id, nome, Hash.gerarHash(sal, senha),
-		// sal));
-
-	}
-
-	private void deletarUsuario(HttpServletRequest request, HttpServletResponse response, HttpSession sessao) {
-		Long id = Long.parseLong(request.getParameter("id"));
-		Usuario usuario = usuarioDAO.recuperarUsuarioPeloId(new Usuario(id));
-		// nao sei pq tem esse metodo
-		usuarioDAO.deletarUsuario(usuario);
 
 	}
 
