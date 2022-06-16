@@ -18,6 +18,8 @@
 	<h1>Minhas Áreas</h1>
 	<c:forEach var="area" items="${areas}">
 		<p><c:out value='${area.nome}'/></p>
+		<a href="editar-area?id=<c:out value='${area.id}'/>">Editar</a>
+		<a href="deletar-area?id=<c:out value='${area.id}'/>">Deletar</a>
 	</c:forEach>
 	<a href="<%=request.getContextPath()%>/nova-area">+</a>
 </body>
