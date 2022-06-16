@@ -8,56 +8,29 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	 <style><%@include file="/assets/css/estilo.css"%></style>
-	<title>Minha Conta | Portal da Instituição</title>
+	<style><%@include file="/assets/css/estilo.css"%></style>
+	<title>Perfil Instituicao| EducaTECH</title>
 </head>
 
 <body>
-	<header>
-		<h1>Minha Conta</h1>
-		<h4>Dados Pessoais</h4>
-		<h4>Endereço</h4>
-		<button>Alterar dados</button>
-	</header>
-	<div>
-		<img alt="Foto de Perfil"> 
-		<c:out value='${instituicao.nome}'/>
-		<p>Alterar imagem<input type="file" name="imagem" id="input-imagem"></p>
-	</div>
-	<div class="aba">
-		<form action="editarInstituicao" method="post">
-			<label id="cnpj">CNPJ</label> 
-				<input type="text" value="<c:out value='${instituicao.cnpj}'/>" id="input-cnpj"> 
-			<label>Celular</label>
-				<input type="tel" value="<c:out value='${contato.celular}'/>" id="input-celular"> 
-			<label>E-mail corporativo</label> 
-				<input type="email" value="<c:out value='${contato.email}'/>" id="input-email-corp"> 
-			<label>Telefone</label> 
-				<input type="tel" value="<c:out value='${contato.telefone}'/>" id="input-telefone">
-		</form>
-	</div>
-	<div class="aba">
-		<form action="editarInstituicao" method="post">
-			<label>CEP</label> 
-				<input type="text" value="<c:out value='${endereco.cep}'/>" id="input-cep"> 
-			<label>Cidade</label>
-				<input type="text" value="<c:out value='${endereco.cidade}'/>"id="input-cidade"> 
-			<label>Estado</label> 
-				<input type="text" value="<c:out value='${endereco.estado}'/>" id="input-estado"> 
-			<label>Complemento</label>
-				<input type="text" value="<c:out value='${endereco.complemento}'/>"id="input-complemento"> 
-			<label>Bairro</label> 
-				<input type="text" value="<c:out value='${endereco.bairro}'/>" id="input-bairro">
-			<label>Rua</label>
-				<input type="text" value="<c:out value='${endereco.logradouro}'/>" id="input-rua"> 
-			<label>Número</label> 
-				<input type="text" value="<c:out value='${endereco.numero}'/>" id="input-numero"> 
-			<label>Referência</label>
-				<input type="text" value="<c:out value='${endereco.referencia}'/>" id="input-referencia">
-		</form>
-	</div>
-		<button type="reset" id="botao-cancelar">Cancelar</button> 
-		<button type="submit" id="botao-salvar">Salvar alterações</button>
+	 <h1>Minha Conta</h1>
+	
+	<p>Nome: <c:out value='${instituicao.nome}'/></p>
+	<p>CNPJ: <c:out value='${instituicao.cnpj}'/></p>
+	<p>Descrisao: <c:out value='${instituicao.descricao}'/></p>
+	
+	<h5>Contato</h5>
+	<p>Celular: <c:out value='${contato.celular}'/></p>
+	<p>Telefone: <c:out value='${contato.telefone}'/></p>
+	<p>E-mail: <c:out value='${contato.email}'/></p>
+	
+	<h5>Endereço</h5>
+	
+	<p>Cidade: <c:out value='${endereco.cidade}'/></p>
+	<p>Bairro: <c:out value='${endereco.bairro}'/></p>
+	<p>Rua: <c:out value='${endereco.logradouro}'/></p>
+	
+	<a href="editar-instituicao?id=<c:out value='${instituicao.id}'/>">Alterar Dados</a>
 </body>
 
 </html>

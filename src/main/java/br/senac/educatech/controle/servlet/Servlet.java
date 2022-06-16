@@ -113,6 +113,10 @@ public class Servlet extends HttpServlet {
 			case "/deletar-aluno":
 				deletarAluno(request, response, sessao);
 				break;
+				
+			case "/conta-aluno":
+				mostrarContaAluno(request, response, sessao);
+				break;
 
 			case "/nova-area":
 				mostrarFormularioArea(request, response, sessao);
@@ -205,7 +209,7 @@ public class Servlet extends HttpServlet {
 			case "/deletar-instituicao":
 				deletarInstituicao(request, response, sessao);
 				break;
-				
+
 			case "/conta-instituicao":
 				mostrarContaInstituicao(request, response, sessao);
 				break;
@@ -311,7 +315,7 @@ public class Servlet extends HttpServlet {
 		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
 		request.setAttribute("aluno", aluno);
-		
+
 		Contato contato = contatoDAO.recuperarContatoPeloUsuario(usuario);
 		request.setAttribute("contato", contato);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("editar-perfil-aluno.jsp");
@@ -406,6 +410,19 @@ public class Servlet extends HttpServlet {
 		// remover cursos favoritados, contato e endereco
 		alunoDAO.deletarAluno(aluno);
 		// redirect or response
+	}
+	
+	private void mostrarContaAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
+			throws SQLException, ServletException, IOException {
+		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
+		request.setAttribute("aluno", aluno);
+		
+		Contato contato = contatoDAO.recuperarContatoPeloUsuario(aluno);
+		request.setAttribute("contato", contato);
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("minha-conta-aluno.jsp");
+		dispatcher.forward(request, response);
 	}
 
 	private void mostrarFormularioArea(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
@@ -951,14 +968,22 @@ public class Servlet extends HttpServlet {
 		// redirect or response
 	}
 
-	
 	private void mostrarContaInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
-		
+		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
+		request.setAttribute("instituicao", instituicao);
+
+		Contato contato = contatoDAO.recuperarContatoPeloUsuario(instituicao);
+		request.setAttribute("contato", contato);
+
+		Endereco endereco = enderecoDAO.recuperarEnderecoPelaInstituicao(instituicao);
+		request.setAttribute("endereco", endereco);
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher("conta-instituicao.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
 	private void mostrarFormularioLogin(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
