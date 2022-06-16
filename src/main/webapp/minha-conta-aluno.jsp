@@ -13,18 +13,30 @@
 </head>
 
 <body>
-    <h1>Minha Conta</h1>
-	
-	<p>Nome: <c:out value='${aluno.nome}'/></p>
-	<p>CPF: <c:out value='${aluno.cpf}'/></p>
-	<p>Data de Nascimento: <c:out value='${aluno.dataNascimento}'/></p>
-	<p>Pronome: <c:out value='${aluno.pronome}'/></p>
-	<p>Gênero: <c:out value='${aluno.genero}'/></p>
-	<p>Celular: <c:out value='${contato.celular}'/></p>
-	<p>Telefone: <c:out value='${contato.telefone}'/></p>
-	<p>E-mail: <c:out value='${contato.email}'/></p>
-	<p>Biografia: <c:out value='${aluno.biografia}'/></p>
-	<a href="editar-aluno?id=<c:out value='${aluno.id}'/>">Alterar Dados</a>
+
+	<h1>Minha Conta</h1>
+	<label>Foto de Perfil</label>
+	<img>
+	<label>Nome</label>
+	<span></span>
+	<label>CPF</label>
+	<span></span>
+	<label>Data de Nascimento</label>
+	<span></span>
+	<label>Pronome</label>
+	<span></span>
+	<label>Gênero</label>
+	<span></span>
+	<label>Celular</label>
+	<span></span>
+	<label>Telefone</label>
+	<span></span>
+	<label>E-mail 
+	</label><span></span>
+	<label>Biografia</label>
+	<span></span>
+	<button type="button">Alterar Dados</button>
+
 </body>
 
 </html>
