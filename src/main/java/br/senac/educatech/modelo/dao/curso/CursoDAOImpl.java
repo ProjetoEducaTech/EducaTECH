@@ -376,47 +376,47 @@ public class CursoDAOImpl implements CursoDAO {
 		return consultaArea;
 	}
 
-	public List<Curso> recuperarCursosPelaNota(Aluno aluno) {
-
-		Session sessao = null;
-		List<Curso> consultaNota = null;
-
-		try {
-
-			sessao = conexao.getConexao().openSession();
-			sessao.beginTransaction();
-
-			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
-
-			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
-			Root<Curso> raizCurso = criteria.from(Curso.class);
-
-			//criteria.where(construtor.lessThanOrEqualTo(raizCurso.<Double>get(Curso_.NOTA_CORTE), aluno.getNota()));
-
-		//	criteria.orderBy(construtor.desc(raizCurso.get(Curso_.NOTA_CORTE)),
-		//			construtor.asc(raizCurso.get(Curso_.NOME)));
-
-			consultaNota = sessao.createQuery(criteria).getResultList();
-
-			sessao.getTransaction().commit();
-
-		} catch (Exception sqlException) {
-
-			sqlException.printStackTrace();
-
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
-
-		} finally {
-
-			if (sessao != null) {
-				sessao.close();
-			}
-		}
-
-		return consultaNota;
-	}
+//	public List<Curso> recuperarCursosPelaNota(Aluno aluno) {
+//
+//		Session sessao = null;
+//		List<Curso> consultaNota = null;
+//
+//		try {
+//
+//			sessao = conexao.getConexao().openSession();
+//			sessao.beginTransaction();
+//
+//			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+//
+//			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
+//			Root<Curso> raizCurso = criteria.from(Curso.class);
+//
+//			criteria.where(construtor.lessThanOrEqualTo(raizCurso.<Double>get(Curso_.NOTA_CORTE), aluno.getNota()));
+//
+//			criteria.orderBy(construtor.desc(raizCurso.get(Curso_.NOTA_CORTE)),
+//					construtor.asc(raizCurso.get(Curso_.NOME)));
+//
+//			consultaNota = sessao.createQuery(criteria).getResultList();
+//
+//			sessao.getTransaction().commit();
+//
+//		} catch (Exception sqlException) {
+//
+//			sqlException.printStackTrace();
+//
+//			if (sessao.getTransaction() != null) {
+//				sessao.getTransaction().rollback();
+//			}
+//
+//		} finally {
+//
+//			if (sessao != null) {
+//				sessao.close();
+//			}
+//		}
+//
+//		return consultaNota;
+//	}
 
 	public List<Curso> recuperarCursosFavoritos(Aluno aluno) {
 

@@ -34,8 +34,16 @@
 		      </select>
 	</div>
 
-		<label for="senha">Senha<em>*</em></label> 
+		<label for="nome">Nome<em>*</em></label> 
+		 <input type="text" name="nome" id="nome" value="<c:out value='${aluno.nome}'/>">
+		 <label for="sobrenome">Sobrenome<em>*</em></label> 
+		 <input type="text" name="sobrenome" id="sobrenome" value="<c:out value='${aluno.sobrenome}'/>">
+		 <label for="data-nascimento">Data de nascimento<em>*</em></label>
+			<input type="date" name="data-nascimento" value="<c:out value='${aluno.sobrenome}'/>" id="data-nascimento">
+         <label for="senha">Senha<em>*</em></label> 
 		 <input type="text" name="senha" id="senha">
+		<label for="nome">CPF<em>*</em></label> 
+		 <input type="text" name="cpf" id="cpf" value="<c:out value='${aluno.cpf}'/>">
 		<label for="senha">E-mail</label>
 			<input type="email" id="input-mail" value="<c:out value='${contato.email}'/>" placeholder="Digite seu e-mail" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$" maxlength="100" required>
 
