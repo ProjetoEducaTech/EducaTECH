@@ -755,7 +755,7 @@ public class CursoDAOImpl implements CursoDAO {
 
 			if (duracao.isPresent() && (duracao.get() != 0)) {
 				predicates.add(
-						construtor.or(construtor.between(raizCurso.<Double>get(Curso_.DURACAO), 50.0, duracao.get())));
+						construtor.or(construtor.between(raizCurso.<Double>get(Curso_.DURACAO), 0.0, duracao.get())));
 			}
 
 			criteria.where(construtor.and(predicates.toArray(new Predicate[predicates.size()])));

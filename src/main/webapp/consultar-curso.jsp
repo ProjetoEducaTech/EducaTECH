@@ -41,8 +41,8 @@
 			<label>Área<em>*</em></label>
 			<select name="area">
 				<c:forEach var="area" items="${areas}">
-					<option value="<c:out value="${area.id}"/>"><c:out
-							value="${area.nome}" /></option>
+					<option value="<c:out value="${area.id}"/>">
+					<c:out value="${area.nome}" /></option>
 				</c:forEach>
 
 			</select> 
@@ -57,7 +57,7 @@
 
 			</select> 
 			
-			<input class="btn-buscar" type="submit" value="Buscar">
+			<button type="submit" id="botao-buscar">Buscar</button>
 
 		</div>
 		
