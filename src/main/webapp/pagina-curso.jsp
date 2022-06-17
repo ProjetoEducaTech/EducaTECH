@@ -46,34 +46,28 @@
 	<div class="avaliacoes">
 	<h2>Avaliações</h2>
 	<c:forEach var="avaliacao" items="${avaliacoes}">
-		<p><c:out value='${avaliacao.nota}'/></p>
-		<p><c:out value='${avaliacao.comentario}'/></p>
-		<p><c:out value='${avaliacao.dataAvaliacao}'/></p>
-		<p><c:out value='${avaliacao.aluno.nome}'/></p>
-		<p><c:out value='${avaliacao.aluno.pronome}'/></p>
-		<a href="editar-avaliacao?id=<c:out value='${avaliacao.id}'/>">Editar</a>
-		<a href="deletar-avaliacao?id=<c:out value='${avaliacao.id}'/>">Deletar</a>
-	</c:forEach>
+		<div class="avaliacao">
+			<img src="data:image/<c:out value='${avaliacao.extensao}'/>;base64,<c:out value='${avaliacao.foto}'/>" class="avatar" height="75" width="75">
+			<span><c:out value='${avaliacao.nome}'/></span>
+			<span><c:out value='${avaliacao.sobrenome}'/></span>
+			<span>|</span>
+			<span><c:out value='${avaliacao.pronome}'/></span>
+			<p><c:out value='${avaliacao.comentario}'/></p>
+			<span>Nota:</span>
+			<span><c:out value='${avaliacao.nota}'/></span>			
+			<p><c:out value='${avaliacao.data}'/></p>
+			<a href="editar-avaliacao?id=<c:out value='${avaliacao.id}'/>">Editar</a>
+			<a href="deletar-avaliacao?id=<c:out value='${avaliacao.id}'/>">Deletar</a>
+		</div>
+	  </c:forEach>
 	</div>
   	<div class="detalhes">
+  		<h2>Detalhes</h2>
 		<p>Área: <c:out value='${area.nome}'/></p>
 		<p>Duração do Curso: <c:out value='${curso.duracao}'/></p>
 		<p>Modalidade: <c:out value='${curso.modalidade}'/></p>
 		<p>Turno: <c:out value='${curso.turno}'/></p>
 		<p>Preço: <c:out value='${curso.preco}'/></p>
 	</div>
-	<div>
-        <c:forEach var="curso" items="${cursos}">
-			<div class="content-card">
-				<form action="favoritar-curso" method="post">
-					<input type="hidden" name="id" value='${curso.id}'/>
-					<p><c:out value="${curso.nome}" /></p>
-					<p><c:out value="${curso.descricao}" /></p>
-					<button>Favoritar Curso</button>
-		</form>
-			</div>                      
-        </c:forEach>
-    </div>
-</body>
-
+	</body>
 </html>
