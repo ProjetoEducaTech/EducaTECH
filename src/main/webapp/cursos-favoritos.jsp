@@ -14,6 +14,7 @@
 </head>
 
 <body>
+<%@ include file="menu-aluno.jsp"%>
 	<h1>Meus Cursos Favoritos</h1>
 	<c:forEach var="curso" items="${cursos}">
 		<div class="card">

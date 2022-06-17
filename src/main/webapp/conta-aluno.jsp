@@ -9,10 +9,11 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<style><%@include file="/assets/css/estilo.css"%></style>
-	<title>Perfil Aluno| EducaTECH</title>
+	<title>Perfil ${aluno.nome}| EducaTECH</title>
 </head>
 
 <body>
+<%@ include file="menu-aluno.jsp"%>
     <h1>Minha Conta</h1>
 	
 	<p>Nome: <c:out value='${aluno.nome}'/></p>

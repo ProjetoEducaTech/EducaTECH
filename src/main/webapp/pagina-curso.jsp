@@ -13,6 +13,7 @@
 </head>
 
 <body>
+	<%@ include file="menu-aluno.jsp"%>
 	<div class="cabecalho">
 	<button type="button" name="retornar">Retornar</button>
 		<img alt="Logo da Instituição">

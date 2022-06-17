@@ -280,7 +280,7 @@ public class Servlet extends HttpServlet {
 
 	private void padrao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
-
+		
 		List<Area> areas = areaDAO.recuperarAreas();
 		request.setAttribute("areas", areas);
 
@@ -295,7 +295,6 @@ public class Servlet extends HttpServlet {
 			HttpSession sessao) throws ServletException, IOException {
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-aluno.jsp");
-
 		dispatcher.forward(request, response);
 	}
 
@@ -391,7 +390,6 @@ public class Servlet extends HttpServlet {
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("conta-aluno.jsp");
 		dispatcher.forward(request, response);
-
 	}
 
 	private void deletarAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
@@ -401,7 +399,9 @@ public class Servlet extends HttpServlet {
 		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(id));
 		// remover cursos favoritados, contato e endereco
 		alunoDAO.deletarAluno(aluno);
-		// redirect or response
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-inicial.jsp");
+		dispatcher.forward(request, response);
 	}
 
 	private void mostrarContaAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
@@ -443,11 +443,10 @@ public class Servlet extends HttpServlet {
 		areaDAO.inserirArea(area);
 
 		List<Area> areas = areaDAO.recuperarAreasPelaInstituicao(instituicao);
-
 		request.setAttribute("areas", areas);
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-curso.jsp");
 		dispatcher.forward(request, response);
-
 	}
 
 	private void atualizarArea(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
@@ -464,7 +463,8 @@ public class Servlet extends HttpServlet {
 		List<Area> areas = areaDAO.recuperarAreasPelaInstituicao(instituicao);
 
 		request.setAttribute("areas", areas);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("minhas-areas.jsp");
 		dispatcher.forward(request, response);
 
 	}
@@ -475,7 +475,9 @@ public class Servlet extends HttpServlet {
 		// deletarCursos
 		Area area = areaDAO.recuperarAreaPeloId(new Area(id));
 		areaDAO.deletarArea(area);
-		// redirect or response
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("minhas-areas.jsp");
+		dispatcher.forward(request, response);
 	}
 
 	private void mostrarFormularioAvaliacao(HttpServletRequest request, HttpServletResponse response,
@@ -566,6 +568,7 @@ public class Servlet extends HttpServlet {
 		Curso curso = avaliacao.getCurso();
 		LocalDate dataComentario = LocalDate.now();
 		avaliacaoDAO.atualizarAvaliacao(new Avaliacao(id, nota, comentario, aluno, curso, dataComentario));
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-curso.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -587,9 +590,9 @@ public class Servlet extends HttpServlet {
 		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
 		List<Area> areas = areaDAO.recuperarAreasPelaInstituicao(instituicao);
 		request.setAttribute("areas", areas);
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-curso.jsp");
 		dispatcher.forward(request, response);
-
 	}
 
 	private void preencherFormularioCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
@@ -602,6 +605,7 @@ public class Servlet extends HttpServlet {
 		request.setAttribute("curso", curso);
 		List<Area> areas = areaDAO.recuperarAreasPelaInstituicao(instituicao);
 		request.setAttribute("areas", areas);
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-curso.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -652,9 +656,8 @@ public class Servlet extends HttpServlet {
 		cursoDAO.atualizarCurso(
 				new Curso(id, nome, desc, duracao, preco, link, modalidade, turno, new Area(idArea), instituicao));
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("consultar-curso.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("meus-cursos.jsp");
 		dispatcher.forward(request, response);
-
 	}
 
 	private void mostrarPaginaCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
@@ -692,9 +695,7 @@ public class Servlet extends HttpServlet {
 		request.setAttribute("cursos", cursos);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("cursos-favoritos.jsp");
-
 		dispatcher.forward(request, response);
-
 	}
 
 	private void favoritarCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
@@ -709,6 +710,8 @@ public class Servlet extends HttpServlet {
 		alunoDAO.atualizarAluno(aluno);
 		cursoDAO.atualizarCurso(curso);
 
+		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-curso.jsp");
+		dispatcher.forward(request, response);
 	}
 
 	private void desfavoritarCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
@@ -734,8 +737,8 @@ public class Servlet extends HttpServlet {
 		// desfavoritar curso
 		Curso curso = cursoDAO.recuperarCursoPeloId(new Curso(id));
 		cursoDAO.deletarCurso(curso);
-		// redirect or response
-
+		RequestDispatcher dispatcher = request.getRequestDispatcher("meus-cursos.jsp");
+		dispatcher.forward(request, response);
 	}
 
 	private void mostrarFormularioConsultaCurso(HttpServletRequest request, HttpServletResponse response,
@@ -986,7 +989,8 @@ public class Servlet extends HttpServlet {
 		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(id));
 		// desfavoritar e remover cursos, endereco, area
 		instituicaoDAO.deletarInstituicao(instituicao);
-		// redirect or response
+		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-inicial.jsp");
+		dispatcher.forward(request, response);
 	}
 
 	private void mostrarContaInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)

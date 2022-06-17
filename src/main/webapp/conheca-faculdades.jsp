@@ -12,6 +12,7 @@
 	<title>Conheca as Faculdades| EducaTECH</title>
 </head>
 <body>
+<%@ include file="menu-aluno.jsp"%>
 	<h1>Faculdades</h1>
 
 	<div>
