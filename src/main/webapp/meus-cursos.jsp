@@ -18,7 +18,7 @@
 	<h1>Meus Cursos</h1>
 	<div class="card">
 		<c:forEach var="curso" items="${cursos}">
-			<p><c:out value='${curso.nome}'/></p>
+			<p><a href="pagina-curso?id=<c:out value='${curso.id}'/>"><c:out value='${curso.nome}'/></a></p>
         	<a href="editar-curso?id=<c:out value='${curso.id}'/>">Editar</a>
 			<a href="deletar-curso?id=<c:out value='${curso.id}'/>">Deletar</a>
 		</c:forEach>

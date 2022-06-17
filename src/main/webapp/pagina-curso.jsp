@@ -70,7 +70,7 @@
 					<p><c:out value="${curso.nome}" /></p>
 					<p><c:out value="${curso.descricao}" /></p>
 					<button>Favoritar Curso</button>
-				</form>
+		</form>
 			</div>                      
         </c:forEach>
     </div>

@@ -141,7 +141,7 @@ public class CursoDAOImpl implements CursoDAO {
 
 			CriteriaQuery<Curso> criteria = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteria.from(Curso.class);
-
+			raizCurso.fetch(Curso_.AREA, JoinType.LEFT);
 			criteria.where(construtor.equal(raizCurso.get(Curso_.ID), curso.getId()));
 
 			cursosRecuperados = sessao.createQuery(criteria).getSingleResult();

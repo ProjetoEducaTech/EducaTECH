@@ -17,18 +17,20 @@
 			<div class="filtro">
 			<label>Modalidade</label>
 			<select name="modalidade">
-				<option selected value="0">EAD</option>
-				<option selected value="1">Presencial</option>
-				<option selected value="2">Semi Presencial</option>
-				<option selected value="3">Ao Vivo</option>
+				<option selected value="4"></option>
+				<option value="0">EAD</option>
+				<option value="1">Presencial</option>
+				<option value="2">Semi Presencial</option>
+				<option value="3">Ao Vivo</option>
 			</select> 
 			<label>Turno</label>
 			<select name="turno">
-				<option selected value="0">Matutino</option>
-				<option selected value="1">Vespertino</option>
-				<option selected value="2">Noturno</option>
-				<option selected value="3">Integral</option>
-				<option selected value="4">Livre</option>
+				<option selected value="5"></option>
+				<option value="0">Matutino</option>
+				<option value="1">Vespertino</option>
+				<option value="2">Noturno</option>
+				<option value="3">Integral</option>
+				<option value="4">Livre</option>
 			</select> 
 			<label>Área</label> 
 			<select name="area">
