@@ -39,6 +39,8 @@ import br.senac.educatech.modelo.dao.instituicao.InstituicaoDAO;
 import br.senac.educatech.modelo.dao.instituicao.InstituicaoDAOImpl;
 import br.senac.educatech.modelo.dao.usuario.UsuarioDAO;
 import br.senac.educatech.modelo.dao.usuario.UsuarioDAOImpl;
+import br.senac.educatech.modelo.dto.avaliacao.AvaliacaoDTO;
+import br.senac.educatech.modelo.dto.avaliacao.AvaliacaoMapper;
 import br.senac.educatech.modelo.entidade.aluno.Aluno;
 import br.senac.educatech.modelo.entidade.area.Area;
 import br.senac.educatech.modelo.entidade.avaliacao.Avaliacao;
@@ -669,8 +671,9 @@ public class Servlet extends HttpServlet {
 
 		Area area = areaDAO.recuperarAreaPeloCurso(curso);
 		request.setAttribute("area", area);
-
-		List<Avaliacao> avaliacoes = avaliacaoDAO.recuperarAvaliacoesPeloCurso(curso);
+		
+		AvaliacaoMapper avaliacaoMapper = new AvaliacaoMapper();
+		List<AvaliacaoDTO> avaliacoes = avaliacaoMapper.paraDTO(avaliacaoDAO.recuperarAvaliacoesPeloCurso(curso));
 		request.setAttribute("avaliacoes", avaliacoes);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-curso.jsp");

@@ -17,7 +17,7 @@
 	<div>
 		<c:forEach var="avaliacao" items="${avaliacoes}">
 		<div class="avaliacao">
-			<img src="data:image/<c:out value='${avaliacao.aluno.foto.extensao}'/>;base64,<c:out value='${avatar}'/>" class="avatar" height="50" width="50">
+			<img src="data:image/<c:out value='${avaliacao.aluno.foto.extensao}'/>;base64,<c:out value='${avatar}'/>" class="avatar" height="75" width="75">
 			<span><c:out value='${avaliacao.aluno.nome}'/></span>
 			<span><c:out value='${avaliacao.aluno.sobrenome}'/></span>
 			<span>|</span>
