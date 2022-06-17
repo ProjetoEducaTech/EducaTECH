@@ -13,6 +13,7 @@
 </head>
 
 <body>
+	<%@ include file="menu-aluno.jsp"%>
 	<h1>Minhas Avaliações</h1>
 	<div>
 		<c:forEach var="avaliacao" items="${avaliacoes}">

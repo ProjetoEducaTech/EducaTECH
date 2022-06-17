@@ -13,7 +13,7 @@
 </head>
 
 <body>
-
+<%@ include file="menu-aluno.jsp"%>
 	<h1>Bem-Vindo!</h1>
 	
 	<form action = "efetuar-login" method = "post">

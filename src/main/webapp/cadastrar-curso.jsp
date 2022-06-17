@@ -16,7 +16,6 @@
 
 	<%@include file="/menu-instituicao.jsp"%>
 
-
 	<h1>Cadastrar Curso</h1>	
 
 	<form action="inserir-curso" method="post">

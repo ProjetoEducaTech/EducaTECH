@@ -13,7 +13,8 @@
 </head>
 
 <body>
-
+	<%@ include file="menu-aluno.jsp"%>
+	
 	<form  action="atualizar-aluno" method="post">
 	<div>
 	    <h1>Minha Conta</h1>

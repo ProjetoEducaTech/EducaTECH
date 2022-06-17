@@ -13,6 +13,7 @@
 </head>
 
 <body>
+	<%@ include file="menu-aluno.jsp"%>
 		<form class="consulta-inicial" action="consulta-inicial" method="post">
 			<div class="filtro">
 			<label>Modalidade</label>

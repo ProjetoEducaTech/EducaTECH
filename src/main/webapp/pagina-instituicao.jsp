@@ -13,7 +13,7 @@
 </head>
 
 <body>
-	<%@ include file="menu-instituicao.jsp"%>
+	<%@ include file="menu-aluno.jsp"%>
 	 <h1><c:out value='${instituicao.nome}'/></h1>
 	
 	<h5>Descricao da Instituicao</h5>

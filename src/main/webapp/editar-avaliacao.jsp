@@ -13,7 +13,7 @@
 </head>
 
 <body>
-
+<%@ include file="menu-aluno.jsp"%>
 		<h2>Editar Avaliação</h2>
 		<form action="atualizar-avaliacao" method="post">
 			<input type="hidden" name = "id" value="${avaliacao.id}"/>

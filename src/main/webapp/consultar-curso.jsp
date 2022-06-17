@@ -5,7 +5,15 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style><%@include file="/assets/css/estilo.css"%></style>
+	<title>Consultar Cursos | EducaTECH</title>
+</head>
 <body>
+	<%@ include file="menu-aluno.jsp"%>
 
 	<h1 class="intro"> Selecione as suas preferências para encontrar o curso perfeito!</h1>
 
@@ -14,6 +22,7 @@
 		<div class="container-field">
 
 			<label>Modalidade<em>*</em></label> <select name="modalidade">
+			<option selected value="4"></option>
 				<option value="0">EAD</option>
 				<option value="1">Presencial</option>
 				<option value="2">Semi-Presencial</option>
@@ -25,6 +34,7 @@
 			
 			<label>Turno<em>*</em></label> 	
 			<select name="turno">
+			<option selected value="5"></option>
 				<option value="0">Matutino</option>
 				<option value="1">Vespertino</option>
 				<option value="2">Noturno</option>
