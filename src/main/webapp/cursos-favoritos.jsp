@@ -19,10 +19,10 @@
 		<div class="card">
 			<div class="content-card">
 				<form action="desfavoritar-curso" method="post">
-					<input type="hidden" name="input-id" value='${curso.id}'/>
-					<p><c:out value="${curso.nome}" /></p>
-					<p><c:out value="${curso.descricao}" /></p>
-					<button type="button" id="botao-desfavoritar">Desfavoritar Curso</button>
+					<input type="hidden" name="id" value='${curso.id}'/>
+						<p><c:out value="${curso.nome}" /></p>
+						<p><c:out value="${curso.descricao}" /></p>
+						<button type="submit">Desfavoritar Curso</button>
 				</form>
 			</div>
 		</div>
