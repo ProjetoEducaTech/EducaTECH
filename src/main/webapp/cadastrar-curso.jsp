@@ -15,11 +15,12 @@
 <body>
 
 	<%@include file="/menu-instituicao.jsp"%>
-	<h1>Cadastrar Curso</h1>
-	
+
+
+	<h1>Cadastrar Curso</h1>	
+
 	<form action="inserir-curso" method="post">
-	
-		<div>
+
 			<label for="nome">Nome do curso<em>*</em></label> 
 			<input type="text" placeholder="Digite o nome do curso" name="curso" id="nome">
 			<label for="modalidade">Modalidade<em>*</em></label> 
@@ -47,18 +48,16 @@
 			</select> 
 			<label for="preco">Preço do curso<em>*</em></label> 
 			<input type="text" placeholder="Digite o preço" name="preco" id="preco">
-		</div>
 		
-		<div>
 			<label for="link">Link do Site Oficial do Curso</label>
 			<textarea rows="1" name="link" id="link"></textarea>
 			<label for="descricao">Descrição</label>
 			<textarea rows="5" id="descricao" name="descricao" id="descricao"></textarea>
-		</div>
+		
 		
 		<button type="reset">Cancelar</button>
 		<button type="submit">Cadastrar</button>
-		
+
 		</form>
 </body>
 

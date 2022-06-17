@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
@@ -450,10 +451,12 @@ public class Servlet extends HttpServlet {
 	private void atualizarArea(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws SQLException, ServletException, IOException {
 
+
+		long id = Long.parseLong(request.getParameter("id"));
 		String nome = request.getParameter("nome");
 		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
 		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
-		Area area = new Area(nome, instituicao);
+		Area area = new Area(id, nome, instituicao);
 		areaDAO.atualizarArea(area);
 
 		List<Area> areas = areaDAO.recuperarAreasPelaInstituicao(instituicao);
@@ -519,6 +522,9 @@ public class Servlet extends HttpServlet {
 
 		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoComCursosPeloId(new Aluno(usuario.getId()));
+
+		String avatar = new String(Base64.encodeBase64(aluno.getFoto().getConteudo()));
+		request.setAttribute("avatar", avatar);
 
 		List<Avaliacao> avaliacoes = avaliacaoDAO.recuperarAvaliacoesPeloAluno(aluno);
 		request.setAttribute("avaliacoes", avaliacoes);
@@ -617,6 +623,9 @@ public class Servlet extends HttpServlet {
 
 		cursoDAO.inserirCurso(
 				new Curso(nome, descricao, duracao, preco, link, modalidade, turno, new Area(idArea), instituicao));
+		
+		List<Curso> cursos = cursoDAO.recuperarCursosPelaInstituicao(instituicao);
+		request.setAttribute("cursos", cursos);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("meus-cursos.jsp");
 		dispatcher.forward(request, response);
@@ -760,27 +769,6 @@ public class Servlet extends HttpServlet {
 		List<Curso> cursos = cursoDAO.recuperarCursoPorFiltro(instituicao, area, notaCorte, turno, modalidade, preco,
 				duracao);
 
-		request.setAttribute("cursos", cursos);
-
-		RequestDispatcher dispatcher = request.getRequestDispatcher("consultar-curso.jsp");
-		dispatcher.forward(request, response);
-
-	}
-
-	private void cursosInstituicao1(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws ServletException, IOException {
-
-
-		double precoMinimo = cursoDAO.recuperaMenorPrecoCurso();
-		double precoMaximo = cursoDAO.recuperarMaiorPrecoCurso();
-
-		List<Area> areas = areaDAO.recuperarAreas();
-		List<Instituicao> instituicoes = instituicaoDAO.recuperarInstituicoes();
-
-		request.setAttribute("precoMinimo", precoMinimo);
-		request.setAttribute("precoMaximo", precoMaximo);
-		request.setAttribute("areas", areas);
-		request.setAttribute("instituicoes", instituicoes);
 		request.setAttribute("cursos", cursos);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("consultar-curso.jsp");

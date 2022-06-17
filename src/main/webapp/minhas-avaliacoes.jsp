@@ -16,12 +16,16 @@
 	<h1>Minhas Avaliações</h1>
 	<div>
 		<c:forEach var="avaliacao" items="${avaliacoes}">
-		<div>  
-			<p><c:out value='${avaliacao.nota}'/></p>
+		<div class="avaliacao">
+			<img src="data:image/<c:out value='${avaliacao.aluno.foto.extensao}'/>;base64,<c:out value='${avatar}'/>" class="avatar" height="50" width="50">
+			<span><c:out value='${avaliacao.aluno.nome}'/></span>
+			<span><c:out value='${avaliacao.aluno.sobrenome}'/></span>
+			<span>|</span>
+			<span><c:out value='${avaliacao.aluno.pronome}'/></span>
 			<p><c:out value='${avaliacao.comentario}'/></p>
+			<span>Nota:</span>
+			<span><c:out value='${avaliacao.nota}'/></span>			
 			<p><c:out value='${avaliacao.dataAvaliacao}'/></p>
-			<p><c:out value='${avaliacao.aluno.nome}'/></p>
-	        <p><c:out value='${avaliacao.aluno.pronome}'/></p>
 			<a href="editar-avaliacao?id=<c:out value='${avaliacao.id}'/>">Editar</a>
 			<a href="deletar-avaliacao?id=<c:out value='${avaliacao.id}'/>">Deletar</a>
 		</div>

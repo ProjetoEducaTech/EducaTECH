@@ -17,7 +17,8 @@
 	<%@include file="/menu-instituicao.jsp"%>
 
 	<form action="inserir-area" method="post">
-		<label for="nome">Área</label>
+
+		<label for="nome">Área</label> 
 		<input type="text" name="nome" id="nome">
 		<button type="reset">Cancelar</button>
 		<button type="submit">Cadastrar</button>
