@@ -264,10 +264,10 @@ public class Curso implements Serializable {
 		Curso curso = (Curso) obj;
 
 		return this.getId().equals(curso.getId()) && this.getNome().equals(curso.getNome())
-				&& this.getArea().equals(curso.getArea()) && this.getDescricao().equals(curso.getDescricao())
+				 && this.getDescricao().equals(curso.getDescricao())
 				&& this.getDuracao() == curso.getDuracao() && this.getPreco() == curso.getPreco()
 				&& this.getNotaCorte() == curso.getNotaCorte() && this.getlink().equals(curso.getlink())
-				&& this.getModalidade().equals(curso.getModalidade()) && this.getTurno().equals(curso.getTurno())
-				&& this.getInstituicao().equals(curso.getInstituicao());
+				&& this.getModalidade().equals(curso.getModalidade()) && this.getTurno().equals(curso.getTurno());
+			
 	}
 }
