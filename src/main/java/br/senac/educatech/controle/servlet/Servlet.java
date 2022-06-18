@@ -683,7 +683,7 @@ public class Servlet extends HttpServlet {
 	private void mostrarCursosFavoritos(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
 
-		// long id = Long.parseLong(request.getParameter("id"));
+		//long id = Long.parseLong(request.getParameter("id"));
 		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoComCursosPeloId(new Aluno(usuario.getId()));
 		request.setAttribute("alunos", aluno);
@@ -722,6 +722,8 @@ public class Servlet extends HttpServlet {
 		cursoDAO.atualizarCurso(curso);
 		aluno.removerCursoFavorito(curso);
 		alunoDAO.atualizarAluno(aluno);
+		List<Curso> cursos = cursoDAO.recuperarCursosFavoritos(aluno);
+		request.setAttribute("cursos", cursos);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("cursos-favoritos.jsp");
 		dispatcher.forward(request, response);
