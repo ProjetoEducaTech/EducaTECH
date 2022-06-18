@@ -19,6 +19,8 @@ import br.senac.educatech.modelo.entidade.aluno.Aluno;
 import br.senac.educatech.modelo.entidade.aluno.Aluno_;
 import br.senac.educatech.modelo.entidade.area.Area;
 import br.senac.educatech.modelo.entidade.area.Area_;
+import br.senac.educatech.modelo.entidade.avaliacao.Avaliacao;
+import br.senac.educatech.modelo.entidade.avaliacao.Avaliacao_;
 import br.senac.educatech.modelo.entidade.curso.Curso;
 import br.senac.educatech.modelo.entidade.curso.Curso_;
 import br.senac.educatech.modelo.entidade.instituicao.Instituicao;
@@ -165,9 +167,9 @@ public class CursoDAOImpl implements CursoDAO {
 
 		return cursosRecuperados;
 	}
-	
+
 	public Curso recuperarCursoComAvaliacoesPeloId(Curso curso) {
-		
+
 		Session sessao = null;
 		Curso cursosRecuperados = null;
 
@@ -205,7 +207,7 @@ public class CursoDAOImpl implements CursoDAO {
 
 		return cursosRecuperados;
 	}
-	
+
 	public Curso recuperarCursoComAlunosPeloId(Curso curso) {
 
 		Session sessao = null;
@@ -245,7 +247,7 @@ public class CursoDAOImpl implements CursoDAO {
 
 		return cursosRecuperados;
 	}
-		
+
 	public Curso recuperarCursoComAreaPeloId(Curso curso) {
 
 		Session sessao = null;
@@ -719,11 +721,18 @@ public class CursoDAOImpl implements CursoDAO {
 			CriteriaQuery<Curso> criteriaQuery = construtor.createQuery(Curso.class);
 			Root<Curso> raizCurso = criteriaQuery.from(Curso.class);
 			CriteriaQuery<Curso> select = criteriaQuery.select(raizCurso);
+			raizCurso.fetch(Curso_.AVALIACOES, JoinType.LEFT);
+			//Join<Curso, Avaliacao> joinAvaliacao = raizCurso.join(Curso_.AVALIACOES);
+			 criteriaQuery.multiselect(construtor.avg(raizCurso.get(Avaliacao_.NOTA)),
+			 raizCurso.get(Curso_.NOME), raizCurso.get(Curso_.ID));
 
-			criteriaQuery.orderBy(construtor.desc(raizCurso.get(Curso_.AVALIACOES)),
-					construtor.asc(raizCurso.get(Curso_.NOME)), construtor.asc(raizCurso.get(Curso_.PRECO)));
+			// Expression<Double> avgCursos =
+			// construtor.avg(joinAvaliacao.get(Avaliacao.NOTA));
+			criteriaQuery.orderBy(construtor.asc(raizCurso.get(Curso_.NOME)),
+					construtor.asc(raizCurso.get(Curso_.PRECO)));
 			TypedQuery<Curso> typedQuery = sessao.createQuery(select);
-			paginaAtual.addAll(typedQuery.getResultList());
+			paginaAtual.addAll(
+					typedQuery.setFirstResult(numeroDaPagina - 1).setMaxResults(tamanhoDaPagina).getResultList());
 
 		} catch (Exception sqlException) {
 
@@ -770,7 +779,7 @@ public class CursoDAOImpl implements CursoDAO {
 			if (modalidade.isPresent() && (modalidade.get().ordinal() < 4)) {
 				predicates.add(construtor.and(construtor.equal(raizCurso.get(Curso_.MODALIDADE), modalidade.get())));
 			}
-			
+
 			if (turno.isPresent() && (turno.get().ordinal() < 5)) {
 				predicates.add(construtor.and(construtor.equal(raizCurso.get(Curso_.TURNO), turno.get())));
 			}
@@ -781,7 +790,6 @@ public class CursoDAOImpl implements CursoDAO {
 			}
 
 			if (idArea.isPresent() && (idArea.get() > 0)) {
-
 
 				predicates.add(construtor.and(construtor.equal(raizCurso.get(Curso_.AREA), idArea.get())));
 			}
@@ -842,18 +850,17 @@ public class CursoDAOImpl implements CursoDAO {
 			if (modalidade.isPresent() && (modalidade.get().ordinal() < 4)) {
 				predicates.add(construtor.and(construtor.equal(raizCurso.get(Curso_.MODALIDADE), modalidade.get())));
 			}
-			
+
 			if (turno.isPresent() && (turno.get().ordinal() < 5)) {
 				predicates.add(construtor.and(construtor.equal(raizCurso.get(Curso_.TURNO), turno.get())));
 			}
 
 			if (notaDeCorte.isPresent() && (notaDeCorte.get() > 0)) {
-				predicates.add(construtor
-						.and(construtor.lessThanOrEqualTo(raizCurso.<Double>get(Curso_.NOTA_CORTE), notaDeCorte.get())));
+				predicates.add(construtor.and(
+						construtor.lessThanOrEqualTo(raizCurso.<Double>get(Curso_.NOTA_CORTE), notaDeCorte.get())));
 			}
 
 			if (idArea.isPresent() && (idArea.get() > 0)) {
-
 
 				predicates.add(construtor.and(construtor.equal(raizCurso.get(Curso_.AREA), idArea.get())));
 			}

@@ -68,6 +68,11 @@ public class Avaliacao implements Serializable {
 		setId(id);
 
 	}
+	
+	public Avaliacao(int nota) {
+		setNota(nota);
+
+	}
 
 	public Long getId() {
 		return id;

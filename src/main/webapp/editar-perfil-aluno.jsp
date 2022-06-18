@@ -9,7 +9,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style><%@include file="/assets/css/estilo.css"%></style>
-    <title>Editar Perfil| Portal do Aluno</title>
+    <title>Editar Perfil | Portal do Aluno</title>
 </head>
 
 <body>
@@ -40,7 +40,7 @@
 		 <label for="sobrenome">Sobrenome<em>*</em></label> 
 		 <input type="text" name="sobrenome" id="sobrenome" value="<c:out value='${aluno.sobrenome}'/>">
 		 <label for="data-nascimento">Data de nascimento<em>*</em></label>
-			<input type="date" name="data-nascimento" value="<c:out value='${aluno.sobrenome}'/>" id="data-nascimento">
+			<input type="date" name="data-nascimento" value="<c:out value='${aluno.dataNascimento}'/>" id="data-nascimento">
          <label for="senha">Senha<em>*</em></label> 
 		 <input type="text" name="senha" id="senha">
 		<label for="nome">CPF<em>*</em></label> 

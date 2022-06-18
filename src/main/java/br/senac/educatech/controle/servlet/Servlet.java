@@ -270,6 +270,10 @@ public class Servlet extends HttpServlet {
 			case "/conheca-faculdades":
 				mostrarInstituicoes(request, response, sessao);
 				break;
+				
+			case "/teste":
+				teste(request, response, sessao);
+				break;
 
 			default:
 				padrao(request, response, sessao);
@@ -280,6 +284,18 @@ public class Servlet extends HttpServlet {
 
 			e.printStackTrace();
 		}
+	}
+
+	private void teste(HttpServletRequest request, HttpServletResponse response, HttpSession sessao) {
+		
+		List<Curso> cursos = cursoDAO.recuperarPaginaPorAvaliacaoNomePreco(1, 5);
+		
+		for(Curso cursosAvaliados :  cursos) {
+			System.out.println(cursosAvaliados.getId());
+			System.out.println(cursosAvaliados.getNome());
+			System.out.println(cursosAvaliados.getAvaliacoes().get(0).getNota());
+		}
+		
 	}
 
 	private void padrao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
