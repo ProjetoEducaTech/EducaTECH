@@ -3,6 +3,7 @@ package br.senac.educatech.modelo.dao.foto;
 import java.util.List;
 
 import br.senac.educatech.modelo.entidade.foto.Foto;
+import br.senac.educatech.modelo.entidade.usuario.Usuario;
 
 public interface FotoDAO {
 
@@ -13,6 +14,8 @@ public interface FotoDAO {
 	void deletarFoto(Foto foto);
 	
 	Foto recuperarFotoPeloId(Foto foto);
+	
+	Foto recuperarFotoPeloIdUsuario(Usuario usuario);
 	
 	List<Foto> recuperarFotos();
 }
