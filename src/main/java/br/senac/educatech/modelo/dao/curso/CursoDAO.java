@@ -23,6 +23,8 @@ public interface CursoDAO {
 	Curso recuperarCursoComAvaliacoesPeloId(Curso curso);
 	
 	Curso recuperarCursoComAlunosPeloId(Curso curso);
+	
+	Curso recuperarCursoComAreaPeloId(Curso curso);
 
 	List<Curso> recuperarCursos();
 

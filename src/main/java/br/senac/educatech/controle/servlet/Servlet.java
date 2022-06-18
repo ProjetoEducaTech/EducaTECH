@@ -41,6 +41,8 @@ import br.senac.educatech.modelo.dao.usuario.UsuarioDAO;
 import br.senac.educatech.modelo.dao.usuario.UsuarioDAOImpl;
 import br.senac.educatech.modelo.dto.avaliacao.AvaliacaoDTO;
 import br.senac.educatech.modelo.dto.avaliacao.AvaliacaoMapper;
+import br.senac.educatech.modelo.dto.usuario.UsuarioDTO;
+import br.senac.educatech.modelo.dto.usuario.UsuarioMapper;
 import br.senac.educatech.modelo.entidade.aluno.Aluno;
 import br.senac.educatech.modelo.entidade.area.Area;
 import br.senac.educatech.modelo.entidade.avaliacao.Avaliacao;
@@ -221,13 +223,16 @@ public class Servlet extends HttpServlet {
 				mostrarContaInstituicao(request, response, sessao);
 				break;
 
-
 			case "/login":
 				mostrarFormularioLogin(request, response, sessao);
 				break;
 
 			case "/efetuar-login":
 				loginUsuario(request, response, sessao);
+				break;
+
+			case "/sair":
+				deslogarUsuario(request, response, sessao);
 				break;
 
 			case "/consulta-principal":
@@ -258,10 +263,9 @@ public class Servlet extends HttpServlet {
 				mostrarMinhasAreas(request, response, sessao);
 				break;
 
-
-			//case "index":
-			//	index(request, response, sessao);
-			//	break;
+			// case "index":
+			// index(request, response, sessao);
+			// break;
 
 			case "/conheca-faculdades":
 				mostrarInstituicoes(request, response, sessao);
@@ -280,7 +284,7 @@ public class Servlet extends HttpServlet {
 
 	private void padrao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
-		
+
 		List<Area> areas = areaDAO.recuperarAreas();
 		request.setAttribute("areas", areas);
 
@@ -299,9 +303,9 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void preencherFormularioAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
+			throws ServletException, IOException {
 
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
 		request.setAttribute("aluno", aluno);
 
@@ -313,7 +317,7 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void inserirAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
+			throws ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
 
 		String nome = request.getParameter("nome");
 		String senha = request.getParameter("senha");
@@ -323,7 +327,6 @@ public class Servlet extends HttpServlet {
 		String email = request.getParameter("email");
 		String sobrenome = request.getParameter("sobrenome");
 		LocalDate dataNascimento = LocalDate.parse(request.getParameter("data-nascimento"));
-		// double nota = Double.parseDouble(request.getParameter("nota"));
 		String biografia = request.getParameter("biografia");
 		Genero genero = Genero.values()[Integer.parseInt(request.getParameter("genero"))];
 		Pronome pronome = Pronome.values()[Integer.parseInt(request.getParameter("pronome"))];
@@ -351,9 +354,9 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void atualizarAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
+			throws ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
 
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
 
 		String nome = request.getParameter("nome");
@@ -393,20 +396,20 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void deletarAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
+			throws ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
 		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(id));
 		// remover cursos favoritados, contato e endereco
 		alunoDAO.deletarAluno(aluno);
-		
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-inicial.jsp");
 		dispatcher.forward(request, response);
 	}
 
 	private void mostrarContaAluno(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+			throws ServletException, IOException {
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
 		request.setAttribute("aluno", aluno);
 
@@ -424,7 +427,7 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void preencherFormularioArea(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
+			throws ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
 		Area area = areaDAO.recuperarAreaPeloId(new Area(id));
@@ -434,28 +437,27 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void inserirArea(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
+			throws ServletException, IOException {
 
 		String nome = request.getParameter("nome");
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
 		Area area = new Area(nome, instituicao);
 		areaDAO.inserirArea(area);
 
 		List<Area> areas = areaDAO.recuperarAreasPelaInstituicao(instituicao);
 		request.setAttribute("areas", areas);
-		
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-curso.jsp");
 		dispatcher.forward(request, response);
 	}
 
 	private void atualizarArea(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
-
+			throws ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
 		String nome = request.getParameter("nome");
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
 		Area area = new Area(id, nome, instituicao);
 		areaDAO.atualizarArea(area);
@@ -463,19 +465,19 @@ public class Servlet extends HttpServlet {
 		List<Area> areas = areaDAO.recuperarAreasPelaInstituicao(instituicao);
 
 		request.setAttribute("areas", areas);
-		
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher("minhas-areas.jsp");
 		dispatcher.forward(request, response);
 
 	}
 
 	private void deletarArea(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
+			throws ServletException, IOException {
 		long id = Long.parseLong("id");
 		// deletarCursos
 		Area area = areaDAO.recuperarAreaPeloId(new Area(id));
 		areaDAO.deletarArea(area);
-		
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher("minhas-areas.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -488,7 +490,7 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void preencherFormularioAvaliacao(HttpServletRequest request, HttpServletResponse response,
-			HttpSession sessao) throws SQLException, ServletException, IOException {
+			HttpSession sessao) throws ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
 		Avaliacao avaliacao = avaliacaoDAO.recuperarAvaliacaoPeloId(new Avaliacao(id));
@@ -499,11 +501,11 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void inserirAvaliacao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
+			throws ServletException, IOException {
 
 		int nota = Integer.parseInt(request.getParameter("nota"));
 		String comentario = request.getParameter("comentario");
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoComAvaliacoesPeloId(new Aluno(usuario.getId()));
 
 		long idCurso = Long.parseLong(request.getParameter("id"));
@@ -522,9 +524,9 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void mostrarMinhasAvaliacoes(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, IOException, ServletException, InvalidKeySpecException, NoSuchAlgorithmException {
+			throws IOException, ServletException {
 
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoComCursosPeloId(new Aluno(usuario.getId()));
 
 		String avatar = new String(Base64.encodeBase64(aluno.getFoto().getConteudo()));
@@ -538,13 +540,9 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void mostrarMinhasAreas(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, IOException, ServletException, InvalidKeySpecException, NoSuchAlgorithmException {
+			throws IOException, ServletException {
 
-
-//		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
-//		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoComAreasPeloId(new Instituicao(usuario.getId()));
-
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
 
 		List<Area> areas = areaDAO.recuperarAreasPelaInstituicao(instituicao);
@@ -563,18 +561,18 @@ public class Servlet extends HttpServlet {
 
 		int nota = Integer.parseInt(request.getParameter("nota"));
 		String comentario = request.getParameter("comentario");
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoPeloId(new Aluno(usuario.getId()));
 		Curso curso = avaliacao.getCurso();
 		LocalDate dataComentario = LocalDate.now();
 		avaliacaoDAO.atualizarAvaliacao(new Avaliacao(id, nota, comentario, aluno, curso, dataComentario));
-		
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-curso.jsp");
 		dispatcher.forward(request, response);
 	}
 
 	private void deletarAvaliacao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
+			throws ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
 		Avaliacao avaliacao = avaliacaoDAO.recuperarAvaliacaoPeloId(new Avaliacao(id));
@@ -586,32 +584,32 @@ public class Servlet extends HttpServlet {
 	private void mostrarFormularioCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
 
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
 		List<Area> areas = areaDAO.recuperarAreasPelaInstituicao(instituicao);
 		request.setAttribute("areas", areas);
-		
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-curso.jsp");
 		dispatcher.forward(request, response);
 	}
 
 	private void preencherFormularioCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
+			throws ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
 		Curso curso = cursoDAO.recuperarCursoPeloId(new Curso(id));
 		request.setAttribute("curso", curso);
 		List<Area> areas = areaDAO.recuperarAreasPelaInstituicao(instituicao);
 		request.setAttribute("areas", areas);
-		
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher("cadastrar-curso.jsp");
 		dispatcher.forward(request, response);
 	}
 
 	private void inserirCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
+			throws ServletException, IOException {
 
 		String nome = request.getParameter("curso");
 		String descricao = request.getParameter("descricao");
@@ -623,13 +621,13 @@ public class Servlet extends HttpServlet {
 		Turno turno = Turno.values()[Integer.parseInt(request.getParameter("turno"))];
 		long idArea = Long.parseLong(request.getParameter("area"));
 
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 
 		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
 
 		cursoDAO.inserirCurso(
 				new Curso(nome, descricao, duracao, preco, link, modalidade, turno, new Area(idArea), instituicao));
-		
+
 		List<Curso> cursos = cursoDAO.recuperarCursosPelaInstituicao(instituicao);
 		request.setAttribute("cursos", cursos);
 
@@ -638,7 +636,7 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void atualizarCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
+			throws ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
 		String nome = request.getParameter("curso");
@@ -651,7 +649,7 @@ public class Servlet extends HttpServlet {
 		Turno turno = Turno.values()[Integer.parseInt(request.getParameter("turno"))];
 
 		long idArea = Long.parseLong(request.getParameter("area"));
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
 		cursoDAO.atualizarCurso(
 				new Curso(id, nome, desc, duracao, preco, link, modalidade, turno, new Area(idArea), instituicao));
@@ -663,7 +661,6 @@ public class Servlet extends HttpServlet {
 	private void mostrarPaginaCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
 
-
 		long id = Long.parseLong(request.getParameter("id"));
 		Curso curso = cursoDAO.recuperarCursoPeloId(new Curso(id));
 
@@ -674,7 +671,7 @@ public class Servlet extends HttpServlet {
 
 		Area area = areaDAO.recuperarAreaPeloCurso(curso);
 		request.setAttribute("area", area);
-		
+
 		AvaliacaoMapper avaliacaoMapper = new AvaliacaoMapper();
 		List<AvaliacaoDTO> avaliacoes = avaliacaoMapper.paraDTO(avaliacaoDAO.recuperarAvaliacoesPeloCurso(curso));
 		request.setAttribute("avaliacoes", avaliacoes);
@@ -687,7 +684,7 @@ public class Servlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		// long id = Long.parseLong(request.getParameter("id"));
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoComCursosPeloId(new Aluno(usuario.getId()));
 		request.setAttribute("alunos", aluno);
 
@@ -699,10 +696,10 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void favoritarCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
+			throws ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 		Aluno aluno = alunoDAO.recuperarAlunoComCursosPeloId(new Aluno(usuario.getId()));
 		Curso curso = cursoDAO.recuperarCursoComAlunosPeloId(new Curso(id));
 		curso.adicionarAluno(aluno);
@@ -715,23 +712,23 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void desfavoritarCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
-			long id = Long.parseLong(request.getParameter("id"));
-			Usuario usuario = (Usuario) sessao.getAttribute("usuario");
-			Aluno aluno = alunoDAO.recuperarAlunoComCursosPeloId(new Aluno(usuario.getId()));
-			Curso curso = cursoDAO.recuperarCursoComAlunosPeloId(new Curso(id));
+			throws ServletException, IOException {
+		long id = Long.parseLong(request.getParameter("id"));
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
+		Aluno aluno = alunoDAO.recuperarAlunoComCursosPeloId(new Aluno(usuario.getId()));
+		Curso curso = cursoDAO.recuperarCursoComAlunosPeloId(new Curso(id));
 
-			curso.removerAluno(aluno);
-			cursoDAO.atualizarCurso(curso);
-			aluno.removerCursoFavorito(curso);
-			alunoDAO.atualizarAluno(aluno);
+		curso.removerAluno(aluno);
+		cursoDAO.atualizarCurso(curso);
+		aluno.removerCursoFavorito(curso);
+		alunoDAO.atualizarAluno(aluno);
 
-			RequestDispatcher dispatcher = request.getRequestDispatcher("cursos-favoritos.jsp");
-			dispatcher.forward(request, response);
-			}
+		RequestDispatcher dispatcher = request.getRequestDispatcher("cursos-favoritos.jsp");
+		dispatcher.forward(request, response);
+	}
 
 	private void deletarCurso(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
+			throws ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
 		// desfavoritar curso
@@ -775,16 +772,17 @@ public class Servlet extends HttpServlet {
 		Optional<Double> preco = Optional.of(Double.parseDouble(request.getParameter("preco")));
 		System.out.println(preco.get());
 
-		List<Curso> cursos = cursoDAO.recuperarCursoPorFiltro(instituicao, area, notaCorte, turno, modalidade, preco, duracao);
+		List<Curso> cursos = cursoDAO.recuperarCursoPorFiltro(instituicao, area, notaCorte, turno, modalidade, preco,
+				duracao);
 		System.out.println(cursos.size());
 		request.setAttribute("cursos", cursos);
-		
+
 		double precoMinimo = cursoDAO.recuperaMenorPrecoCurso();
 		double precoMaximo = cursoDAO.recuperarMaiorPrecoCurso();
 
 		List<Area> areas = areaDAO.recuperarAreas();
 		List<Instituicao> instituicoes = instituicaoDAO.recuperarInstituicoes();
-		
+
 		request.setAttribute("precoMinimo", precoMinimo);
 		request.setAttribute("precoMaximo", precoMaximo);
 		request.setAttribute("areas", areas);
@@ -846,7 +844,7 @@ public class Servlet extends HttpServlet {
 	private void cursosInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
 
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
 
 		List<Curso> cursos = cursoDAO.recuperarCursosPelaInstituicao(instituicao);
@@ -865,8 +863,8 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void preencherFormularioInstituicao(HttpServletRequest request, HttpServletResponse response,
-			HttpSession sessao) throws SQLException, ServletException, IOException {
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
+			HttpSession sessao) throws ServletException, IOException {
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
 		request.setAttribute("instituicao", instituicao);
 
@@ -881,7 +879,7 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void inserirInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
+			throws ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
 
 		String nome = request.getParameter("nome");
 		String senha = request.getParameter("senha");
@@ -931,7 +929,7 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void atualizarInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
+			throws ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
 		String nome = request.getParameter("nome");
 		String senha = request.getParameter("senha");
 		String cnpj = request.getParameter("cnpj");
@@ -951,8 +949,7 @@ public class Servlet extends HttpServlet {
 		String referencia = request.getParameter("referencia");
 		String complemento = request.getParameter("complemento");
 
-		Usuario usuario = (Usuario) sessao.getAttribute("usuario");
-
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 
 		Instituicao instituicao = new Instituicao(usuario.getId(), nome, Hash.gerarHash(sal, senha), sal, cnpj,
 				descricao, null);
@@ -984,7 +981,7 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void deletarInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
+			throws ServletException, IOException {
 		long id = Long.parseLong(request.getParameter("id"));
 		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(id));
 		// desfavoritar e remover cursos, endereco, area
@@ -994,12 +991,11 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void mostrarContaInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
-		// Usuario usuario = (Usuario) sessao.getAttribute("usuario");
-		// Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new
-		// Instituicao(usuario.getId()));
+			throws ServletException, IOException {
+		
+		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
+		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
 
-		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(3L));
 		request.setAttribute("instituicao", instituicao);
 
 		Contato contato = contatoDAO.recuperarContatoPeloUsuario(instituicao);
@@ -1013,7 +1009,7 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void mostrarPaginaInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
+			throws ServletException, IOException {
 
 		long id = Long.parseLong(request.getParameter("id"));
 		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(id));
@@ -1030,7 +1026,7 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void mostrarInstituicoes(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException {
+			throws ServletException, IOException {
 
 		List<Instituicao> instituicoes = instituicaoDAO.recuperarInstituicoes();
 		request.setAttribute("instituicoes", instituicoes);
@@ -1047,16 +1043,22 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void loginUsuario(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
-			throws SQLException, ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
+			throws ServletException, IOException, InvalidKeySpecException, NoSuchAlgorithmException {
 
 		String email = request.getParameter("email");
 		String senha = request.getParameter("senha");
 
 		Usuario usuario = usuarioDAO.recuperarUsuarioPorEmail(new Contato(email));
 
-		if (usuario.getSenha().equals(Hash.gerarHash(usuario.getSal(), senha)))
-			request.getSession().setAttribute("usuario", usuario);
+		if (usuario.getSenha().equals(Hash.gerarHash(usuario.getSal(), senha))) {
 
+			usuario.setFoto(fotoDAO.recuperarFotoPeloIdUsuario(usuario));
+
+			UsuarioMapper usuarioMapper = new UsuarioMapper();
+			UsuarioDTO usuarioDTO = usuarioMapper.paraDTO(usuario);
+
+			request.getSession().setAttribute("usuario", usuarioDTO);
+		}
 		// List<Curso> cursosAvaliados = cursoDAO.recuperarCincoCursosAvaliados();
 		// request.setAttribute("cursosAvaliados", cursosAvaliados);
 
@@ -1068,4 +1070,9 @@ public class Servlet extends HttpServlet {
 
 	}
 
+	private void deslogarUsuario(HttpServletRequest request, HttpServletResponse response, HttpSession sessao) throws ServletException, IOException {
+		sessao.invalidate();
+		RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+		dispatcher.forward(request, response);
+	}
 }

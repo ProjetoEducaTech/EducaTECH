@@ -146,3 +146,32 @@ border-radius: var(--raio-borda);
 border: 2px solid var(--cor-roxa-secundaria);
 margin-bottom: 10px;
 }
+
+li.dropdown {
+	display: inline-block;
+}
+
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: rgb(242, 242, 242);
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+}
+
+.dropdown-content a {
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+	text-align: left;
+}
+
+.dropdown-content a:hover {
+	background-color: rgb(221, 221, 221);
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
