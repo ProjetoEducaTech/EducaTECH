@@ -70,5 +70,17 @@
 		<p>Turno: <c:out value='${curso.turno}'/></p>
 		<p>Preço: <c:out value='${curso.preco}'/></p>
 	</div>
+	
+	<div class="favoritar-curso">
+	<h2>Favoritar curso</h2>
+                <div class="content-card">
+                    <form action="favoritar-curso" method="post">
+                        <input type="hidden" name="id" value='${curso.id}'/>
+                        <p><c:out value="${curso.nome}" /></p>
+                        <p><c:out value="${curso.descricao}" /></p>
+                        <button type="submit">Favoritar Curso</button>
+                    </form>
+                </div>                      
+    </div>
 	</body>
 </html>
