@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -19,8 +18,6 @@ import br.senac.educatech.modelo.entidade.aluno.Aluno;
 import br.senac.educatech.modelo.entidade.aluno.Aluno_;
 import br.senac.educatech.modelo.entidade.area.Area;
 import br.senac.educatech.modelo.entidade.area.Area_;
-import br.senac.educatech.modelo.entidade.avaliacao.Avaliacao;
-import br.senac.educatech.modelo.entidade.avaliacao.Avaliacao_;
 import br.senac.educatech.modelo.entidade.curso.Curso;
 import br.senac.educatech.modelo.entidade.curso.Curso_;
 import br.senac.educatech.modelo.entidade.instituicao.Instituicao;
@@ -305,7 +302,7 @@ public class CursoDAOImpl implements CursoDAO {
 
 			criteria.select(raizCurso);
 			criteria.orderBy(construtor.asc(raizCurso.get(Curso_.NOME)));
-
+			raizCurso.fetch(Curso_.INSTITUICAO, JoinType.LEFT);
 			curso = sessao.createQuery(criteria).getResultList();
 
 			sessao.getTransaction().commit();
@@ -703,7 +700,7 @@ public class CursoDAOImpl implements CursoDAO {
 		return maiorPreco;
 	}
 
-	public List<Curso> recuperarPaginaPorAvaliacaoNomePreco(int numeroDaPagina, int tamanhoDaPagina) {
+	public List<Curso> recuperarPaginaPorAvaliacao() {
 
 		Session sessao = null;
 		List<Curso> paginaAtual = new ArrayList<>();
@@ -722,17 +719,16 @@ public class CursoDAOImpl implements CursoDAO {
 			Root<Curso> raizCurso = criteriaQuery.from(Curso.class);
 			CriteriaQuery<Curso> select = criteriaQuery.select(raizCurso);
 			raizCurso.fetch(Curso_.AVALIACOES, JoinType.LEFT);
-			//Join<Curso, Avaliacao> joinAvaliacao = raizCurso.join(Curso_.AVALIACOES);
-			 criteriaQuery.multiselect(construtor.avg(raizCurso.get(Avaliacao_.NOTA)),
-			 raizCurso.get(Curso_.NOME), raizCurso.get(Curso_.ID));
+//			Join<Curso, Avaliacao> joinAvaliacao = raizCurso.join(Curso_.AVALIACOES);
+//			criteriaQuery.multiselect(construtor.avg(raizCurso.get(Avaliacao_.NOTA)),
+//			raizCurso.get(Curso_.NOME), raizCurso.get(Curso_.ID));
 
 			// Expression<Double> avgCursos =
 			// construtor.avg(joinAvaliacao.get(Avaliacao.NOTA));
-			criteriaQuery.orderBy(construtor.asc(raizCurso.get(Curso_.NOME)),
+			criteriaQuery.orderBy(/*construtor.asc(raizCurso.get(Curso_.NOME)),*/
 					construtor.asc(raizCurso.get(Curso_.PRECO)));
-			TypedQuery<Curso> typedQuery = sessao.createQuery(select);
-			paginaAtual.addAll(
-					typedQuery.setFirstResult(numeroDaPagina - 1).setMaxResults(tamanhoDaPagina).getResultList());
+			paginaAtual = sessao.createQuery(select).getResultList();
+			//paginaAtual.addAll(typedQuery.setFirstResult(numeroDaPagina - 1).setMaxResults(tamanhoDaPagina).getResultList());
 
 		} catch (Exception sqlException) {
 

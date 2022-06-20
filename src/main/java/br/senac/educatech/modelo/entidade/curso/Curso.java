@@ -138,11 +138,6 @@ public class Curso implements Serializable {
 		avaliacoes = new ArrayList<Avaliacao>();
 	}
 	
-	public Curso(int nota, String nome, Long id) {
-		setId(id);
-		setNome(nome);
-		Avaliacao media = new Avaliacao(nota);
-	}
 
 	public Long getId() {
 		return id;

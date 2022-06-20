@@ -175,3 +175,242 @@ li.dropdown {
 .dropdown:hover .dropdown-content {
 	display: block;
 }
+
+input {
+	padding: 10px;
+	width: 100%;
+	font-size: 17px;
+	border-radius: var(--raio-borda);
+}
+
+input.invalid {
+	background-color: var(--cor-vermelho-erro);
+}
+
+.input-campo {
+	width: 160px;
+	height: 50px;
+	border: 3px solid var(--cor-roxa-secundaria);
+	border-radius: var(--raio-borda);
+	background-color: #e6e8ec;
+}
+
+.input-campo:hover{
+	text-decoration: none;
+	
+}
+
+.menu {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-top: 15px;
+	max-width: var(--tamanho-maximo-largura);
+	margin: 0 auto;
+	flex-wrap: wrap;
+	margin-bottom: 2em;
+}
+
+.filtro {
+	width: var(--tamanho-maximo-largura);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 0 auto;
+	margin-bottom: 4em;
+}
+
+select {
+	color: var(--cor-roxa-secundaria);
+}
+
+.nav-lista {
+	display: flex;
+	flex-wrap: wrap;
+	width: 930px;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.nav-link {
+	/*(superior, inferior) e (esquerda e direita)*/
+	font-weight: bold;
+}
+
+.menu-logo [alt=logo] {
+	width: 235px;
+	height: 80px;
+}
+
+.nav-link-perfil {
+	width: 40px;
+	height: 40px;
+	border-color: var(--cor-roxa-secundaria);
+	border-style: solid;
+	border-width: 3px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: var(--raio-borda);
+}
+
+#imagem-perfil {
+	display: block;
+	margin: 0 auto;
+	width: 27px;
+	height: 27px;
+}
+
+.aba {
+	display: none;
+}
+
+button {
+	border-radius: var(--raio-borda);
+	padding: 10px 20px;
+	font-size: 17px;
+	cursor: pointer;
+}
+
+button:hover {
+	opacity: 0.8;
+}
+
+#botao-buscar {
+	width: 220px;
+	height: 50px;
+	background: linear-gradient(180deg, #B18DFF 0%, #690AC2 100%);
+	box-shadow: 0px 4px 16px #D6DBE3;
+	border: none;
+	border-radius: var(--raio-borda);
+	color: var(--cor-branco);
+}
+
+.paleta-cor-instituicao {
+	background-color: var(--cor-azul-secundaria);
+	color: var(--cor-branco);
+	border: none;
+}
+
+#botao-proximo {
+	background: linear-gradient(180deg, #0D19A3 0%, #070C4B 100%);
+	box-shadow: 0px 4px 16px #D6DBE3;
+}
+
+.borda-insticuicao-azul {
+	border: 3px solid var(--cor-azul-terciario);
+}
+
+.passos {
+	text-align: center;
+	margin-top: 40px;
+}
+
+.passo {
+	height: 15px;
+	width: 15px;
+	margin: 0 1px;
+	background-color: var(--cor-branco);
+	border: 2px solid var(--cor-roxa-secundaria);
+	border-radius: 50%;
+	display: inline-block;
+}
+
+.passo.active {
+	background-color: var(--cor-roxa-secundaria);
+}
+
+.passo.finish {
+	background-color: var(- -cor-roxa-secundaria);
+}
+
+/*Card*/
+
+.destaques {
+	width: var(--tamanho-maximo-largura);
+	margin: 0 auto;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.card-conteudo {
+	border-radius: 15px;
+	width: 220px;
+	height: 305px;
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-content: space-around;
+	border: 3px solid var(--cor-roxa-secundaria);
+	background-color: var(--cor-branco);
+}
+
+.imagem-card {
+	/*(superior, inferior) e (esquerda e direita)*/
+	margin: 25px 0px 0px 15px;
+	width: 150px;
+	height: 80px;
+	display: block;
+}
+
+
+a .card-links {
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.nome-curso {
+	margin: 0 auto;
+	text-align: center;
+	font-weight: bolder;
+}
+
+.avaliacao {
+	display: inline-block;
+}
+
+.avaliacao-container {
+	direction: rtl !important;
+}
+
+.label-estrela {
+	display: inline-block;
+	margin: 15px 0;
+	color: #d4d4d4;
+	cursor: pointer;
+	font-size: 40px;
+	transition: color 0.2s;
+}
+
+.input-estrela {
+	display: none;
+}
+
+.label-estrela:hover,
+.label-estrela:hover~.label-estrela,
+.input-estrela:checked~.label-estrela {
+	color: var(--cor-amarelo-secundario);
+}
+
+
+.rodape {
+	width: var(--tamanho-maximo-largura);
+	margin: 0 auto;
+	margin-top: 50px;
+	display: flex;
+	justify-content: space-between;
+	font-size: var(--texto-tamanho-pequeno);
+	list-style: none;
+	color: var(--cor-texto-preto);
+}
+
+#rodape-fim {
+	text-align: center;
+}
+
+.imagem-logo {
+	width: 125px;
+	height: 45px;
+}

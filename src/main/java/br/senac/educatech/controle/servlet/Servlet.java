@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,6 +57,7 @@ import br.senac.educatech.modelo.enumeracao.genero.Genero;
 import br.senac.educatech.modelo.enumeracao.modalidade.Modalidade;
 import br.senac.educatech.modelo.enumeracao.pronome.Pronome;
 import br.senac.educatech.modelo.enumeracao.turno.Turno;
+import br.senac.educatech.util.foto.ConversorFoto;
 import br.senac.educatech.util.hash.Hash;
 
 @WebServlet("/")
@@ -270,7 +272,7 @@ public class Servlet extends HttpServlet {
 			case "/conheca-faculdades":
 				mostrarInstituicoes(request, response, sessao);
 				break;
-				
+
 			case "/teste":
 				teste(request, response, sessao);
 				break;
@@ -287,26 +289,59 @@ public class Servlet extends HttpServlet {
 	}
 
 	private void teste(HttpServletRequest request, HttpServletResponse response, HttpSession sessao) {
-		
-		List<Curso> cursos = cursoDAO.recuperarPaginaPorAvaliacaoNomePreco(1, 5);
-		
-		for(Curso cursosAvaliados :  cursos) {
-			System.out.println(cursosAvaliados.getId());
-			System.out.println(cursosAvaliados.getNome());
-			System.out.println(cursosAvaliados.getAvaliacoes().get(0).getNota());
+
+		List<Curso> cursos = cursoDAO.recuperarPaginaPorAvaliacao();
+		List<Curso> cursosAvaliados = new ArrayList<Curso>();
+		// Curso[] cursosAvaliados = new Curso[cursos.size()];
+
+		for (int i = 0; i < cursos.size(); i++) {
+			double soma = 0;
+			if (cursos.get(i).getAvaliacoes().size() != 0) {
+				for (int j = 0; j < cursos.get(i).getAvaliacoes().size(); j++) {
+					soma += cursos.get(i).getAvaliacoes().get(j).getNota();
+
+				}
+				double resultado = soma / cursos.get(i).getAvaliacoes().size();
+				System.out.println("Avg do curso " + cursos.get(i).getNome() + ": " + resultado);
+
+				cursosAvaliados.add(cursos.get(i));
+
+			} else {
+				continue;
+			}
+
+			System.out.println("-------------------");
 		}
-		
+
+		for (int i = 0; i < cursosAvaliados.size(); i++) {
+			if (cursosAvaliados.get(i).getAvaliacoes().size() != 0) {
+				for (int j = 0; j < cursosAvaliados.size() - i; j++) {
+					if (cursosAvaliados.get(i).getAvaliacoes().get(j).getNota() > cursosAvaliados.get(i + 1)
+							.getAvaliacoes().get(j).getNota()) {
+						int temp = cursosAvaliados.get(i).getAvaliacoes().get(j).getNota();
+						cursosAvaliados.get(i).getAvaliacoes().get(j)
+								.setNota(cursosAvaliados.get(+1).getAvaliacoes().get(j).getNota());
+						cursosAvaliados.get(i + 1).getAvaliacoes().get(j).setNota(temp);
+					}
+				}
+			} else {
+				cursosAvaliados.remove(i);
+			}
+
+		}
+
 	}
 
 	private void padrao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
 
+		
 		List<Area> areas = areaDAO.recuperarAreas();
 		request.setAttribute("areas", areas);
 
-		// List<Curso> cursosAvaliados = cursoDAO.recuperarCincoCursosAvaliados();
-		// request.setAttribute("cursosAvaliados", cursosAvaliados);
-
+		List<Curso> cursosAvaliados = cursoDAO.recuperarCursos();
+		request.setAttribute("cursosAvaliados", cursosAvaliados);
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("pagina-inicial.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -1008,7 +1043,7 @@ public class Servlet extends HttpServlet {
 
 	private void mostrarContaInstituicao(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
 			throws ServletException, IOException {
-		
+
 		UsuarioDTO usuario = (UsuarioDTO) sessao.getAttribute("usuario");
 		Instituicao instituicao = instituicaoDAO.recuperarInstituicaoPeloId(new Instituicao(usuario.getId()));
 
@@ -1075,8 +1110,8 @@ public class Servlet extends HttpServlet {
 
 			request.getSession().setAttribute("usuario", usuarioDTO);
 		}
-		// List<Curso> cursosAvaliados = cursoDAO.recuperarCincoCursosAvaliados();
-		// request.setAttribute("cursosAvaliados", cursosAvaliados);
+		 List<Curso> cursosAvaliados = cursoDAO.recuperarCursos();
+		 request.setAttribute("cursosAvaliados", cursosAvaliados);
 
 		List<Area> areas = areaDAO.recuperarAreas();
 		request.setAttribute("areas", areas);
@@ -1086,7 +1121,8 @@ public class Servlet extends HttpServlet {
 
 	}
 
-	private void deslogarUsuario(HttpServletRequest request, HttpServletResponse response, HttpSession sessao) throws ServletException, IOException {
+	private void deslogarUsuario(HttpServletRequest request, HttpServletResponse response, HttpSession sessao)
+			throws ServletException, IOException {
 		sessao.invalidate();
 		RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
 		dispatcher.forward(request, response);

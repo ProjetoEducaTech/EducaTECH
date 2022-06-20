@@ -20,7 +20,6 @@ import br.senac.educatech.modelo.entidade.curso.Curso;
 @Table(name = "avaliacao")
 public class Avaliacao implements Serializable {
 
-	
 	private static final long serialVersionUID = 8587596035712912830L;
 
 	@Id
@@ -41,11 +40,12 @@ public class Avaliacao implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_curso")
 	private Curso curso;
-	
-	@Column(name = "data_avaliacao", nullable = false)
-	private LocalDate dataAvaliacao; 
 
-	public Avaliacao() {}
+	@Column(name = "data_avaliacao", nullable = false)
+	private LocalDate dataAvaliacao;
+
+	public Avaliacao() {
+	}
 
 	public Avaliacao(int nota, String comentario, Aluno aluno, Curso curso, LocalDate dataAvaliacao) {
 		setNota(nota);
@@ -68,7 +68,7 @@ public class Avaliacao implements Serializable {
 		setId(id);
 
 	}
-	
+
 	public Avaliacao(int nota) {
 		setNota(nota);
 
@@ -121,7 +121,7 @@ public class Avaliacao implements Serializable {
 	public void setDataAvaliacao(LocalDate dataAvaliacao) {
 		this.dataAvaliacao = dataAvaliacao;
 	}
-	
+
 	public boolean equals(Object obj) {
 
 		if (this == obj)
